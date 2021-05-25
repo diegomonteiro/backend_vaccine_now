@@ -1,0 +1,15 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vaccination_point: one
+  cod: MyString
+  vaccine_type: MyString
+  total_doses: 1
+  remain_doses: 1
+
+two:
+  vaccination_point: two
+  cod: MyString
+  vaccine_type: MyString
+  total_doses: 1
+  remain_doses: 1

@@ -1,0 +1,29 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Vaccination point:</strong>
+  <%= @vaccination.vaccination_point_id %>
+</p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @vaccination.cod %>
+</p>
+
+<p>
+  <strong>Vaccine type:</strong>
+  <%= @vaccination.vaccine_type %>
+</p>
+
+<p>
+  <strong>Total doses:</strong>
+  <%= @vaccination.total_doses %>
+</p>
+
+<p>
+  <strong>Remain doses:</strong>
+  <%= @vaccination.remain_doses %>
+</p>
+
+<%= link_to 'Edit', edit_vaccination_path(@vaccination) %> |
+<%= link_to 'Back', vaccinations_path %>

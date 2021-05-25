@@ -1,0 +1,2 @@
+class VaccinationPointType < ApplicationRecord
+end

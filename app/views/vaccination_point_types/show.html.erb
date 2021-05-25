@@ -1,0 +1,14 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @vaccination_point_type.name %>
+</p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @vaccination_point_type.cod %>
+</p>
+
+<%= link_to 'Edit', edit_vaccination_point_type_path(@vaccination_point_type) %> |
+<%= link_to 'Back', vaccination_point_types_path %>

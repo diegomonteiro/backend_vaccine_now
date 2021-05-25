@@ -1,0 +1,2 @@
+module VaccinationPointsHelper
+end

@@ -1,0 +1,19 @@
+# Read about fixtures at https://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  vaccination_point_type: one
+  name: MyString
+  address: MyText
+  latitude: MyString
+  longitude: MyString
+  contact_number: MyString
+  days_work: 
+
+two:
+  vaccination_point_type: two
+  name: MyString
+  address: MyText
+  latitude: MyString
+  longitude: MyString
+  contact_number: MyString
+  days_work: 

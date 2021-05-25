@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Vaccine Types</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Cod</th>
+      <th>Manufacturer</th>
+      <th>Efficiency</th>
+      <th>Number of doses</th>
+      <th>Max interval in days</th>
+      <th>Disease</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vaccine_types.each do |vaccine_type| %>
+      <tr>
+        <td><%= vaccine_type.name %></td>
+        <td><%= vaccine_type.cod %></td>
+        <td><%= vaccine_type.manufacturer %></td>
+        <td><%= vaccine_type.efficiency %></td>
+        <td><%= vaccine_type.number_of_doses %></td>
+        <td><%= vaccine_type.max_interval_in_days %></td>
+        <td><%= vaccine_type.disease %></td>
+        <td><%= link_to 'Show', vaccine_type %></td>
+        <td><%= link_to 'Edit', edit_vaccine_type_path(vaccine_type) %></td>
+        <td><%= link_to 'Destroy', vaccine_type, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vaccine Type', new_vaccine_type_path %>

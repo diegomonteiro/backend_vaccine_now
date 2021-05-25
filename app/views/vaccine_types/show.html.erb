@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @vaccine_type.name %>
+</p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @vaccine_type.cod %>
+</p>
+
+<p>
+  <strong>Manufacturer:</strong>
+  <%= @vaccine_type.manufacturer %>
+</p>
+
+<p>
+  <strong>Efficiency:</strong>
+  <%= @vaccine_type.efficiency %>
+</p>
+
+<p>
+  <strong>Number of doses:</strong>
+  <%= @vaccine_type.number_of_doses %>
+</p>
+
+<p>
+  <strong>Max interval in days:</strong>
+  <%= @vaccine_type.max_interval_in_days %>
+</p>
+
+<p>
+  <strong>Disease:</strong>
+  <%= @vaccine_type.disease %>
+</p>
+
+<%= link_to 'Edit', edit_vaccine_type_path(@vaccine_type) %> |
+<%= link_to 'Back', vaccine_types_path %>

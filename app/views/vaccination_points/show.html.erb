@@ -1,0 +1,39 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Vaccination point type:</strong>
+  <%= @vaccination_point.vaccination_point_type_id %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @vaccination_point.name %>
+</p>
+
+<p>
+  <strong>Address:</strong>
+  <%= @vaccination_point.address %>
+</p>
+
+<p>
+  <strong>Latitude:</strong>
+  <%= @vaccination_point.latitude %>
+</p>
+
+<p>
+  <strong>Longitude:</strong>
+  <%= @vaccination_point.longitude %>
+</p>
+
+<p>
+  <strong>Contact number:</strong>
+  <%= @vaccination_point.contact_number %>
+</p>
+
+<p>
+  <strong>Days work:</strong>
+  <%= @vaccination_point.days_work %>
+</p>
+
+<%= link_to 'Edit', edit_vaccination_point_path(@vaccination_point) %> |
+<%= link_to 'Back', vaccination_points_path %>

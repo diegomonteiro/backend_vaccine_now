@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Vaccinations</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vaccination point</th>
+      <th>Cod</th>
+      <th>Vaccine type</th>
+      <th>Total doses</th>
+      <th>Remain doses</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vaccinations.each do |vaccination| %>
+      <tr>
+        <td><%= vaccination.vaccination_point_id %></td>
+        <td><%= vaccination.cod %></td>
+        <td><%= vaccination.vaccine_type %></td>
+        <td><%= vaccination.total_doses %></td>
+        <td><%= vaccination.remain_doses %></td>
+        <td><%= link_to 'Show', vaccination %></td>
+        <td><%= link_to 'Edit', edit_vaccination_path(vaccination) %></td>
+        <td><%= link_to 'Destroy', vaccination, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vaccination', new_vaccination_path %>
