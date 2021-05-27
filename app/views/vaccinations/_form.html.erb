@@ -1,42 +1,11 @@
-<%= form_with(model: vaccination, local: true) do |form| %>
-  <% if vaccination.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(vaccination.errors.count, "error") %> prohibited this vaccination from being saved:</h2>
+<%= simple_form_for @vaccination, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :vaccination_point_id %>
+  <%= f.input :cod %>
+  <%= f.input :vaccine_type %>
+  <%= f.input :total_doses %>
+  <%= f.input :remain_doses %>
 
-      <ul>
-        <% vaccination.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :vaccination_point_id %>
-    <%= form.text_field :vaccination_point_id %>
-  </div>
-
-  <div class="field">
-    <%= form.label :cod %>
-    <%= form.text_field :cod %>
-  </div>
-
-  <div class="field">
-    <%= form.label :vaccine_type %>
-    <%= form.text_field :vaccine_type %>
-  </div>
-
-  <div class="field">
-    <%= form.label :total_doses %>
-    <%= form.number_field :total_doses %>
-  </div>
-
-  <div class="field">
-    <%= form.label :remain_doses %>
-    <%= form.number_field :remain_doses %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                vaccinations_path, :class => 'btn btn-default' %>
 <% end %>

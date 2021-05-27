@@ -1,6 +1,5 @@
-<h1>Editing Vaccination</h1>
-
-<%= render 'form', vaccination: @vaccination %>
-
-<%= link_to 'Show', @vaccination %> |
-<%= link_to 'Back', vaccinations_path %>
+<%- model_class = Vaccination -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => [:'helpers.titles.edit', 'Edit %{model}'], :model => model_class.model_name.human.titleize %></h1>
+</div>
+<%= render :partial => 'form' %>

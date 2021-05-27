@@ -1,35 +1,44 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Vaccinations</h1>
-
-<table>
+<%- model_class = Vaccination -%>
+<div class="page-header">
+  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Vaccination point</th>
-      <th>Cod</th>
-      <th>Vaccine type</th>
-      <th>Total doses</th>
-      <th>Remain doses</th>
-      <th colspan="3"></th>
+      <th><%= model_class.human_attribute_name(:id) %></th>
+      <th><%= model_class.human_attribute_name(:vaccination_point_id) %></th>
+      <th><%= model_class.human_attribute_name(:cod) %></th>
+      <th><%= model_class.human_attribute_name(:vaccine_type) %></th>
+      <th><%= model_class.human_attribute_name(:total_doses) %></th>
+      <th><%= model_class.human_attribute_name(:remain_doses) %></th>
+      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
-
   <tbody>
     <% @vaccinations.each do |vaccination| %>
       <tr>
+        <td><%= link_to vaccination.id, vaccination_path(vaccination) %></td>
         <td><%= vaccination.vaccination_point_id %></td>
         <td><%= vaccination.cod %></td>
         <td><%= vaccination.vaccine_type %></td>
         <td><%= vaccination.total_doses %></td>
         <td><%= vaccination.remain_doses %></td>
-        <td><%= link_to 'Show', vaccination %></td>
-        <td><%= link_to 'Edit', edit_vaccination_path(vaccination) %></td>
-        <td><%= link_to 'Destroy', vaccination, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%=l vaccination.created_at %></td>
+        <td>
+          <%= link_to t('.edit', :default => t("helpers.links.edit")),
+                      edit_vaccination_path(vaccination), :class => 'btn btn-default btn-xs' %>
+          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+                      vaccination_path(vaccination),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+        </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
-<br>
-
-<%= link_to 'New Vaccination', new_vaccination_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_vaccination_path,
+            :class => 'btn btn-primary' %>

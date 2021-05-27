@@ -1,27 +1,8 @@
-<%= form_with(model: vaccination_point_type, local: true) do |form| %>
-  <% if vaccination_point_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(vaccination_point_type.errors.count, "error") %> prohibited this vaccination_point_type from being saved:</h2>
+<%= simple_form_for @vaccination_point_type, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :cod %>
 
-      <ul>
-        <% vaccination_point_type.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :cod %>
-    <%= form.text_field :cod %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                vaccination_point_types_path, :class => 'btn btn-default' %>
 <% end %>

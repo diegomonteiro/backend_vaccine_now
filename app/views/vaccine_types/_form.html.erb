@@ -1,52 +1,13 @@
-<%= form_with(model: vaccine_type, local: true) do |form| %>
-  <% if vaccine_type.errors.any? %>
-    <div id="error_explanation">
-      <h2><%= pluralize(vaccine_type.errors.count, "error") %> prohibited this vaccine_type from being saved:</h2>
+<%= simple_form_for @vaccine_type, :html => { :class => 'form-horizontal' } do |f| %>
+  <%= f.input :name %>
+  <%= f.input :cod %>
+  <%= f.input :manufacturer %>
+  <%= f.input :efficiency %>
+  <%= f.input :number_of_doses %>
+  <%= f.input :max_interval_in_days %>
+  <%= f.input :disease %>
 
-      <ul>
-        <% vaccine_type.errors.full_messages.each do |message| %>
-          <li><%= message %></li>
-        <% end %>
-      </ul>
-    </div>
-  <% end %>
-
-  <div class="field">
-    <%= form.label :name %>
-    <%= form.text_field :name %>
-  </div>
-
-  <div class="field">
-    <%= form.label :cod %>
-    <%= form.text_field :cod %>
-  </div>
-
-  <div class="field">
-    <%= form.label :manufacturer %>
-    <%= form.text_field :manufacturer %>
-  </div>
-
-  <div class="field">
-    <%= form.label :efficiency %>
-    <%= form.text_field :efficiency %>
-  </div>
-
-  <div class="field">
-    <%= form.label :number_of_doses %>
-    <%= form.number_field :number_of_doses %>
-  </div>
-
-  <div class="field">
-    <%= form.label :max_interval_in_days %>
-    <%= form.number_field :max_interval_in_days %>
-  </div>
-
-  <div class="field">
-    <%= form.label :disease %>
-    <%= form.text_field :disease %>
-  </div>
-
-  <div class="actions">
-    <%= form.submit %>
-  </div>
+  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
+                vaccine_types_path, :class => 'btn btn-default' %>
 <% end %>

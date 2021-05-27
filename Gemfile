@@ -36,6 +36,16 @@ gem 'omniauth-facebook'
 gem 'omniauth-twitter'
 gem 'omniauth-google'
 
+gem 'rails-i18n'
+
+gem 'bootstrap', '~> 4.1.0'
+gem 'jquery-rails'
+gem 'pusher'
+gem 'figaro'
+
+gem 'simple_form'
+gem "twitter-bootstrap-rails"
+
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console
   gem 'byebug', platforms: [:mri, :mingw, :x64_mingw]
