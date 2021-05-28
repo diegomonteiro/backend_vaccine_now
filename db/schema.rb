@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_25_191942) do
+ActiveRecord::Schema.define(version: 2021_05_28_030933) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -82,6 +82,7 @@ ActiveRecord::Schema.define(version: 2021_05_25_191942) do
     t.string "cod"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.string "icon_class"
   end
 
   create_table "vaccination_points", force: :cascade do |t|
@@ -94,18 +95,21 @@ ActiveRecord::Schema.define(version: 2021_05_25_191942) do
     t.json "days_work"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.float "radius_km"
+    t.integer "remain_doses"
     t.index ["vaccination_point_type_id"], name: "index_vaccination_points_on_vaccination_point_type_id"
   end
 
   create_table "vaccinations", force: :cascade do |t|
     t.bigint "vaccination_point_id", null: false
     t.string "cod"
-    t.string "vaccine_type"
     t.integer "total_doses"
     t.integer "remain_doses"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "vaccine_type_id"
     t.index ["vaccination_point_id"], name: "index_vaccinations_on_vaccination_point_id"
+    t.index ["vaccine_type_id"], name: "index_vaccinations_on_vaccine_type_id"
   end
 
   create_table "vaccine_types", force: :cascade do |t|
@@ -123,4 +127,5 @@ ActiveRecord::Schema.define(version: 2021_05_25_191942) do
   add_foreign_key "checkins", "trips"
   add_foreign_key "vaccination_points", "vaccination_point_types"
   add_foreign_key "vaccinations", "vaccination_points"
+  add_foreign_key "vaccinations", "vaccine_types"
 end

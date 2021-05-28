@@ -12,7 +12,7 @@
       <th><%= model_class.human_attribute_name(:latitude) %></th>
       <th><%= model_class.human_attribute_name(:longitude) %></th>
       <th><%= model_class.human_attribute_name(:contact_number) %></th>
-      <th><%= model_class.human_attribute_name(:days_work) %></th>
+      <th><%= model_class.human_attribute_name(:radius_km) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -21,13 +21,13 @@
     <% @vaccination_points.each do |vaccination_point| %>
       <tr>
         <td><%= link_to vaccination_point.id, vaccination_point_path(vaccination_point) %></td>
-        <td><%= vaccination_point.vaccination_point_type_id %></td>
+        <td><%= vaccination_point.vaccination_point_type.name %></td>
         <td><%= vaccination_point.name %></td>
         <td><%= vaccination_point.address %></td>
         <td><%= vaccination_point.latitude %></td>
         <td><%= vaccination_point.longitude %></td>
         <td><%= vaccination_point.contact_number %></td>
-        <td><%= vaccination_point.days_work %></td>
+        <td><%= vaccination_point.radius_km %></td>
         <td><%=l vaccination_point.created_at %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),

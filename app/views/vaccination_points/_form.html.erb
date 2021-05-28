@@ -1,11 +1,11 @@
 <%= simple_form_for @vaccination_point, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :vaccination_point_type_id %>
+  <%= f.association :vaccination_point_type, collection: VaccinationPointType.all.map { |vpt| [vpt.name, vpt.id] } %>
   <%= f.input :name %>
   <%= f.input :address %>
   <%= f.input :latitude %>
   <%= f.input :longitude %>
   <%= f.input :contact_number %>
-  <%= f.input :days_work %>
+  <%= f.input :radius_km %>
 
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

@@ -1,7 +1,8 @@
 <%= simple_form_for @vaccination, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :vaccination_point_id %>
-  <%= f.input :cod %>
-  <%= f.input :vaccine_type %>
+
+  <%= f.association :vaccination_point, collection: VaccinationPoint.all.map { |vpt| [vpt.name, vpt.id] } %>
+  <%= f.input :cod %> 
+  <%= f.association :vaccine_type, collection: VaccineType.all.map { |vpt| [vpt.name, vpt.id] } %>
   <%= f.input :total_doses %>
   <%= f.input :remain_doses %>
 

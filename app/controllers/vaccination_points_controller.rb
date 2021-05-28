@@ -64,6 +64,6 @@ class VaccinationPointsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def vaccination_point_params
-      params.require(:vaccination_point).permit(:vaccination_point_type_id, :name, :address, :latitude, :longitude, :contact_number, :days_work)
+      params.require(:vaccination_point).permit(:vaccination_point_type_id, :radius_km, :name, :address, :latitude, :longitude, :contact_number, :days_work)
     end
 end

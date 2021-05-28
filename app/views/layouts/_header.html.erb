@@ -1,0 +1,45 @@
+<nav class="navbar navbar-expand-lg navbar-light bg-light">
+  <a class="navbar-brand" href="#">Navbar</a>
+  <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+    <span class="navbar-toggler-icon"></span>
+  </button>
+
+  <div class="collapse navbar-collapse" id="navbarSupportedContent">
+    <ul class="navbar-nav mr-auto">
+      <li class="nav-item active">
+        <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
+      </li>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Vacinas
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to('Tipos de Vacinas', vaccine_types_path, :class => "dropdown-item") %>
+          <%= link_to('Tipos de Pontos de Vacinação', vaccination_point_types_path, :class => "dropdown-item") %>
+          <%= link_to('Pontos de Vacinação', vaccination_points_path, :class => "dropdown-item") %>
+          <%= link_to('Vacinas', vaccinations_path, :class => "dropdown-item") %>
+        </div>
+      
+    </ul>
+
+    <ul class="navbar-nav mr-auto pull-right">
+    <% unless current_user.nil? %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          <%= current_user.name %>
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          <%= link_to('Meu perfil', edit_user_registration_path, :class => "dropdown-item") %>
+          <div class="dropdown-divider"></div>
+          <%= link_to('Logout', destroy_user_session_path, method: :delete, :class => "dropdown-item") %>  
+        </div>
+      </li>
+    <% else %>
+      <li class="nav-item">
+        <%= link_to('Login', new_user_session_path, :class => "nav-link") %> 
+      </li>
+    <% end %>
+    </ul>
+    
+  </div>
+</nav>

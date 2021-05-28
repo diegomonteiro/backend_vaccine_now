@@ -1,2 +1,8 @@
 pt-BR:
-  
+  helpers:
+    links:
+      new: "Novo"
+      edit: "Editar"
+      destroy: "Excluir"
+      confirm: "Tem certeza disso?"
+      cancel: "Cancelar"
