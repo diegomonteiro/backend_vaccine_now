@@ -43,7 +43,9 @@
     $(document).ready(function(){
         getVaccinationPoints();
 
+        <% unless current_user.nil?  %>
         getLocation("<%= current_user.name %>");
+        <% end %>
     });
 
     function updateUserLocation(e){

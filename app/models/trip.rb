@@ -1,6 +1,7 @@
 class Trip < ApplicationRecord
     before_create :set_uuid
     has_many :checkins
+    belongs_to :user
 
     # a method that creates a random uuid for each trip before its created
     def set_uuid
