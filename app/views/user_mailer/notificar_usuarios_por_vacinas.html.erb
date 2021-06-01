@@ -1,0 +1,21 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Olá, <%= @user.name %></h1>
+    <p>
+      Informamos que há vacinas disponíveis para pessoas em sua região<br>
+      Nome: <%= @vaccination_point.name %><br/>
+      Local: <%= @vaccination_point.address %><br/>
+      Quantidade de vacinas: <%= @remain_doses %><br/>
+      Data: <%= @vaccination_point.updated_at.localtime.strftime("%Y-%m-%d %H:%M") %>
+    </p>
+    <p>
+      Dirija-se imediatamente ao local para garantir sua dose. Obs: Esta notificação não garante a dose,
+      ela será aplicada em ordem de chegada.
+    </p>
+    <p>Obrigado e Vacina-Já!</p>
+  </body>
+</html>

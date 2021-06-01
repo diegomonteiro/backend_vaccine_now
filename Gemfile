@@ -50,6 +50,12 @@ gem 'geokit-rails'
 gem 'apipie-rails'
 gem 'authtrail'
 gem 'active_record_upsert'
+gem 'whenever'
+gem 'delayed_job_active_record'
+
+gem "letter_opener", group: :development
+gem 'sendgrid-ruby'
+
 
 group :development, :test do
   # Call 'byebug' anywhere in the code to stop execution and get a debugger console

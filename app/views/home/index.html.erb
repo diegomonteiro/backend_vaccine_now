@@ -170,25 +170,42 @@
                 $.each(data, function(k,v){
                     var style = getVaccinationPointStyle(v);
 
+                    var remain_doses = _.sumBy(data.vaccinations, function(n){ return n.remain_doses });
+
                     var vaccination_point = L.circle([parseFloat(v.latitude), parseFloat(v.longitude)], {
                         radius: v.radius_km * 1000,
                         color: style.textColor,
                         fillColor: style.textColor,
                         fill: style.textColor,
-                        fillOpacity: 0.1
+                        fillOpacity: 0.1,
+                        options: v
                     });
 
                     vaccination_points.addLayer(
                         L.marker({lat: parseFloat(v.latitude), lng: parseFloat(v.longitude)},
                         {
-                            icon: L.BeautifyIcon.icon(style)
+                            icon: L.BeautifyIcon.icon(style),
+                            options: v
                         }).addTo(map));
                     vaccination_points.addLayer(vaccination_point);
                 });
 
                 vaccination_points.eachLayer(function (layer) {
-                    //layer.bindPopup('Hello');
+                    var html = "";
+                    
+                    var remain_doses = _.sumBy(layer.options.options.vaccinations, function(n){ return n.remain_doses });
+                    var total_doses  = _.sumBy(layer.options.options.vaccinations, function(n){ return n.total_doses });
+
+                    html += "<span><b>"+layer.options.options.name+"</b></span><br/>";
+                    html += "<hr/>";
+                    html += "<span><b>Doses Disponíveis:</b> "+remain_doses+"<span><br/>";
+                    html += "<span><b>Total de Doses:</b> "+total_doses+"<span>";
+                    html += "<hr/>";
+                    html += "<a href='#' class='btn btn-success btn-sm btn-block' style='color: #ffffff'>Avise-me</a>";
+
+                    layer.bindPopup(html);
                     //console.log("Renderizar Custom-Modal: ", layer);
+
                 })
 
                 vaccination_points.addTo(map);

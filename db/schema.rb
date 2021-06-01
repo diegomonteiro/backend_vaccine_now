@@ -10,18 +10,24 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_06_01_004139) do
+ActiveRecord::Schema.define(version: 2021_06_01_234556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
 
-  create_table "checkins", force: :cascade do |t|
-    t.bigint "trip_id", null: false
-    t.decimal "lat"
-    t.decimal "lng"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["trip_id"], name: "index_checkins_on_trip_id"
+  create_table "delayed_jobs", force: :cascade do |t|
+    t.integer "priority", default: 0, null: false
+    t.integer "attempts", default: 0, null: false
+    t.text "handler", null: false
+    t.text "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string "locked_by"
+    t.string "queue"
+    t.datetime "created_at", precision: 6
+    t.datetime "updated_at", precision: 6
+    t.index ["priority", "run_at"], name: "delayed_jobs_priority"
   end
 
   create_table "login_activities", force: :cascade do |t|
@@ -57,19 +63,10 @@ ActiveRecord::Schema.define(version: 2021_06_01_004139) do
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
   end
 
-  create_table "trips", force: :cascade do |t|
-    t.string "name"
-    t.string "uuid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id", null: false
-    t.index ["user_id"], name: "index_trips_on_user_id"
-  end
-
   create_table "user_positions", force: :cascade do |t|
     t.bigint "user_id", null: false
-    t.string "latitude"
-    t.string "longitude"
+    t.float "latitude"
+    t.float "longitude"
     t.float "accuracy"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
@@ -163,8 +160,6 @@ ActiveRecord::Schema.define(version: 2021_06_01_004139) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
-  add_foreign_key "checkins", "trips"
-  add_foreign_key "trips", "users"
   add_foreign_key "user_positions", "users"
   add_foreign_key "vaccination_points", "vaccination_point_types"
   add_foreign_key "vaccinations", "vaccination_points"
