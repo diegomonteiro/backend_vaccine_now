@@ -5,6 +5,7 @@
   <%= f.association :vaccine_type, collection: VaccineType.all.map { |vpt| [vpt.name, vpt.id] } %>
   <%= f.input :total_doses %>
   <%= f.input :remain_doses %>
+  <%= f.input :discarded_doses %>
 
   <%= f.button :submit, :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

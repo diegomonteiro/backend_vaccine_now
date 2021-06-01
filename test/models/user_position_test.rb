@@ -1,6 +1,6 @@
 require 'test_helper'
 
-class TripTest < ActiveSupport::TestCase
+class UserPositionTest < ActiveSupport::TestCase
   # test "the truth" do
   #   assert true
   # end

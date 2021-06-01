@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_05_28_203140) do
+ActiveRecord::Schema.define(version: 2021_06_01_004139) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,29 @@ ActiveRecord::Schema.define(version: 2021_05_28_203140) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["trip_id"], name: "index_checkins_on_trip_id"
+  end
+
+  create_table "login_activities", force: :cascade do |t|
+    t.string "scope"
+    t.string "strategy"
+    t.string "identity"
+    t.boolean "success"
+    t.string "failure_reason"
+    t.string "user_type"
+    t.bigint "user_id"
+    t.string "context"
+    t.string "ip"
+    t.text "user_agent"
+    t.text "referrer"
+    t.string "city"
+    t.string "region"
+    t.string "country"
+    t.float "latitude"
+    t.float "longitude"
+    t.datetime "created_at"
+    t.index ["identity"], name: "index_login_activities_on_identity"
+    t.index ["ip"], name: "index_login_activities_on_ip"
+    t.index ["user_type", "user_id"], name: "index_login_activities_on_user_type_and_user_id"
   end
 
   create_table "roles", force: :cascade do |t|
@@ -41,6 +64,17 @@ ActiveRecord::Schema.define(version: 2021_05_28_203140) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "user_id", null: false
     t.index ["user_id"], name: "index_trips_on_user_id"
+  end
+
+  create_table "user_positions", force: :cascade do |t|
+    t.bigint "user_id", null: false
+    t.string "latitude"
+    t.string "longitude"
+    t.float "accuracy"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["user_id", "latitude", "longitude"], name: "index_user_positions_on_user_id_and_latitude_and_longitude", unique: true
+    t.index ["user_id"], name: "index_user_positions_on_user_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -66,6 +100,8 @@ ActiveRecord::Schema.define(version: 2021_05_28_203140) do
     t.text "address"
     t.string "sus_id"
     t.string "cpf"
+    t.string "latitude"
+    t.string "longitude"
     t.index ["confirmation_token"], name: "index_users_on_confirmation_token", unique: true
     t.index ["email"], name: "index_users_on_email", unique: true
     t.index ["reset_password_token"], name: "index_users_on_reset_password_token", unique: true
@@ -110,6 +146,7 @@ ActiveRecord::Schema.define(version: 2021_05_28_203140) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "vaccine_type_id"
+    t.integer "discarded_doses"
     t.index ["vaccination_point_id"], name: "index_vaccinations_on_vaccination_point_id"
     t.index ["vaccine_type_id"], name: "index_vaccinations_on_vaccine_type_id"
   end
@@ -128,6 +165,7 @@ ActiveRecord::Schema.define(version: 2021_05_28_203140) do
 
   add_foreign_key "checkins", "trips"
   add_foreign_key "trips", "users"
+  add_foreign_key "user_positions", "users"
   add_foreign_key "vaccination_points", "vaccination_point_types"
   add_foreign_key "vaccinations", "vaccination_points"
   add_foreign_key "vaccinations", "vaccine_types"

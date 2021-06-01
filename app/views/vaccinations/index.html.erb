@@ -11,7 +11,8 @@
       <th><%= model_class.human_attribute_name(:vaccine_type) %></th>
       <th><%= model_class.human_attribute_name(:total_doses) %></th>
       <th><%= model_class.human_attribute_name(:remain_doses) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th><%= model_class.human_attribute_name(:discarded_doses) %></th>
+      <th><%= model_class.human_attribute_name(:updated_at) %></th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -19,12 +20,13 @@
     <% @vaccinations.each do |vaccination| %>
       <tr>
         <td><%= link_to vaccination.id, vaccination_path(vaccination) %></td>
-        <td><%= vaccination.vaccination_point_id %></td>
+        <td><%= vaccination.vaccination_point.name %></td>
         <td><%= vaccination.cod %></td>
-        <td><%= vaccination.vaccine_type %></td>
+        <td><%= vaccination.vaccine_type.name %></td>
         <td><%= vaccination.total_doses %></td>
         <td><%= vaccination.remain_doses %></td>
-        <td><%=l vaccination.created_at %></td>
+        <td><%= vaccination.discarded_doses %></td>
+        <td><%= vaccination.updated_at.localtime.strftime("%Y-%m-%d %H:%M") %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_vaccination_path(vaccination), :class => 'btn btn-default btn-xs' %>

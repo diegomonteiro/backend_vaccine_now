@@ -1,12 +1,14 @@
 Rails.application.routes.draw do
-  get 'checkins/create'
-  get 'trips/index'
-  get 'trips/create'
-  get 'trips/show'
+  resources :user_positions
+  apipie
+  # get 'checkins/create'
+  # get 'trips/index'
+  # get 'trips/create'
+  # get 'trips/show'
 
-  resources :trips do
-    resources :checkins, only: :create
-  end
+  # resources :trips do
+  #   resources :checkins, only: :create
+  # end
 
   resources :vaccinations
   resources :vaccination_points

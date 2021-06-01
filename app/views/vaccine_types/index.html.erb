@@ -10,7 +10,6 @@
       <th><%= model_class.human_attribute_name(:cod) %></th>
       <th><%= model_class.human_attribute_name(:manufacturer) %></th>
       <th><%= model_class.human_attribute_name(:efficiency) %></th>
-      <th><%= model_class.human_attribute_name(:number_of_doses) %></th>
       <th><%= model_class.human_attribute_name(:max_interval_in_days) %></th>
       <th><%= model_class.human_attribute_name(:disease) %></th>
       <th><%= model_class.human_attribute_name(:created_at) %></th>
@@ -25,10 +24,9 @@
         <td><%= vaccine_type.cod %></td>
         <td><%= vaccine_type.manufacturer %></td>
         <td><%= vaccine_type.efficiency %></td>
-        <td><%= vaccine_type.number_of_doses %></td>
         <td><%= vaccine_type.max_interval_in_days %></td>
         <td><%= vaccine_type.disease %></td>
-        <td><%=l vaccine_type.created_at %></td>
+        <td><%=l vaccine_type.created_at.localtime %></td>
         <td>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_vaccine_type_path(vaccine_type), :class => 'btn btn-default btn-xs' %>
