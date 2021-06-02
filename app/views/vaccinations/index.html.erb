@@ -28,13 +28,22 @@
         <td><%= vaccination.discarded_doses %></td>
         <td><%= vaccination.updated_at.localtime.strftime("%Y-%m-%d %H:%M") %></td>
         <td>
+          <% if can? :read, Vaccination %>
+            <%= link_to 'Show', vaccination , :class => 'btn btn-default btn-xs'%>
+          <% end %>
+
+          <% if can? :update, Vaccination %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_vaccination_path(vaccination), :class => 'btn btn-default btn-xs' %>
+          <% end %>
+
+          <% if can? :destroy, Vaccination %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       vaccination_path(vaccination),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+          <% end %>
         </td>
       </tr>
     <% end %>

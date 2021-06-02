@@ -1,7 +1,7 @@
 class UserPosition < ApplicationRecord
   belongs_to :user
 
-  validates_uniqueness_of :user_id, :scope => [:user_id, :latitude, :longitude]
+  validates_uniqueness_of :user_id, :scope => [:latitude, :longitude], :message => " com posição já cadastrada"
 
   acts_as_mappable :default_units => :kms,
                    :default_formula => :sphere,

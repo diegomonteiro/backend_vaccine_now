@@ -1,6 +1,8 @@
 class VaccinationPointsController < ApplicationController
   before_action :set_vaccination_point, only: %i[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  load_and_authorize_resource
+  
   # GET /vaccination_points or /vaccination_points.json
   def index
     @vaccination_points = VaccinationPoint.all

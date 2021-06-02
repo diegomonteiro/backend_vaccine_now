@@ -17,6 +17,14 @@
         height: 480px;
         width: 100%;
     }
+
+    .container-fluid {
+        width: 100%;
+        padding-right: 0px;
+        padding-left: 0px;
+        margin-right: auto;
+        margin-left: auto;
+    }
 </style>
 
 
@@ -28,8 +36,8 @@
 
     var vaccination_points = L.layerGroup();
     var user_positions = L.layerGroup();
+    var bounds;
 
-    var trip_id;
     startingPoint = {};
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
@@ -39,12 +47,41 @@
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
 
+    $(window).on("resize", function () {
+        //console.log("Redefinir map");
+        $("#map").height($(window).height()-50);
+        map.invalidateSize();
+        //plotar_situacao_atual(casos, caso_selecionado);
+
+    }).trigger("resize");
+
     $(document).ready(function(){
         getVaccinationPoints();
         <% if user_signed_in?  %>
         getLocation("<%= current_user.id %>");
         <% end %>
     });
+
+    function plotFakeUsers(number){
+        bounds = map.getBounds();
+        var southWest = bounds.getSouthWest();
+        var northEast = bounds.getNorthEast();
+        var lngSpan = northEast.lng - southWest.lng;
+        var latSpan = northEast.lat - southWest.lat;
+
+        pointsrand=[];
+
+        for(var i=0;i<number;++i)
+        {
+            var point = [southWest.lat + latSpan * Math.random(),southWest.lng + lngSpan * Math.random()];
+            pointsrand.push(point);
+
+            user_positions.addLayer(L.marker(point).bindPopup("Sua localização é de " + 0 + " metros a partir deste ponto"));
+        }
+
+        console.log("Random Users: ", pointsrand);
+
+    }
 
     function updateUserLocation(e){
         
@@ -61,21 +98,6 @@
         saveTrip(data);
         <% end %>
     }
-
-    /*function updateCurrentLocation(){
-    var token = $('meta[name="csrf-token"]').attr('content');
-        $.ajax({
-          url: "/user_positions/" + id + "/",
-          type: 'post',
-          beforeSend: function(xhr) {
-            xhr.setRequestHeader('X-CSRF-Token', token);
-          },
-          data: tripData,
-          success: function(response) {
-              console.log("Atualizar posição: ", response);
-          }
-        });
-    }*/
 
     function onLocationFound(e) {
         var radius = e.accuracy;
@@ -96,7 +118,7 @@
 
     function onLocationError(e) {
         //alert(e.message);
-        console.error(e);
+        console.log("Erro na Geolocalização: ", e);
     }
 
     function saveTrip(positionData){
@@ -117,6 +139,24 @@
             },
             success: function(response){
                 console.log("Posição Registrada: ",response);
+            },
+            error: function(error){
+                console.log("Erro ao atualizar posição do usuário: ", error);
+            }
+        })
+    }
+
+    function getPathByUser(user_id){
+        $.ajax({
+            url: "/user_positions.json",
+            type: "GET",
+            success: function(data){
+                var vals = _.groupBy(data,function(o){ return o.user_id });
+
+                $.each(vals[user_id], function(k,v){
+                    //console.log("Posição em: ",v.updated_at,"=> ",v);
+                    user_positions.addLayer(L.marker([v.latitude, v.longitude], {options: v}));
+                });
             }
         })
     }
@@ -199,7 +239,9 @@
                     html += "<span><b>"+layer.options.options.name+"</b></span><br/>";
                     html += "<hr/>";
                     html += "<span><b>Doses Disponíveis:</b> "+remain_doses+"<span><br/>";
-                    html += "<span><b>Total de Doses:</b> "+total_doses+"<span>";
+                    html += "<span><b>Total de Doses:</b> "+total_doses+"<span><br/>";
+                    html += "<span><b>Data Última Atualização:</b> "+layer.options.options.updated_at+"<span>";
+
                     html += "<hr/>";
                     html += "<a href='#' class='btn btn-success btn-sm btn-block' style='color: #ffffff'>Avise-me</a>";
 
@@ -211,7 +253,7 @@
                 vaccination_points.addTo(map);
             },
             error: function(error){
-                console.error(error);
+                console.error("Erro no Ponto de Vacinação: ", error);
             }
         })
     }
@@ -220,11 +262,11 @@
         var remain_doses = _.sumBy(data.vaccinations, function(n){ return n.remain_doses });
 
         var options = {
-            icon: 'hospital',
+            icon: data.vaccination_point_type.icon_class,
             borderColor: ((remain_doses > 0) ? 'green' : 'red'),
             textColor: ((remain_doses > 0) ? 'green' : 'red')
         }
-        //console.log("Style: ",options);
+        console.log("Style: ",data);
 
         return options;
     }

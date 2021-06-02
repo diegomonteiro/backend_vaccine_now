@@ -28,19 +28,31 @@
         <td><%= vaccine_type.disease %></td>
         <td><%=l vaccine_type.created_at.localtime %></td>
         <td>
+          
+          <% if can? :read, VaccineType %>
+            <%= link_to 'Show', vaccine_type , :class => 'btn btn-default btn-xs'%>
+          <% end %>
+
+          <% if can? :update, VaccineType %>
           <%= link_to t('.edit', :default => t("helpers.links.edit")),
                       edit_vaccine_type_path(vaccine_type), :class => 'btn btn-default btn-xs' %>
+          <% end %>
+
+          <% if can? :destroy, VaccineType %>
           <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
                       vaccine_type_path(vaccine_type),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
 
+<% if can? :create, VaccineType %>
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_vaccine_type_path,
             :class => 'btn btn-primary' %>
+<% end %>

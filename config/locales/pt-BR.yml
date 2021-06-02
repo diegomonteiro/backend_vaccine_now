@@ -1,4 +1,32 @@
 pt-BR:
+  users:
+    confirmations:
+      new:
+        resend_confirmation_instructions: "Reenviar instruções de confirmação"
+    passwords:
+      edit:
+        change_your_password: "Alteração de Senha"
+        new_password: "Nova senha"
+        confirm_new_password: "Confirmar nova senha"
+        change_my_password: "Confirmar Alteração"
+      new:
+        forgot_your_password: "Esqueceu sua senha"
+        send_me_reset_password_instructions: "Enviar instruções de redefinição de senha"
+    registrations:
+      new:
+        sign_up: "Registrar"
+      edit:
+        update: "Atualizar"
+        back: "Voltar"
+        cancel_my_account: "Cancelar minha conta"
+        unhappy: "Insatisfeito"
+        are_you_sure: "Tem certeza que quer excluir sua conta?"
+        we_need_your_current_password_to_confirm_your_changes: "Informe a senha atual para confirmar as alterações"
+        leave_blank_if_you_don_t_want_to_change_it: "Deixe em branco caso não queira alterar a senha."
+    sessions:
+      new:
+        login: "Acessar"
+
   helpers:
     links:
       new: "Novo"

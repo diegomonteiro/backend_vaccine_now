@@ -1,14 +1,11 @@
 Rails.application.routes.draw do
   resources :user_positions
   apipie
-  # get 'checkins/create'
-  # get 'trips/index'
-  # get 'trips/create'
-  # get 'trips/show'
 
-  # resources :trips do
-  #   resources :checkins, only: :create
-  # end
+  scope module: 'api', path: '/api' do
+    resources :auth_token
+    resources :user_positions
+  end
 
   resources :vaccinations
   resources :vaccination_points

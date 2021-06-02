@@ -1,5 +1,7 @@
 class VaccinationsController < ApplicationController
   before_action :set_vaccination, only: %i[ show edit update destroy ]
+  before_action :authenticate_user!
+  load_and_authorize_resource
 
   # GET /vaccinations or /vaccinations.json
   def index

@@ -1,6 +1,8 @@
 class VaccinationPointTypesController < ApplicationController
   before_action :set_vaccination_point_type, only: %i[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  load_and_authorize_resource
+  
   # GET /vaccination_point_types or /vaccination_point_types.json
   def index
     @vaccination_point_types = VaccinationPointType.all
@@ -51,7 +53,7 @@ class VaccinationPointTypesController < ApplicationController
   def destroy
     @vaccination_point_type.destroy
     respond_to do |format|
-      format.html { redirect_to vaccination_point_types_url, notice: "Vaccination point type was successfully destroyed." }
+      format.html { redirect_to vaccination_point_types_url, alert: "Vaccination point type was successfully destroyed." }
       format.json { head :no_content }
     end
   end
