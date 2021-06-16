@@ -28,9 +28,11 @@ pt-BR:
         login: "Acessar"
 
   helpers:
+    actions: "Ações"
     links:
       new: "Novo"
       edit: "Editar"
+      show: "Ver"
       destroy: "Excluir"
       confirm: "Tem certeza disso?"
       cancel: "Cancelar"

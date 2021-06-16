@@ -1,12 +1,13 @@
 <%= simple_form_for @vaccine_type, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.input :name %>
-  <%= f.input :cod %>
-  <%= f.input :manufacturer %>
-  <%= f.input :efficiency %>
-  <%= f.input :max_interval_in_days %>
-  <%= f.input :disease %>
+  <%= f.input :name, label: 'Nome' %>
+  <%= f.input :cod, label: 'Cód.' %>
+  <%= f.input :manufacturer, label: 'Fabricante' %>
+  <%= f.input :efficiency, label: 'Eficiência (%)' %>
+  <%= f.input :max_interval_in_days, label: 'Máx. Intervalo em dias' %>
+  <%= f.input :disease, label: 'Doença' %>
 
-  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                vaccine_types_path, :class => 'btn btn-default' %>
+                vaccine_types_path, :class => 'btn btn-outline-secondary' %>
+
 <% end %>

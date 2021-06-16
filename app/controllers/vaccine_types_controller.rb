@@ -5,7 +5,7 @@ class VaccineTypesController < ApplicationController
 
   # GET /vaccine_types or /vaccine_types.json
   def index
-    @vaccine_types = VaccineType.all
+    @vaccine_types = VaccineType.accessible_by(current_ability)
   end
 
   # GET /vaccine_types/1 or /vaccine_types/1.json

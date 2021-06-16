@@ -4,7 +4,7 @@
 # http://en.wikipedia.org/wiki/Cron
 
 every 10.minutes do
-    
+    AlertUsersToRemainVaccinesJob.perform_now
 end
 
 # Example:

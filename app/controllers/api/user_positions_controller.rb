@@ -30,7 +30,7 @@ module Api
 	      Resposta:
 	    eos
 	    def index
-		    user_positions = UserPosition.accessible_by(current_ability)
+		    user_positions = UserPosition.accessible_by(current_ability).order("updated_at DESC")
 		    render json: user_positions
 	    end
     end

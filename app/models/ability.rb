@@ -4,7 +4,8 @@ class Ability
   include CanCan::Ability
 
   def initialize(user)
-
+    user ||= User.new
+    
     if user.present?
       can :manage, UserPosition, user_id: user.id
     end

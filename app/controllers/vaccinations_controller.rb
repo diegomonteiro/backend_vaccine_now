@@ -5,7 +5,7 @@ class VaccinationsController < ApplicationController
 
   # GET /vaccinations or /vaccinations.json
   def index
-    @vaccinations = Vaccination.all
+    @vaccinations = Vaccination.accessible_by(current_ability).all
   end
 
   # GET /vaccinations/1 or /vaccinations/1.json

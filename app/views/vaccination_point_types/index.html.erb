@@ -1,15 +1,16 @@
 <%- model_class = VaccinationPointType -%>
 <div class="page-header">
-  <h1><%=t '.title', :default => model_class.model_name.human.pluralize.titleize %></h1>
+  <h4><%=t '.title', :default => "Tipos de Pontos de Vacinação" %></h4>
 </div>
+<div class="table-responsive">
 <table class="table table-striped">
   <thead>
     <tr>
-      <th>#</th>
-      <th><%= model_class.human_attribute_name(:id) %></th>
-      <th><%= model_class.human_attribute_name(:name) %></th>
-      <th><%= model_class.human_attribute_name(:cod) %></th>
-      <th><%= model_class.human_attribute_name(:created_at) %></th>
+      <th colspan=2>#</th>
+
+      <th>Nome</th>
+      <th>Cód.</th>
+      <th>Criado Em</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
@@ -20,21 +21,33 @@
         <td><%= link_to vaccination_point_type.id, vaccination_point_type_path(vaccination_point_type) %></td>
         <td><%= vaccination_point_type.name %></td>
         <td><%= vaccination_point_type.cod %></td>
-        <td><%=l vaccination_point_type.created_at %></td>
+        <td><%= vaccination_point_type.created_at.localtime.strftime('%Y-%m-%d %H:%M') %></td>
         <td>
-          <%= link_to t('.edit', :default => t("helpers.links.edit")),
-                      edit_vaccination_point_type_path(vaccination_point_type), :class => 'btn btn-default btn-xs' %>
-          <%= link_to t('.destroy', :default => t("helpers.links.destroy")),
+          <% if can? :read, VaccinationPointType %>
+            <%= link_to '<i class="fa fa-eye"></i> '.html_safe+t('.show', :default => t("helpers.links.show")), vaccination_point_type , :class => 'btn btn-info btn-xs'%>
+          <% end %>
+
+          <% if can? :update, VaccineType %>
+          <%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+                      edit_vaccination_point_type_path(vaccination_point_type), :class => 'btn btn-warning btn-xs' %>
+          <% end %>
+          
+          <% if can? :destroy, VaccineType %>
+          <%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
                       vaccination_point_type_path(vaccination_point_type),
                       :method => :delete,
                       :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
                       :class => 'btn btn-xs btn-danger' %>
+          <% end %>
         </td>
       </tr>
     <% end %>
   </tbody>
 </table>
+</div>
 
+<% if can? :create, VaccineType %>
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_vaccination_point_type_path,
             :class => 'btn btn-primary' %>
+<% end %>

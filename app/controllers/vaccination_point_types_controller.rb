@@ -5,7 +5,7 @@ class VaccinationPointTypesController < ApplicationController
   
   # GET /vaccination_point_types or /vaccination_point_types.json
   def index
-    @vaccination_point_types = VaccinationPointType.all
+    @vaccination_point_types = VaccinationPointType.accessible_by(current_ability)
   end
 
   # GET /vaccination_point_types/1 or /vaccination_point_types/1.json
@@ -27,7 +27,7 @@ class VaccinationPointTypesController < ApplicationController
 
     respond_to do |format|
       if @vaccination_point_type.save
-        format.html { redirect_to @vaccination_point_type, notice: "Vaccination point type was successfully created." }
+        format.html { redirect_to @vaccination_point_type, notice: "Criado com sucesso!" }
         format.json { render :show, status: :created, location: @vaccination_point_type }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class VaccinationPointTypesController < ApplicationController
   def update
     respond_to do |format|
       if @vaccination_point_type.update(vaccination_point_type_params)
-        format.html { redirect_to @vaccination_point_type, notice: "Vaccination point type was successfully updated." }
+        format.html { redirect_to @vaccination_point_type, notice: "Atualizado com sucesso!" }
         format.json { render :show, status: :ok, location: @vaccination_point_type }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class VaccinationPointTypesController < ApplicationController
   def destroy
     @vaccination_point_type.destroy
     respond_to do |format|
-      format.html { redirect_to vaccination_point_types_url, alert: "Vaccination point type was successfully destroyed." }
+      format.html { redirect_to vaccination_point_types_url, alert: "Excluído com sucesso!" }
       format.json { head :no_content }
     end
   end
