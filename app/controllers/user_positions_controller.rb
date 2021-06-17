@@ -27,7 +27,7 @@ class UserPositionsController < ApplicationController
 
     respond_to do |format|
       if @user_position.save
-        format.html { redirect_to @user_position, notice: "User position was successfully created." }
+        format.html { redirect_to @user_position, notice: "Posição registrada com sucesso!" }
         format.json { render :show, status: :created, location: @user_position }
       else
 
@@ -44,7 +44,7 @@ class UserPositionsController < ApplicationController
   def update
     respond_to do |format|
       if @user_position.update(user_position_params)
-        format.html { redirect_to @user_position, notice: "User position was successfully updated." }
+        format.html { redirect_to @user_position, notice: "Posição atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @user_position }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -57,7 +57,7 @@ class UserPositionsController < ApplicationController
   def destroy
     @user_position.destroy
     respond_to do |format|
-      format.html { redirect_to user_positions_url, notice: "User position was successfully destroyed." }
+      format.html { redirect_to user_positions_url, notice: "Posição excluída com sucesso!" }
       format.json { head :no_content }
     end
   end

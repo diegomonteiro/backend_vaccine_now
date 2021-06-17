@@ -5,7 +5,7 @@ class VaccinationsController < ApplicationController
 
   # GET /vaccinations or /vaccinations.json
   def index
-    @vaccinations = Vaccination.accessible_by(current_ability).all
+    @vaccinations = Vaccination.includes([:vaccination_point, :vaccine_type]).accessible_by(current_ability)
   end
 
   # GET /vaccinations/1 or /vaccinations/1.json
@@ -27,7 +27,7 @@ class VaccinationsController < ApplicationController
 
     respond_to do |format|
       if @vaccination.save
-        format.html { redirect_to @vaccination, notice: "Vaccination was successfully created." }
+        format.html { redirect_to @vaccination, notice: "Vacinação criada com sucesso!" }
         format.json { render :show, status: :created, location: @vaccination }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class VaccinationsController < ApplicationController
   def update
     respond_to do |format|
       if @vaccination.update(vaccination_params)
-        format.html { redirect_to @vaccination, notice: "Vaccination was successfully updated." }
+        format.html { redirect_to @vaccination, notice: "Vacinação atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @vaccination }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class VaccinationsController < ApplicationController
   def destroy
     @vaccination.destroy
     respond_to do |format|
-      format.html { redirect_to vaccinations_url, notice: "Vaccination was successfully destroyed." }
+      format.html { redirect_to vaccinations_url, notice: "Vacinação excluída com sucesso!" }
       format.json { head :no_content }
     end
   end

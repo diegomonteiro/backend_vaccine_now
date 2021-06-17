@@ -13,7 +13,7 @@ class AlertUsersToRemainVaccinesJob < ApplicationJob
       
       users = User.where("id in (?)",users_ids)
       users.each do |user|
-        UserMailer.with(user: user, vaccination_point: v, remain_doses: vv).notificar_usuarios_por_vacinas.deliver_later
+        UserMailer.with(user: user, vaccination_point: v, remain_doses: vv).notificar_usuarios_por_vacinas.deliver_now
       end
     end
 

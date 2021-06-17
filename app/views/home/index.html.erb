@@ -199,7 +199,7 @@
 
     function getVaccinationPoints(){
         $.ajax({
-            url: "/vaccination_points.json",
+            url: "/api/vaccination_points",
             beforeSend: function(){
                 //console.log("Preparing request of Vaccination Points");
                 vaccination_points.clearLayers();
@@ -210,7 +210,7 @@
                 $.each(data, function(k,v){
                     var style = getVaccinationPointStyle(v);
 
-                    var remain_doses = _.sumBy(data.vaccinations, function(n){ return n.remain_doses });
+                    var remain_doses = v.remain_doses;
 
                     var vaccination_point = L.circle([parseFloat(v.latitude), parseFloat(v.longitude)], {
                         radius: v.radius_km * 1000,
@@ -233,13 +233,15 @@
                 vaccination_points.eachLayer(function (layer) {
                     var html = "";
                     
-                    var remain_doses = _.sumBy(layer.options.options.vaccinations, function(n){ return n.remain_doses });
-                    var total_doses  = _.sumBy(layer.options.options.vaccinations, function(n){ return n.total_doses });
+                    var remain_doses = layer.options.options.remain_doses;
+                    var total_doses  = layer.options.options.total_doses;
+                    var waste_rate   = layer.options.options.waste_rate;
 
                     html += "<span><b>"+layer.options.options.name+"</b></span><br/>";
                     html += "<hr/>";
                     html += "<span><b>Doses Disponíveis:</b> "+remain_doses+"<span><br/>";
                     html += "<span><b>Total de Doses:</b> "+total_doses+"<span><br/>";
+                    html += "<span><b>Taxa de Disperdício:</b> "+waste_rate.toFixed(2)+"%<span><br/>";
                     html += "<span><b>Data Última Atualização:</b> "+layer.options.options.updated_at+"<span>";
 
                     html += "<hr/>";
@@ -259,12 +261,12 @@
     }
 
     function getVaccinationPointStyle(data){
-        var remain_doses = _.sumBy(data.vaccinations, function(n){ return n.remain_doses });
+        var remain_doses = data.remain_doses;
 
         var options = {
             icon: data.vaccination_point_type.icon_class,
             borderColor: ((remain_doses > 0) ? 'green' : 'red'),
-            textColor: ((remain_doses > 0) ? 'green' : 'red')
+            textColor:   ((remain_doses > 0) ? 'green' : 'red')
         }
         //console.log("Style: ",data);
 

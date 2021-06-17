@@ -58,6 +58,8 @@ gem 'simple_token_authentication'
 
 gem "letter_opener", group: :development
 gem 'sendgrid-ruby'
+gem 'active_model_serializers', '~> 0.10.0'
+gem "bullet"
 
 
 group :development, :test do

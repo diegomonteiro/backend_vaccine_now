@@ -1,13 +1,13 @@
 <%= simple_form_for @vaccination, :html => { :class => 'form-horizontal' } do |f| %>
 
-  <%= f.association :vaccination_point, collection: VaccinationPoint.all.map { |vpt| [vpt.name, vpt.id] } %>
-  <%= f.input :cod %> 
-  <%= f.association :vaccine_type, collection: VaccineType.all.map { |vpt| [vpt.name, vpt.id] } %>
-  <%= f.input :total_doses %>
-  <%= f.input :remain_doses %>
-  <%= f.input :discarded_doses %>
+  <%= f.association :vaccination_point, collection: VaccinationPoint.all.map { |vpt| [vpt.name, vpt.id] }, :label => "Ponto de Vacinação"%>
+  <%= f.input :cod, :label => "Código"%> 
+  <%= f.association :vaccine_type, collection: VaccineType.all.map { |vpt| [vpt.name, vpt.id] }, :label => "Tipo de Vacinação" %>
+  <%= f.input :total_doses, :label => "Total de Doses" %>
+  <%= f.input :remain_doses, :label => "Doses Restantes" %>
+  <%= f.input :discarded_doses, :label => "Doses Descartadas" %>
 
-  <%= f.button :submit, :class => 'btn-primary' %>
+  <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 vaccinations_path, :class => 'btn btn-default' %>
 <% end %>
