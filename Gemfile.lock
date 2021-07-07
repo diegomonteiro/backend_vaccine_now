@@ -64,7 +64,7 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
-    addressable (2.7.0)
+    addressable (2.8.0)
       public_suffix (>= 2.0.2, < 5.0)
     apipie-rails (0.5.18)
       rails (>= 4.1)
@@ -192,7 +192,7 @@ GEM
     marcel (1.0.1)
     method_source (1.0.0)
     mini_mime (1.1.0)
-    mini_portile2 (2.5.1)
+    mini_portile2 (2.5.3)
     minitest (5.14.4)
     msgpack (1.4.2)
     msgpack (1.4.2-java)
@@ -201,14 +201,14 @@ GEM
     multipart-post (2.1.1)
     nio4r (2.5.7)
     nio4r (2.5.7-java)
-    nokogiri (1.11.6)
+    nokogiri (1.11.7)
       mini_portile2 (~> 2.5.0)
       racc (~> 1.4)
-    nokogiri (1.11.6-java)
+    nokogiri (1.11.7-java)
       racc (~> 1.4)
-    nokogiri (1.11.6-x64-mingw32)
+    nokogiri (1.11.7-x64-mingw32)
       racc (~> 1.4)
-    nokogiri (1.11.6-x86-mingw32)
+    nokogiri (1.11.7-x86-mingw32)
       racc (~> 1.4)
     oauth (0.5.6)
     oauth2 (1.4.7)
@@ -419,7 +419,7 @@ DEPENDENCIES
   bullet
   byebug
   cancancan
-  capybara (>= 2.15)
+  capybara (>= 3.35.3)
   database_cleaner
   delayed_job_active_record
   devise
@@ -430,7 +430,7 @@ DEPENDENCIES
   geokit-rails
   jbuilder (~> 2.7)
   jquery-rails
-  letter_opener
+  letter_opener (>= 1.7.0)
   listen (~> 3.2)
   omniauth-facebook
   omniauth-google
@@ -463,4 +463,4 @@ RUBY VERSION
    ruby 2.6.1p33
 
 BUNDLED WITH
-   2.1.4
+   1.17.3
