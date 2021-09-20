@@ -5,7 +5,7 @@ class VaccineTypesController < ApplicationController
 
   # GET /vaccine_types or /vaccine_types.json
   def index
-    @vaccine_types = VaccineType.accessible_by(current_ability)
+    @vaccine_types = VaccineType.includes(:disease).accessible_by(current_ability)
   end
 
   # GET /vaccine_types/1 or /vaccine_types/1.json
@@ -27,7 +27,7 @@ class VaccineTypesController < ApplicationController
 
     respond_to do |format|
       if @vaccine_type.save
-        format.html { redirect_to @vaccine_type, notice: "Vaccine type was successfully created." }
+        format.html { redirect_to @vaccine_type, notice: "Tipo de vacinada criada!" }
         format.json { render :show, status: :created, location: @vaccine_type }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -40,7 +40,7 @@ class VaccineTypesController < ApplicationController
   def update
     respond_to do |format|
       if @vaccine_type.update(vaccine_type_params)
-        format.html { redirect_to @vaccine_type, notice: "Vaccine type was successfully updated." }
+        format.html { redirect_to @vaccine_type, notice: "Tipo de vacina atualizada!" }
         format.json { render :show, status: :ok, location: @vaccine_type }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -53,7 +53,7 @@ class VaccineTypesController < ApplicationController
   def destroy
     @vaccine_type.destroy
     respond_to do |format|
-      format.html { redirect_to vaccine_types_url, notice: "Vaccine type was successfully destroyed." }
+      format.html { redirect_to vaccine_types_url, notice: "Tipo de vacina excluída!" }
       format.json { head :no_content }
     end
   end
@@ -66,6 +66,6 @@ class VaccineTypesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def vaccine_type_params
-      params.require(:vaccine_type).permit(:name, :cod, :manufacturer, :efficiency, :number_of_doses, :max_interval_in_days, :disease)
+      params.require(:vaccine_type).permit(:name, :cod, :manufacturer, :efficiency, :number_of_doses, :max_interval_in_days, :disease_id)
     end
 end

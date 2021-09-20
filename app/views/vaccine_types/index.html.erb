@@ -12,6 +12,7 @@
       <th>Fabricante</th>
       <th>Eficência(%)</th>
       <th>Máx.Intervalo</th>
+      <th>Núm.de Doses</th>
       <th>Doença</th>
       <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
@@ -23,9 +24,10 @@
         <td><%= vaccine_type.name %></td>
         <td><%= vaccine_type.cod %></td>
         <td><%= vaccine_type.manufacturer %></td>
-        <td><%= (vaccine_type.efficiency * 100) unless vaccine_type.efficiency.nil? %></td>
+        <td><%= (vaccine_type.efficiency * 100).round(2) unless vaccine_type.efficiency.nil? %></td>
         <td><%= vaccine_type.max_interval_in_days %></td>
-        <td><%= vaccine_type.disease %></td>
+        <td><%= vaccine_type.number_of_doses %></td>
+        <td><%= vaccine_type.disease.name unless vaccine_type.disease.nil? %></td>
         <td>
           
           <% if can? :read, VaccineType %>

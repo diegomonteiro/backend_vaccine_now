@@ -1,0 +1,33 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Vaccination Campaigns</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Name</th>
+      <th>Date start</th>
+      <th>Date end</th>
+      <th>Description</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vaccination_campaigns.each do |vaccination_campaign| %>
+      <tr>
+        <td><%= vaccination_campaign.name %></td>
+        <td><%= vaccination_campaign.date_start %></td>
+        <td><%= vaccination_campaign.date_end %></td>
+        <td><%= vaccination_campaign.description %></td>
+        <td><%= link_to 'Show', vaccination_campaign %></td>
+        <td><%= link_to 'Edit', edit_vaccination_campaign_path(vaccination_campaign) %></td>
+        <td><%= link_to 'Destroy', vaccination_campaign, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vaccination Campaign', new_vaccination_campaign_path %>

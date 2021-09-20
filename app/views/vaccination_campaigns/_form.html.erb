@@ -1,0 +1,241 @@
+
+
+<%= simple_form_for(@vaccination_campaign) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+
+    <%= f.input :name, label: "Nome" %>
+    <label for="reportrange">Período</label>
+    <div id="reportrange" style="background: #fff; cursor: pointer; padding: 5px 10px; border: 1px solid #ccc; width: 100%">
+        <i class="fa fa-calendar"></i>&nbsp;
+        <span></span> <i class="fa fa-caret-down"></i>
+    </div>
+    <%= f.input :date_start, :as => :hidden %>
+    <%= f.input :date_end, :as => :hidden %>
+    <%= f.input :description, label: "Descrição" %>
+
+  </div>
+
+
+  <% if action_name == 'edit' %>
+  <div class="card">
+    <div class="card-header">
+      <h5>Públicos Alvo</h5>
+    </div>
+     <table id="table_targets" class="table table-condensed table-hover">
+      <thead>
+        <tr>
+          <!--<th>Período</th>-->
+          <th>Idades</th>
+          <th>Com comorbidade?</th>
+          <th>Restrições</th>
+          <th>Operações</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @vaccination_campaign.vaccination_compaigns_targets.each do |target| %>
+          <tr id="target_"+target.id>
+            <!--<td>De <%= target.date_start %> até <%= target.date_end %></td>-->
+            <td>De <%= target.min_years_old %> até <%= target.max_years_old %></td>
+            <td><%= target.with_comorbidity %></td>
+            <td><%= target.restrictions %></td>
+            <td><a href="#" onclick="delete_vaccination_campaign_target(<%= target.id %>)" class="btn btn-danger btn-block"><i class="fa fa-trash"></i></a></td>            
+          </tr>
+        <% end %>
+      </tbody>
+     </table>
+     <div class="card-footer">
+      <button type="button" class="btn btn-primary" data-toggle="modal" data-target="#vaccination_campaign_target">
+        <i class="fa fa-plus"></i> Registrar
+      </button>
+     </div>
+  </div>
+  <% end %>
+
+  <div class="form-actions">
+    <br/>
+    <%= f.button :submit,"Confirmar", class: 'btn btn-success'%>
+  </div>
+
+  <!-- Modal -->
+<div class="modal fade" id="vaccination_campaign_target" tabindex="-1" aria-labelledby="vaccination_campaign_target" aria-hidden="true">
+  <div class="modal-dialog">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title">Registro de público alvo</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+          <div class="form-inputs">
+            <input type="hidden" id="target_vaccination_campaign_id" name="vaccination_campaign_id" value="<%= @vaccination_campaign.id %>" />
+            <input type="hidden" id="target_date_start" name="target_date_start" value="<%= @vaccination_campaign.date_start %>" />
+            <input type="hidden" id="target_date_end" name="target_date_end" value="<%= @vaccination_campaign.date_end %>" />
+
+            <div class="form-group">
+              <label for="target_min_years_old">Idade mínima</label>
+              <input type="number" class="form-control" id="target_min_years_old" name="target_min_years_old" />
+
+              <label for="target_max_years_old">Idade máxima</label>
+              <input type="number" class="form-control" id="target_max_years_old" name="target_max_years_old" />
+              <br/>
+              <label for="target_with_comorbidity">Com comorbidade?</label>
+              <input type="checkbox" data-toggle="toggle" data-on="Sim" data-off="Não" data-size="sm" class="form-control" id="target_with_comorbidity" name="target_with_comorbidity" />
+            </div>
+
+            <div class="form-group">
+              <label for="target_restrictions">Restrições</label>
+              <textarea name="target_restrictions"  class="form-control" id="target_restrictions"></textarea>
+            </div>
+
+
+          </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary"  data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+        <button type="button" class="btn btn-primary" onclick="save_vaccination_campaign_target()"><i class="fa fa-save"></i> Salvar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<% end %>
+
+
+
+<script type="text/javascript">
+ var token = $('meta[name="csrf-token"]').attr('content');
+
+ function save_vaccination_campaign_target(){
+      
+
+      var obj = {
+        vaccination_campaign_id: $("#target_vaccination_campaign_id").val(),
+        date_start: $("#target_date_start").val(),
+        date_end: $("#target_date_end").val(),
+        max_years_old: $("#target_max_years_old").val(),
+        min_years_old: $("#target_min_years_old").val(),
+        with_comorbidity: $("#target_with_comorbidity").prop('checked'),
+        restrictions: $("#target_restrictions").val()
+      };
+
+      var params = "";
+      params += "vaccination_compaigns_target[vaccination_campaign_id]=" + obj.vaccination_campaign_id;
+      params += "&vaccination_compaigns_target[max_years_old]="+obj.max_years_old;
+      params += "&vaccination_compaigns_target[min_years_old]="+obj.min_years_old;
+      params += "&vaccination_compaigns_target[date_start]="+obj.date_start;
+      params += "&vaccination_compaigns_target[date_end]="+obj.date_end;
+      params += "&vaccination_compaigns_target[with_comorbidity]="+obj.with_comorbidity;
+      params += "&vaccination_compaigns_target[restrictions]="+obj.restrictions;
+      
+      $.ajax({
+        url: "/vaccination_compaigns_targets",
+        type: "post",
+        dataType: "json",
+        data: params,
+        beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRF-Token', token);
+        },
+        success: function(response){
+          //console.log("Target Registrada: ",response);
+          //var row = "<tr><td>De "+response.date_start+" até "+response.date_end+"</td>";
+          var row = "<tr id='target_"+response.id+"'><td>De "+response.min_years_old +" até "+response.max_years_old+"</td>";
+          row += "<td>"+response.with_comorbidity+"</td>";
+          row += "<td>"+response.restrictions+"</td>";
+          row += "<td><a href=\"#\" onclick=\"delete_vaccination_campaign_target("+response.id+")\" class=\"btn btn-danger btn-block\"><i class=\"fa fa-trash\"></i></a></td>";
+          row += "</tr>";
+          $("#table_targets").find("tbody").append(row);
+        },
+        error: function(error){
+            console.log("Erro: ", error);
+        }
+      });
+  }
+
+  function delete_vaccination_campaign_target(target_id){
+    $.ajax({
+        url: "/vaccination_compaigns_targets/"+target_id,
+        type: "delete",
+        dataType: "json",
+        beforeSend: function(xhr){
+            xhr.setRequestHeader('X-CSRF-Token', token);
+        },
+        success: function(response){
+          
+          $("#target_"+target_id).hide();
+        },
+        error: function(error){
+            console.log("Erro: ", error);
+        }
+      });
+  }
+
+
+$(function() {
+    console.log("Start: ",$("#vaccination_campaign_date_start").val());
+    
+
+    var start = $("#vaccination_campaign_date_start").val() != "" ? moment($("#vaccination_campaign_date_start").val()) : moment();
+    var end = $("#vaccination_campaign_date_end").val() != "" ? moment($("#vaccination_campaign_date_end").val()) : moment();
+
+    function cb(start, end) {
+        $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
+    }
+
+   
+
+    $('#reportrange').daterangepicker({
+        startDate: start,
+        endDate: end,
+         "locale": {
+        "format": "DD/MM/YYYY",
+        "separator": " - ",
+        "applyLabel": "Aplicar",
+        "cancelLabel": "Cancelar",
+        "fromLabel": "De",
+        "toLabel": "Até",
+        "customRangeLabel": "Personalizado",
+        "weekLabel": "W",
+        "daysOfWeek": [
+            "Dom",
+            "Seg",
+            "Ter",
+            "Qua",
+            "Qui",
+            "Sex",
+            "Sab"
+        ],
+        "monthNames": [
+            "Janeiro",
+            "Fevereiro",
+            "Março",
+            "Abril",
+            "Maio",
+            "Junho",
+            "Julho",
+            "Agosto",
+            "Setembro",
+            "Outubro",
+            "Novembro",
+            "Dezembro"
+        ],
+        "firstDay": 1
+    }
+    }, cb);
+
+    $('#reportrange').on('apply.daterangepicker hide.daterangepicker', function(ev, picker) {
+      $(this).val(picker.startDate.format('DD/MM/YYYY') + ' - ' + picker.endDate.format('DD/MM/YYYY'));
+      $("#vaccination_campaign_date_start").val(picker.startDate.format('DD/MM/YYYY'));
+      $("#vaccination_campaign_date_end").val(picker.endDate.format('DD/MM/YYYY'));
+      //console.log("Atualizando Data: ",picker);
+    });
+
+    cb(start, end);
+
+    
+
+});
+</script>

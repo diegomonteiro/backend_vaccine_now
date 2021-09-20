@@ -1,0 +1,41 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Vaccination Compaigns Targets</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Vaccination campaign</th>
+      <th>Date start</th>
+      <th>Date end</th>
+      <th>Min years old</th>
+      <th>Max years old</th>
+      <th>With comorbidity</th>
+      <th>Max peoples</th>
+      <th>Restrictions</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @vaccination_compaigns_targets.each do |vaccination_compaigns_target| %>
+      <tr>
+        <td><%= vaccination_compaigns_target.vaccination_campaign_id %></td>
+        <td><%= vaccination_compaigns_target.date_start %></td>
+        <td><%= vaccination_compaigns_target.date_end %></td>
+        <td><%= vaccination_compaigns_target.min_years_old %></td>
+        <td><%= vaccination_compaigns_target.max_years_old %></td>
+        <td><%= vaccination_compaigns_target.with_comorbidity %></td>
+        <td><%= vaccination_compaigns_target.max_peoples %></td>
+        <td><%= vaccination_compaigns_target.restrictions %></td>
+        <td><%= link_to 'Show', vaccination_compaigns_target %></td>
+        <td><%= link_to 'Edit', edit_vaccination_compaigns_target_path(vaccination_compaigns_target) %></td>
+        <td><%= link_to 'Destroy', vaccination_compaigns_target, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Vaccination Compaigns Target', new_vaccination_compaigns_target_path %>

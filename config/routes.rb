@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :user_vaccines
+  resources :diseases
+  resources :vaccination_compaigns_targets
+  resources :vaccination_campaigns
   resources :vaccinations
   resources :vaccination_points
   resources :vaccination_point_types

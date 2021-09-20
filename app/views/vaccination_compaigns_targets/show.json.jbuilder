@@ -1,0 +1,1 @@
+json.partial! "vaccination_compaigns_targets/vaccination_compaigns_target", vaccination_compaigns_target: @vaccination_compaigns_target

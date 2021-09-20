@@ -1,0 +1,2 @@
+module VaccinationCompaignsTargetsHelper
+end

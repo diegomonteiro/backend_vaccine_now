@@ -16,7 +16,7 @@ module Api
 
     def updated_at
       unless object.vaccinations.blank?
-        object.vaccinations.map(&:updated_at).max.strftime("%Y-%m-%d %H:%M")
+        object.vaccinations.map(&:updated_at).max.localtime.strftime("%Y-%m-%d %H:%M")
       else
         "Sem informaçoes"
       end

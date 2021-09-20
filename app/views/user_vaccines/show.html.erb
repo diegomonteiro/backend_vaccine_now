@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Date vaccination:</strong>
+  <%= @user_vaccine.date_vaccination %>
+</p>
+
+<p>
+  <strong>Batch:</strong>
+  <%= @user_vaccine.batch %>
+</p>
+
+<p>
+  <strong>Local:</strong>
+  <%= @user_vaccine.local %>
+</p>
+
+<p>
+  <strong>Vaccination point:</strong>
+  <%= @user_vaccine.vaccination_point_id %>
+</p>
+
+<p>
+  <strong>User:</strong>
+  <%= @user_vaccine.user_id %>
+</p>
+
+<p>
+  <strong>Signed by:</strong>
+  <%= @user_vaccine.signed_by %>
+</p>
+
+<p>
+  <strong>Dose number:</strong>
+  <%= @user_vaccine.dose_number %>
+</p>
+
+<p>
+  <strong>Is complete:</strong>
+  <%= @user_vaccine.is_complete %>
+</p>
+
+<%= link_to 'Edit', edit_user_vaccine_path(@user_vaccine) %> |
+<%= link_to 'Back', user_vaccines_path %>

@@ -4,7 +4,8 @@
   <%= f.input :manufacturer, label: 'Fabricante' %>
   <%= f.input :efficiency, label: 'Eficiência (%)' %>
   <%= f.input :max_interval_in_days, label: 'Máx. Intervalo em dias' %>
-  <%= f.input :disease, label: 'Doença' %>
+  <%= f.input :number_of_doses, label: 'Número de doses' %>
+  <%= f.association :disease, collection: Disease.all.map { |vpt| [vpt.name, vpt.id] }, :label => "Doença" %>
 
   <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),

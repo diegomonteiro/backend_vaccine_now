@@ -1,0 +1,49 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @disease.name %>
+</p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @disease.cod %>
+</p>
+
+<p>
+  <strong>Complete name:</strong>
+  <%= @disease.complete_name %>
+</p>
+
+<p>
+  <strong>Description:</strong>
+  <%= @disease.description %>
+</p>
+
+<p>
+  <strong>Symptoms:</strong>
+  <%= @disease.symptoms %>
+</p>
+
+<p>
+  <strong>Restrictions:</strong>
+  <%= @disease.restrictions %>
+</p>
+
+<p>
+  <strong>Pathogen:</strong>
+  <%= @disease.pathogen %>
+</p>
+
+<p>
+  <strong>Pathogen description:</strong>
+  <%= @disease.pathogen_description %>
+</p>
+
+<p>
+  <strong>Is contagious:</strong>
+  <%= @disease.is_contagious %>
+</p>
+
+<%= link_to 'Edit', edit_disease_path(@disease) %> |
+<%= link_to 'Back', diseases_path %>

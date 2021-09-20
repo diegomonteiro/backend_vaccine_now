@@ -1,0 +1,44 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Vaccination campaign:</strong>
+  <%= @vaccination_compaigns_target.vaccination_campaign_id %>
+</p>
+
+<p>
+  <strong>Date start:</strong>
+  <%= @vaccination_compaigns_target.date_start %>
+</p>
+
+<p>
+  <strong>Date end:</strong>
+  <%= @vaccination_compaigns_target.date_end %>
+</p>
+
+<p>
+  <strong>Min years old:</strong>
+  <%= @vaccination_compaigns_target.min_years_old %>
+</p>
+
+<p>
+  <strong>Max years old:</strong>
+  <%= @vaccination_compaigns_target.max_years_old %>
+</p>
+
+<p>
+  <strong>With comorbidity:</strong>
+  <%= @vaccination_compaigns_target.with_comorbidity %>
+</p>
+
+<p>
+  <strong>Max peoples:</strong>
+  <%= @vaccination_compaigns_target.max_peoples %>
+</p>
+
+<p>
+  <strong>Restrictions:</strong>
+  <%= @vaccination_compaigns_target.restrictions %>
+</p>
+
+<%= link_to 'Edit', edit_vaccination_compaigns_target_path(@vaccination_compaigns_target) %> |
+<%= link_to 'Back', vaccination_compaigns_targets_path %>

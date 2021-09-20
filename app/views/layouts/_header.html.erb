@@ -9,16 +9,36 @@
       <li class="nav-item active">
         <a class="nav-link" href="/">Home <span class="sr-only">(current)</span></a>
       </li>
+
+      <% if current_user.has_role? :admin %>
       <li class="nav-item dropdown">
         <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-          Vacinas
+          Cadastro
         </a>
         <div class="dropdown-menu" aria-labelledby="navbarDropdown">
           <%= link_to('Tipos de Vacinas', vaccine_types_path, :class => "dropdown-item") %>
           <%= link_to('Tipos de Pontos de Vacinação', vaccination_point_types_path, :class => "dropdown-item") %>
+          
+        </div>
+      </li>
+      <% end %>
+
+      <% if current_user.has_role?(:worker) || current_user.has_role?(:admin) %>
+      <li class="nav-item dropdown">
+        <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
+          Vacinação
+        </a>
+        <div class="dropdown-menu" aria-labelledby="navbarDropdown">
+          
           <%= link_to('Pontos de Vacinação', vaccination_points_path, :class => "dropdown-item") %>
           <%= link_to('Vacinas', vaccinations_path, :class => "dropdown-item") %>
+          <%= link_to('Campanhas', vaccination_campaigns_path, :class => "dropdown-item") %>
         </div>
+      </li>
+      <% end %>
+
+      <li class="nav-item">
+        <a class="nav-link" href="/user_vaccines">Minhas Vacinas</a>
       </li>
     </ul>
 

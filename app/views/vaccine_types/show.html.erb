@@ -17,7 +17,7 @@
   <dt><strong>Máx.Dias:</strong></dt>
   <dd><%= @vaccine_type.max_interval_in_days %></dd>
   <dt><strong>Doença:</strong></dt>
-  <dd><%= @vaccine_type.disease %></dd>
+  <dd><%= @vaccine_type.disease.name unless @vaccine_type.disease.nil? %></dd>
 </dl>
 
 <%= link_to '<i class="fa fa-arrow-left"></i> '.html_safe+t('.back', :default => t("helpers.links.back")),
