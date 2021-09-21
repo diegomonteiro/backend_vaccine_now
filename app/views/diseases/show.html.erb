@@ -1,7 +1,7 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Name:</strong>
+  <strong>Nome:</strong>
   <%= @disease.name %>
 </p>
 
@@ -11,39 +11,48 @@
 </p>
 
 <p>
-  <strong>Complete name:</strong>
+  <strong>Nome Cientifico:</strong>
   <%= @disease.complete_name %>
 </p>
 
 <p>
-  <strong>Description:</strong>
+  <strong>Descrição:</strong>
   <%= @disease.description %>
 </p>
 
 <p>
-  <strong>Symptoms:</strong>
+  <strong>Sintomas:</strong>
   <%= @disease.symptoms %>
 </p>
 
 <p>
-  <strong>Restrictions:</strong>
+  <strong>Restrições:</strong>
   <%= @disease.restrictions %>
 </p>
 
 <p>
-  <strong>Pathogen:</strong>
+  <strong>Patógeno</strong>
   <%= @disease.pathogen %>
 </p>
 
 <p>
-  <strong>Pathogen description:</strong>
+  <strong>Descrição do Patógeno:</strong>
   <%= @disease.pathogen_description %>
 </p>
 
 <p>
-  <strong>Is contagious:</strong>
+  <strong>Contagioso?</strong>
   <%= @disease.is_contagious %>
 </p>
 
-<%= link_to 'Edit', edit_disease_path(@disease) %> |
-<%= link_to 'Back', diseases_path %>
+
+<% if can? :write, Disease %>
+<%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+              edit_disease_path(@disease), :class => 'btn btn-warning' %>
+<%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
+              disease_path(@disease),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+<% end %>
+

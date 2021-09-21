@@ -9,8 +9,8 @@
       <th>Tipo</th>
       <th>Nome</th>
       <th>Endereço</th>
-      <th>Lat.</th>
-      <th>Long.</th>
+      <%# <th>Lat.</th>
+      <th>Long.</th> %>
       <th>Contato</th>
       <th>Raio <small>km</small></th>
       <th>Atualizado Em?</th>
@@ -24,8 +24,8 @@
         <td><%= vaccination_point.vaccination_point_type.name %></td>
         <td><%= vaccination_point.name %></td>
         <td><%= vaccination_point.address %></td>
-        <td><%= vaccination_point.latitude %></td>
-        <td><%= vaccination_point.longitude %></td>
+        <!--<td><%= vaccination_point.latitude %></td>
+        <td><%= vaccination_point.longitude %></td>-->
         <td><%= vaccination_point.contact_number %></td>
         <td><%= vaccination_point.radius_km %></td>
         <td><%= vaccination_point.updated_at.localtime.strftime('%Y-%m-%d %H:%M') %></td>

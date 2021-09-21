@@ -3,7 +3,7 @@ class UserVaccinesController < ApplicationController
 
   # GET /user_vaccines or /user_vaccines.json
   def index
-    @user_vaccines = UserVaccine.all
+    @user_vaccines = UserVaccine.includes([:vaccine_type => :disease, :vaccination_point => :vaccination_point_type]).includes(:user).accessible_by(current_ability).all
   end
 
   # GET /user_vaccines/1 or /user_vaccines/1.json
@@ -25,7 +25,7 @@ class UserVaccinesController < ApplicationController
 
     respond_to do |format|
       if @user_vaccine.save
-        format.html { redirect_to @user_vaccine, notice: "User vaccine was successfully created." }
+        format.html { redirect_to @user_vaccine, notice: "Vacina do Usuário Registrada com sucesso!" }
         format.json { render :show, status: :created, location: @user_vaccine }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class UserVaccinesController < ApplicationController
   def update
     respond_to do |format|
       if @user_vaccine.update(user_vaccine_params)
-        format.html { redirect_to @user_vaccine, notice: "User vaccine was successfully updated." }
+        format.html { redirect_to @user_vaccine, notice: "Vacina do Usuário Atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @user_vaccine }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class UserVaccinesController < ApplicationController
   def destroy
     @user_vaccine.destroy
     respond_to do |format|
-      format.html { redirect_to user_vaccines_url, notice: "User vaccine was successfully destroyed." }
+      format.html { redirect_to user_vaccines_url, notice: "Vacina do Usuário excluída com sucesso." }
       format.json { head :no_content }
     end
   end
@@ -64,6 +64,6 @@ class UserVaccinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_vaccine_params
-      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complete)
+      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccine_type_id, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complete)
     end
 end

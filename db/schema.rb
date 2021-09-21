@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2021_09_16_060320) do
+ActiveRecord::Schema.define(version: 2021_09_20_151556) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -117,8 +117,10 @@ ActiveRecord::Schema.define(version: 2021_09_16_060320) do
     t.boolean "is_complete"
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
+    t.bigint "vaccine_type_id", null: false
     t.index ["user_id"], name: "index_user_vaccines_on_user_id"
     t.index ["vaccination_point_id"], name: "index_user_vaccines_on_vaccination_point_id"
+    t.index ["vaccine_type_id"], name: "index_user_vaccines_on_vaccine_type_id"
   end
 
   create_table "users", force: :cascade do |t|
@@ -238,6 +240,7 @@ ActiveRecord::Schema.define(version: 2021_09_16_060320) do
   add_foreign_key "user_positions", "users"
   add_foreign_key "user_vaccines", "users"
   add_foreign_key "user_vaccines", "vaccination_points"
+  add_foreign_key "user_vaccines", "vaccine_types"
   add_foreign_key "vaccination_compaigns_targets", "vaccination_campaigns"
   add_foreign_key "vaccination_points", "vaccination_point_types"
   add_foreign_key "vaccinations", "vaccination_points"

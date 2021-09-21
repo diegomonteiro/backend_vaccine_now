@@ -1,44 +1,55 @@
 <p id="notice"><%= notice %></p>
 
 <p>
-  <strong>Date vaccination:</strong>
+  <strong>Data de Vacinação:</strong>
   <%= @user_vaccine.date_vaccination %>
 </p>
 
 <p>
-  <strong>Batch:</strong>
+  <strong>Lote:</strong>
   <%= @user_vaccine.batch %>
 </p>
 
 <p>
-  <strong>Local:</strong>
-  <%= @user_vaccine.local %>
+  <strong>Tipo de Vacina:</strong>
+  <%= @user_vaccine.vaccine_type.disease.name %> - <%= @user_vaccine.vaccine_type.name %>
 </p>
 
 <p>
-  <strong>Vaccination point:</strong>
-  <%= @user_vaccine.vaccination_point_id %>
+  <strong>Ponto de Vacinação:</strong>
+  <%= @user_vaccine.vaccination_point.vaccination_point_type.cod %> - <%= @user_vaccine.vaccination_point.name %>
 </p>
 
 <p>
-  <strong>User:</strong>
-  <%= @user_vaccine.user_id %>
+  <strong>Paciente:</strong>
+  <%= @user_vaccine.user.name %>
 </p>
 
 <p>
-  <strong>Signed by:</strong>
-  <%= @user_vaccine.signed_by %>
+  <strong>Aplicado por:</strong>
+  <%= User.find(@user_vaccine.signed_by).name %>
 </p>
 
 <p>
-  <strong>Dose number:</strong>
+  <strong>Num.Dose:</strong>
   <%= @user_vaccine.dose_number %>
 </p>
 
 <p>
-  <strong>Is complete:</strong>
-  <%= @user_vaccine.is_complete %>
+  <strong>Completa?</strong>
+  <%= (@user_vaccine.is_complete) ? "Sim" : "Não" %>
 </p>
 
-<%= link_to 'Edit', edit_user_vaccine_path(@user_vaccine) %> |
-<%= link_to 'Back', user_vaccines_path %>
+
+<%= link_to '<i class="fa fa-arrow-left"></i> '.html_safe+t('.back', :default => t("helpers.links.back")),
+              user_vaccines_path, :class => 'btn btn-outline-secondary'  %>
+
+<% if can? :write, UserVaccine %>
+<%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+              edit_user_vaccine_path(@user_vaccine), :class => 'btn btn-warning' %>
+<%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
+              user_vaccine_path(@user_vaccine),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+<% end %>

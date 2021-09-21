@@ -4,18 +4,21 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.input :name %>
-    <%= f.input :cod %>
-    <%= f.input :complete_name %>
-    <%= f.input :description %>
-    <%= f.input :symptoms %>
-    <%= f.input :restrictions %>
-    <%= f.input :pathogen %>
-    <%= f.input :pathogen_description %>
-    <%= f.input :is_contagious %>
+    <%= f.input :name, :label => "Nome" %>
+    <%= f.input :cod, :label => "Código" %>
+    <%= f.input :complete_name, :label => "Nome Científico" %>
+    <%= f.input :description, :label => "Descrição" %>
+    <%= f.input :symptoms, :label => "Sintomas" %>
+    <%= f.input :restrictions, :label => "Restrições" %>
+    <%= f.input :pathogen, :label => "Patógeno" %>
+    <%= f.input :pathogen_description, :label => "Descrição do Patógeno" %>
+    <%= f.input :is_contagious, :label => "Contagioso?" %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <br/>
+    <%= f.button :submit,"Confirmar", class: 'btn btn-success'%>
+    <%= link_to '<i class="fa fa-arrow-left"></i> '.html_safe+t('.back', :default => t("helpers.links.back")),
+              diseases_path, :class => 'btn btn-outline-secondary'  %>
   </div>
 <% end %>

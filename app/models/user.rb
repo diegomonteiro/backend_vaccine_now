@@ -8,9 +8,15 @@ class User < ApplicationRecord
 
   after_create :assign_default_role
   has_many :login_activities, as: :users
+  has_many :user_vaccines
+  has_many :user_positions
 
   def assign_default_role
-    add_role(:person) if self.roles.blank?
+    add_role(:patient) if self.roles.blank?
+  end
+
+  def complete_name
+    "#{roles.first.name.capitalize} - #{name}"
   end
   
 end

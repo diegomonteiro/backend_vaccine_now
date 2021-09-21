@@ -1,6 +1,5 @@
 class VaccineType < ApplicationRecord
     has_many :vaccinations
-
     belongs_to :disease
 
     validates :name, presence: true
@@ -12,6 +11,10 @@ class VaccineType < ApplicationRecord
 
     validate :check_efficiency_number
     validate :check_max_interval_in_days
+
+    def complete_name
+        "#{disease.name} - #{name}"
+    end
 
     def check_efficiency_number
         if efficiency.nil? || efficiency <= 0 

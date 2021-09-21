@@ -1,15 +1,15 @@
-<p id="notice"><%= notice %></p>
-
-<h1>Vaccination Campaigns</h1>
-
-<table>
+<div class="page-header">
+  <h4><%=t '.title', :default => "Campanhas de Vacinação" %></h4>
+</div>
+<table class="table table-striped">
   <thead>
     <tr>
-      <th>Name</th>
-      <th>Date start</th>
-      <th>Date end</th>
-      <th>Description</th>
-      <th colspan="3"></th>
+      <th>Nome</th>
+      <th>Data de Inicio</th>
+      <th>Data de Término</th>
+      <th>Descrição</th>
+      <th>Públicos</th>
+      <th><%=t '.actions', :default => t("helpers.actions") %></th>
     </tr>
   </thead>
 
@@ -20,14 +20,32 @@
         <td><%= vaccination_campaign.date_start %></td>
         <td><%= vaccination_campaign.date_end %></td>
         <td><%= vaccination_campaign.description %></td>
-        <td><%= link_to 'Show', vaccination_campaign %></td>
-        <td><%= link_to 'Edit', edit_vaccination_campaign_path(vaccination_campaign) %></td>
-        <td><%= link_to 'Destroy', vaccination_campaign, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= vaccination_campaign.vaccination_compaigns_targets.count %></td>
+        <td>
+          <% if can? :read, VaccinationCampaign %>
+            <%= link_to '<i class="fa fa-eye"></i> '.html_safe+t('.show', :default => t("helpers.links.show")), vaccination_campaign , :class => 'btn btn-info btn-xs'%>
+          <% end %>
+
+          <% if can? :update, VaccinationCampaign %>
+          <%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+                      edit_vaccination_campaign_path(vaccination_campaign), :class => 'btn btn-warning btn-xs' %>
+          <% end %>
+
+          <% if can? :destroy, VaccinationCampaign %>
+          <%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
+                      vaccination_campaign_path(vaccination_campaign),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Tem certeza?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+          <% end %>
+        </td>
+       
       </tr>
     <% end %>
   </tbody>
 </table>
 
 <br>
-
-<%= link_to 'New Vaccination Campaign', new_vaccination_campaign_path %>
+<%= link_to t('.new', :default => t("helpers.links.new")),
+            new_vaccination_campaign_path,
+            :class => 'btn btn-primary' %>

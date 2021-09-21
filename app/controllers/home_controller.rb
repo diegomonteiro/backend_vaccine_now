@@ -1,5 +1,6 @@
 class HomeController < ApplicationController
   def index
-    #render layout: false
+    @vaccine_types = VaccineType.all
+    @diseases = Disease.all
   end
 end

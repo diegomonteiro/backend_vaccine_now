@@ -94,3 +94,7 @@ gem 'tzinfo-data', platforms: [:mingw, :mswin, :x64_mingw, :jruby]
 
 # Nested Forms Easy
 gem 'vanilla_nested'
+
+# Monitoring Code With Sentry
+gem "sentry-ruby"
+gem "sentry-rails"

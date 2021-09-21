@@ -6,12 +6,16 @@ class Ability
   def initialize(user)
     user ||= User.new
 
-    if user.present?
+    unless user.nil?
       can :manage, UserPosition, user_id: user.id
     end
 
+    can :read, VaccinationPoint
+    can :read, VaccinationPointType
+
     if user.has_role? :guest
       can :read, :all
+      can :read, UserVaccine, user_id: user.id
     end
 
     if user.has_role? :worker
@@ -21,5 +25,6 @@ class Ability
     if user.has_role? :admin
       can :manage, :all
     end
+
   end
 end

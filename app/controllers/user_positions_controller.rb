@@ -5,7 +5,7 @@ class UserPositionsController < ApplicationController
 
   # GET /user_positions or /user_positions.json
   def index
-    @user_positions = UserPosition.accessible_by(current_ability).order("updated_at DESC")
+    @user_positions = UserPosition.includes(:user).accessible_by(current_ability).order("updated_at DESC")
   end
 
   # GET /user_positions/1 or /user_positions/1.json
@@ -34,8 +34,8 @@ class UserPositionsController < ApplicationController
         up = UserPosition.where("user_id = ? and latitude = ? and longitude = ?", @user_position.user_id, @user_position.latitude, @user_position.longitude).first
         up.touch(:updated_at) 
 
-        format.html { render :new, status: :unprocessable_entity }
-        format.json { render json: @user_position.errors, status: :unprocessable_entity }
+        format.html { render :new, status: :ok }
+        format.json { render json: @user_position.errors, status: 302 }
       end
     end
   end
@@ -47,8 +47,8 @@ class UserPositionsController < ApplicationController
         format.html { redirect_to @user_position, notice: "Posição atualizada com sucesso!" }
         format.json { render :show, status: :ok, location: @user_position }
       else
-        format.html { render :edit, status: :unprocessable_entity }
-        format.json { render json: @user_position.errors, status: :unprocessable_entity }
+        format.html { render :edit, status: :ok }
+        format.json { render json: @user_position.errors, status: 302 }
       end
     end
   end

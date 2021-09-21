@@ -2,7 +2,7 @@ module Api
 	class VaccinationPointsController < ApiController
 
 	# This is our new function that comes before Devise's one
-    before_action :authenticate_user_from_token!
+    #before_action :authenticate_user_from_token!
     load_and_authorize_resource
 
 		resource_description do

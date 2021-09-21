@@ -41,4 +41,18 @@
 </p>
 
 <%= link_to 'Edit', edit_vaccination_compaigns_target_path(@vaccination_compaigns_target) %> |
-<%= link_to 'Back', vaccination_compaigns_targets_path %>
+
+
+<%= link_to '<i class="fa fa-arrow-left"></i> '.html_safe+t('.back', :default => t("helpers.links.back")),
+              vaccination_compaigns_targets_path, :class => 'btn btn-outline-secondary'  %>
+
+<% if can? :write, VaccinationCompaignsTarget %>
+<%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+              edit_vaccination_compaigns_target_path(@vaccination_compaigns_target), :class => 'btn btn-warning' %>
+
+<%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
+              vaccination_compaigns_target_path(@vaccination_compaigns_target),
+              :method => 'delete',
+              :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Are you sure?')) },
+              :class => 'btn btn-danger' %>
+<% end %>

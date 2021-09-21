@@ -23,13 +23,58 @@
 
 <div id="map"></div>
 
+<!-- Modal -->
+<div class="modal fade" id="vaccination_point_modal" tabindex="-1" aria-labelledby="vaccination_point_modal" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-centered modal-xl">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="modal_title">Modal title</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <ul class="nav nav-tabs" id="myTab" role="tablist">
+        <li class="nav-item" role="presentation">
+            <a class="nav-link active" id="resume-tab" data-toggle="tab" href="#resume" role="tab" aria-controls="home" aria-selected="true">Informações</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="vaccines-tab" data-toggle="tab" href="#vaccines" role="tab" aria-controls="profile" aria-selected="false">Vacinas</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="contact-tab" data-toggle="tab" href="#contact" role="tab" aria-controls="contact" aria-selected="false">Contato</a>
+        </li>
+        <li class="nav-item" role="presentation">
+            <a class="nav-link" id="report-tab" data-toggle="tab" href="#report" role="tab" aria-controls="contact" aria-selected="false">Relatório</a>
+        </li>
+        </ul>
+        <div class="tab-content" id="myTabContent">
+        <div class="tab-pane fade show active" id="resume" role="tabpanel" aria-labelledby="home-tab">Informações</div>
+        <div class="tab-pane fade" id="vaccines" role="tabpanel" aria-labelledby="profile-tab">Vacinas</div>
+        <div class="tab-pane fade" id="contact" role="tabpanel" aria-labelledby="contact-tab">Contato</div>
+        <div class="tab-pane fade" id="report" role="tabpanel" aria-labelledby="contact-tab">Relatório</div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button type="button" class="btn btn-primary">Avise-me</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <script>
 
-    var map = L.map('map').setView([-22.432, -44.432], 13).locate({setView: true, maxZoom: 16, watch: true});
+    var map = L.map('map').locate({setView: true, maxZoom: 16, watch: true, maximumAge: 60000, timeout: 1000});
 
     var vaccination_points = L.layerGroup();
     var user_positions = L.layerGroup();
     var bounds;
+
+    var vaccine_types_json = <%= @vaccine_types.to_json.html_safe %>;
+    var diseases_json = <%= @diseases.to_json.html_safe %>;
+
+    user_positions.addTo(map);
 
     startingPoint = {};
 
@@ -70,6 +115,8 @@
             pointsrand.push(point);
 
             user_positions.addLayer(L.marker(point).bindPopup("Sua localização é de " + 0 + " metros a partir deste ponto"));
+            //var marker = L.marker(point).on('click', render_modal));
+            user_positions.addLayer(marker);
         }
 
         console.log("Random Users: ", pointsrand);
@@ -104,7 +151,7 @@
         user_positions.addLayer(m);
         //user_positions.addLayer(c);
 
-        user_positions.addTo(map);
+        
 
         updateUserLocation(e);
     }
@@ -112,6 +159,9 @@
     function onLocationError(e) {
         //alert(e.message);
         console.log("Erro na Geolocalização: ", e);
+        <% if user_signed_in?  %>
+            getPathByUser(<%= current_user.id %>);
+        <% end %>
     }
 
     function saveTrip(positionData){
@@ -133,13 +183,14 @@
             success: function(response){
                 console.log("Posição Registrada: ",response);
             },
-            error: function(error){
-                console.log("Erro ao atualizar posição do usuário: ", error);
+            error: function(e){
+                //console.log("Erro ao atualizar posição do usuário: ", e);
             }
         })
     }
 
     function getPathByUser(user_id){
+        
         $.ajax({
             url: "/user_positions.json",
             type: "GET",
@@ -147,11 +198,17 @@
                 var vals = _.groupBy(data,function(o){ return o.user_id });
 
                 $.each(vals[user_id], function(k,v){
-                    //console.log("Posição em: ",v.updated_at,"=> ",v);
+                    console.log("Posição em: ",v.updated_at,"=> ",v);
                     user_positions.addLayer(L.marker([v.latitude, v.longitude], {options: v}));
+                    map.setView([v.latitude, v.longitude],16);
                 });
+            },
+            error: function(e){
+                console.error("Erro ao obter posições: ",e)
             }
         })
+
+
     }
 
     function getCurrentLocation(){
@@ -167,10 +224,13 @@
           //return updateCurrentLocation(data);
           return saveTrip(data);
           <% end %>
+
+          console.log("Current Position: ", position);
         });
     }
 
     function getLocation(user){
+
         if (navigator.geolocation) {
             navigator.geolocation.getCurrentPosition(function(position) {
             var coord, data, timestamp;
@@ -187,6 +247,10 @@
             //console.log("Location : ", data);
             return saveTrip(data);
             });
+        }
+        else{
+            console.error("GPS não habilitado ou autorizado no dispositivo");
+            alert("Habilite o GPS");
         }
     }
 
@@ -240,7 +304,11 @@
                     html += "<hr/>";
                     //html += "<a href='#' class='btn btn-success btn-sm btn-block' style='color: #ffffff'>Avise-me</a>";
 
-                    layer.bindPopup(html);
+                    //layer.bindPopup(html);
+                    layer.on('click',function(e){
+                        //console.log("Click: ",e.target.options.options)
+                        render_modal(e.target.options.options);
+                    });
                     //console.log("Renderizar Custom-Modal: ", layer);
 
                 })
@@ -251,6 +319,101 @@
                 console.error("Erro no Ponto de Vacinação: ", error);
             }
         })
+    }
+
+    function render_modal(e){
+        console.log(e);
+        $("#vaccination_point_modal").find(".modal-title").html(e.vaccination_point_type.cod + " - " + e.name);
+
+        var resume = "";
+
+        resume += "<br/><div class=\"row\">";
+            resume += "<div class=\"col-md-4 col-xs-12\">";
+                resume += "<div class=\"card bg-light mb-3\">";
+                    //resume += "<img src=\"\" class=\"card-img-top\" alt=\"...\">";
+                    resume += "<div class=\"card-body\">";
+                        resume += "<h5 class=\"card-title\"><b>Localização</b></h5>";
+                        resume += "<p class=\"card-text\">"+e.address+"</p>";
+                        resume += "<p class=\"card-text\"><b>Tel:</b> "+e.contact_number+"</p>";
+                    resume += "</div>";
+                    resume += "<ul class=\"list-group list-group-flush\">";
+                        resume += "<li class=\"list-group-item\"><b>Total de Doses</b> <span class=\"badge badge-info float-right\">"+e.total_doses+"</span></li>";
+                        resume += "<li class=\"list-group-item\"><b>Doses Disponíveis</b> <span class=\"badge badge-success float-right\">"+e.remain_doses+"</span></li>";
+                        resume += "<li class=\"list-group-item\"><b>Doses Descartadas</b> <span class=\"badge badge-danger float-right\">"+e.discarded_doses+"</span></li>";
+                    resume += "</ul>";
+                    resume += "<div class=\"card-body\">";
+                        resume += "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">";
+                            resume += "<button type=\"button\" class=\"btn btn-success\"><i class=\"fas fa-sms\"></i> SMS</button>";
+                            resume += "<button type=\"button\" class=\"btn btn-primary\"><i class=\"far fa-compass\"></i> Ver no GPS</button>";
+                            resume += "<button type=\"button\" class=\"btn btn-secondary\"><i class='fas fa-phone'></i> Detalhes</button>";
+                        resume += "</div>";
+                    resume += "</div>";
+                resume += "</div>";
+            resume += "</div>";
+            resume += "<div class=\"col-md-8\">";
+                resume += "<div class='table-responsive'>";
+                resume += "<table id=\"table_vaccines\" class='table table-condensed table-striped table-bordered'>";
+                    resume += "<thead><tr><th>Doença</th><th>Vacina</th><th>Disponíveis</th><th>Descartadas</th><th>Total</th><th>Desp(%)</th></tr></thead>";
+                    resume += "<tbody>";
+                        $.each(e.vaccinations, function(k,v){
+                            //console.log(v);
+                            var vaccine_type_obj = getVaccineTypeById(v.vaccine_type_id);
+
+                            resume += "<tr>";
+                                resume += "<td>"+getDiseaseById(vaccine_type_obj.disease_id).name+"</td>";
+                                resume += "<td>"+vaccine_type_obj.name+"</td>";
+                                resume += "<td>"+v.remain_doses+"</td>";
+                                resume += "<td>"+v.discarded_doses+"</td>";
+                                resume += "<td>"+v.total_doses+"</td>";
+                                resume += "<td>"+getWasteRate(v.total_doses,v.discarded_doses).toFixed(2)+"</td>";
+                            resume += "</tr>";
+                        });
+                    resume += "</tbody>";
+                resume += "</table>";
+                resume += "</div>";
+            resume += "</div>";
+        resume += "</div>";
+
+        $("#resume").html(resume);
+        $("#vaccines").html("Vacinas Teste");
+        $("#contact").html("Contato Teste");
+        $("#report").html("Relatório Teste");
+
+        $('#table_vaccines').DataTable(
+            {
+                "language":
+                {
+                    "url": "https://cdn.datatables.net/plug-ins/1.11.2/i18n/pt_br.json"
+                }
+            }
+        );
+
+        $("#vaccination_point_modal").modal('show');
+    }
+
+    function getVaccineTypeById(vaccine_type_id){
+        var ret = null;
+        $.each(vaccine_types_json,function(k,v){
+            if(v.id == vaccine_type_id){
+                ret = v;
+            }
+        })
+
+        return ret;
+    }
+
+    function getDiseaseById(disease_id){
+        var ret = null;
+        $.each(diseases_json,function(k,v){
+            if(v.id == disease_id){
+                ret = v;
+            }
+        });
+        return ret;
+    }
+
+    function getWasteRate(total,discarted){
+        return (discarted/total)*100;
     }
 
     function getVaccinationPointStyle(data){
