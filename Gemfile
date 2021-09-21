@@ -4,11 +4,11 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.3', '>= 6.0.3.7'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.1'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
-gem 'puma', '~> 4.1'
+gem 'puma', '~> 4.3', '>= 4.3.8'
 # Use SCSS for stylesheets
 gem 'sass-rails', '>= 6'
 # Transpile app-like JavaScript. Read more: https://github.com/rails/webpacker
@@ -32,22 +32,22 @@ gem 'devise'
 gem "rolify"
 gem "cancancan"
 
-gem 'omniauth-facebook'
-gem 'omniauth-twitter'
-gem 'omniauth-google'
+gem 'omniauth-facebook', '>= 8.0.0'
+gem 'omniauth-twitter', '>= 1.4.0'
+gem 'omniauth-google', '>= 1.0.2'
 
 gem 'rails-i18n'
 
-gem 'bootstrap', '~> 4.1.0'
+gem 'bootstrap', '~> 4.3.1'
 gem 'jquery-rails'
 gem 'pusher'
 gem 'figaro'
 
 gem 'simple_form'
 gem "twitter-bootstrap-rails"
-gem 'geokit-rails'
+gem 'geokit-rails', '>= 2.3.2'
 
-gem 'apipie-rails'
+gem 'apipie-rails', '>= 0.5.18'
 gem 'authtrail'
 gem 'active_record_upsert'
 gem 'whenever'
@@ -56,7 +56,7 @@ gem 'devise-i18n'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'simple_token_authentication'
 
-gem "letter_opener", group: :development
+gem "letter_opener", ">= 1.7.0", group: :development
 gem 'sendgrid-ruby'
 gem 'active_model_serializers', '~> 0.10.0'
 gem "bullet"
@@ -80,7 +80,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
+  gem 'capybara', '>= 3.35.3'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'shoulda-callback-matchers', '~> 1.1.1'
