@@ -56,7 +56,7 @@ gem 'devise-i18n'
 gem 'devise-bootstrap-views', '~> 1.0'
 gem 'simple_token_authentication'
 
-gem "letter_opener", group: :development
+gem "letter_opener", ">= 1.7.0", group: :development
 gem 'sendgrid-ruby'
 gem 'active_model_serializers', '~> 0.10.0'
 gem "bullet"
@@ -80,7 +80,7 @@ end
 
 group :test do
   # Adds support for Capybara system testing and selenium driver
-  gem 'capybara', '>= 2.15'
+  gem 'capybara', '>= 3.35.3'
   gem 'selenium-webdriver'
   gem 'shoulda-matchers', '~> 4.0'
   gem 'shoulda-callback-matchers', '~> 1.1.1'
