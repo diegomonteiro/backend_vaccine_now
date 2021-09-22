@@ -2,6 +2,10 @@ class Vaccination < ApplicationRecord
   belongs_to :vaccination_point
   belongs_to :vaccine_type
 
+  validates_presence_of :total_doses, message: 'O total de doses não pode fica em branco'
+  validates_presence_of :remain_doses, message: 'As doses remanescentes não podem ficar em branco'
+  validates_presence_of :discarded_doses, message: 'As doses descartadas não podem ficar em branco'
+
   validates :vaccination_point, uniqueness: { scope: [:vaccine_type], message: "Vacinação já existe, atualize-a" }
 
 
@@ -17,9 +21,10 @@ class Vaccination < ApplicationRecord
     tracked: true
 
   def notifier_message
-    ret = {title: "", message: "", link: ""}
+    ret = {title: "", message: "", link: "", classification: ""}
     if remain_doses > 0
       ret[:title] = 'Vacinas disponíveis'
+      ret[:icon_class] = 'fa fa-circle text-danger'
       ret[:message] = "#{vaccination_point.vaccination_point_type.cod} - #{vaccination_point.name} - Doses disponíveis: #{remain_doses}"
     end
 

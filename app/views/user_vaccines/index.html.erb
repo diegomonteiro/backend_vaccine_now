@@ -7,13 +7,14 @@
     <tr>
       <th>#</th>
       <th>Data</th>
+      <th>Expira</th>
       <th>Lote</th>
       <th>Tipo de Vacina</th>
       <th>Ponto de Vacinação</th>
-      <th>Usuário</th>
-      <th>Aplicado por</th>
+      <th>Paciente</th>
+      <th>Aplicador</th>
       <th>Núm.Dose</th>
-      <th>Está completo?</th>
+      <th>Completa?</th>
       <th></th>
     </tr>
   </thead>
@@ -23,6 +24,7 @@
       <tr>
         <td><i class="fa fa-circle <%= (user_vaccine.is_complete) ? "text-success" : "text-danger" %>"></i></td>
         <td><%= user_vaccine.date_vaccination %></td>
+        <td><%= user_vaccine.expiration_date %></td>
         <td><%= user_vaccine.batch %></td>
         <td><%= user_vaccine.vaccine_type.disease.name %> - <%= user_vaccine.vaccine_type.name %></td>
         <td><%= user_vaccine.vaccination_point.vaccination_point_type.cod %> - <%= user_vaccine.vaccination_point.name %></td>

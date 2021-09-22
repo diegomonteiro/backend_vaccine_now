@@ -9,9 +9,30 @@
       Informamos que há vacinas disponíveis para pessoas em sua região<br>
       Nome: <%= @vaccination_point.name %><br/>
       Local: <%= @vaccination_point.address %><br/>
-      Quantidade de vacinas: <%= @remain_doses %><br/>
       Data: <%= @vaccination_point.vaccinations.map(&:updated_at).max.localtime.strftime("%Y-%m-%d %H:%M") %>
     </p>
+    <hr/>
+    <table>
+      <thead>
+        <tr>
+          <th>Tipo de Vacina</th>
+          <th>Doença</th>
+          <th>Doses Restantes</th>
+          <th>Doses Desperdiçadas</th>
+        </tr>
+      </thead>
+      <tbody>
+        <% @vaccination_point.vaccinations.each do |x| %>
+          <tr>
+            <td><%= x.vaccine_type.name %></td>
+            <td><%= x.vaccine_type.disease.name %></td>
+            <td><%= x.remain_doses %></td>
+            <td><%= x.discarded_doses %></td>
+          </tr>
+        <% end %>
+      </tbody>
+    </table>
+    <hr/>
     <p>
       Dirija-se imediatamente ao local para garantir sua dose. Obs: Esta notificação não garante a dose,
       ela será aplicada em ordem de chegada.

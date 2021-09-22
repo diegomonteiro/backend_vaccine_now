@@ -4,20 +4,28 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.input :date_vaccination, :label => "Data de Vacinação" %>
-    <%= f.input :expiration_date, :label => "Data de Vencimento" %>
-    <%= f.input :batch, :label => "Cód do Lote" %>
 
-    <%= f.association :vaccine_type, collection: VaccineType.includes(:disease).all.map { |vpt| ["#{vpt.disease.name} - #{vpt.name}", vpt.id] }, :label => "Tipo de Vacinação" %>
-    <%= f.association :vaccination_point, collection: VaccinationPoint.includes(:vaccination_point_type).all.map { |vpt| ["#{vpt.vaccination_point_type.cod} - #{vpt.name}", vpt.id] }, :label => "Ponto de Vacinação" %>
-    <%= f.association :user, collection: User.with_role(:patient).all.map { |vpt| ["#{vpt.roles.first.name.capitalize} - #{vpt.name}", vpt.id] }, :label => "Paciente" %>
+    <div class="row">
+      <div class="col-md-4"><%= f.input :date_vaccination, :label => "Data de Vacinação" %></div>
+      <div class="col-md-4"><%= f.input :expiration_date, :label => "Data de Vencimento" %></div>
+      <div class="col-md-4"><%= f.association :user, collection: User.with_role(:patient).all.map { |vpt| ["#{vpt.roles.first.name.capitalize} - #{vpt.name}", vpt.id] }, :label => "Paciente" %></div>
+    </div>
     
-    <%= f.input :signed_by, collection: User.with_role(:worker).all, :label_method => :complete_name, :value_method => :id, :label => "Aplicado por" %>
-    <%= f.input :dose_number, :label => "Núm. de Doses" %>
-    <%= f.input :is_complete, :label => "Está Completa?" %>
+    <div class="row">
+      <div class="col-md-4"><%= f.association :vaccine_type, collection: VaccineType.includes(:disease).all.map { |vpt| ["#{vpt.disease.name} - #{vpt.name}", vpt.id] }, :label => "Tipo de Vacinação" %></div>
+      <div class="col-md-4"><%= f.association :vaccination_point, collection: VaccinationPoint.includes(:vaccination_point_type).all.map { |vpt| ["#{vpt.vaccination_point_type.cod} - #{vpt.name}", vpt.id] }, :label => "Ponto de Vacinação" %></div>
+      <div class="col-md-4"><%= f.input :batch, :label => "Cód do Lote" %></div>
+    </div>
+    
+    <div class="row">
+      <div class="col-md-4"><%= f.input :signed_by, collection: User.with_role(:worker).all, :label_method => :complete_name, :value_method => :id, :label => "Aplicado por" %></div>
+      <div class="col-md-4"><%= f.input :dose_number, :label => "Núm. de Doses" %></div>
+      <div class="col-md-4"><%= f.input :is_complete, :label => "Está Completa?" %></div>
+    </div>
   </div>
 
   <div class="form-actions">
+    <%= link_to '<i class="fa fa-arrow-left"></i> Voltar'.html_safe, user_vaccines_path, class: 'btn btn-outline-secondary' %>
     <%= f.button :submit,"Confirmar", class: 'btn btn-success'%>
   </div>
 <% end %>

@@ -14,7 +14,7 @@
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
-      <div class="modal-body">
+      <div class="modal-body" style="padding: 0px">
         <div class="notifications">
             <%= yield :notification_index %>
         </div>
@@ -34,17 +34,7 @@
 <script>
     $('#modal-notifications').modal('handleUpdate');
 
-    $(document).click(function(e){
-        if( !$(e.target).is(".notification_list_cover") && !$(e.target).is(".notification_wrapper a") ){
-            if($(".notification_wrapper").hasClass("open") && !$(".notification_wrapper").hasClass("opened")){
-            $(".notification_wrapper").addClass("opened");
-            }else if($(".notification_wrapper").hasClass("opened")){
-            $(".notification_wrapper").removeClass("open").removeClass("opened");
-            }
-        }
-    });
-
-    $(".dropdown_notification").click(function(){
-        $(this).parent().toggleClass("open");
+    $(document).on('click','notification_',function(e){
+        console.log(e.target)
     });
 </script>

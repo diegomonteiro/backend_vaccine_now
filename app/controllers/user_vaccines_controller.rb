@@ -66,6 +66,6 @@ class UserVaccinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_vaccine_params
-      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccine_type_id, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complet, :expiration_date)
+      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccine_type_id, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complete, :expiration_date)
     end
 end

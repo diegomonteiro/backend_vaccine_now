@@ -7,7 +7,7 @@
   <%= f.input :contact_number, :label => "Contato" %>
   <%= f.input :radius_km, :label => "Raio (km)"%>
 
-  <%= f.button :submit, :class => 'btn-primary' %>
-  <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
-                vaccination_points_path, :class => 'btn btn-default' %>
+  <%= link_to '<i class="fa fa-arrow-left"></i> Voltar'.html_safe, vaccination_points_path, class: 'btn btn-outline-secondary' %>
+  <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
+  
 <% end %>

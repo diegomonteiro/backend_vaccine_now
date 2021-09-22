@@ -7,7 +7,9 @@ class UserMailer < ApplicationMailer
     def notificar_usuarios_por_vacinas
         @user = params[:user]
         @vaccination_point = params[:vaccination_point]
-        @remain_doses = params[:remain_doses]
-        mail(to: @user.email, subject: "Vacinas disponíveis em sua região")
+        @vaccinations = params[:vaccinations]
+
+        #@user.email
+        mail(to: "dmsburn@gmail.com", subject: "Vacinas disponíveis em sua região")
     end
 end
