@@ -9,6 +9,8 @@ Rails.application.routes.draw do
   resources :vaccination_point_types
   resources :vaccine_types
   resources :user_positions
+  notify_to :users, with_devise: :users, devise_default_routes: true
+
   devise_for :users
 
   apipie

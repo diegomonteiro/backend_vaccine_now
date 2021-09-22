@@ -64,6 +64,11 @@ GEM
       minitest (~> 5.1)
       tzinfo (~> 1.1)
       zeitwerk (~> 2.2, >= 2.2.2)
+    activity_notification (2.2.2)
+      i18n (>= 0.5.0)
+      jquery-rails (>= 3.1.1)
+      railties (>= 5.0.0, < 6.2)
+      swagger-blocks (>= 3.0.0)
     addressable (2.7.0)
       public_suffix (>= 2.0.2, < 5.0)
     apipie-rails (0.5.18)
@@ -369,6 +374,7 @@ GEM
       actionpack (>= 4.0)
       activesupport (>= 4.0)
       sprockets (>= 3.0.0)
+    swagger-blocks (3.0.0)
     thor (1.1.0)
     thread_safe (0.3.6)
     thread_safe (0.3.6-java)
@@ -423,6 +429,7 @@ PLATFORMS
 DEPENDENCIES
   active_model_serializers (~> 0.10.0)
   active_record_upsert
+  activity_notification
   apipie-rails
   authtrail
   bootsnap (>= 1.4.2)

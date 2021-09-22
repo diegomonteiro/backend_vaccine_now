@@ -11,6 +11,10 @@ class User < ApplicationRecord
   has_many :user_vaccines
   has_many :user_positions
 
+  acts_as_target email: :email, email_allowed: :confirmed_at, action_cable_allowed: true
+
+  
+
   def assign_default_role
     add_role(:patient) if self.roles.blank?
   end

@@ -98,3 +98,6 @@ gem 'vanilla_nested'
 # Monitoring Code With Sentry
 gem "sentry-ruby"
 gem "sentry-rails"
+
+# Notifications Module
+gem 'activity_notification'

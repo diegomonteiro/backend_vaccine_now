@@ -1,0 +1,26 @@
+
+<br/>
+<div class="card bg-light mb-3">
+  <div class="card-header">
+    <h5>Notificações do <%= @target.name %>
+    <%= link_to open_all_notifications_path_for(@target, @index_options.slice(:routing_scope, :devise_default_routes)), class: "btn btn-success float-right", method: :post, remote: true do %>
+        <span class="notification_count"><span class="<%= 'unopened' if @target.has_unopened_notifications?(@index_options) %>">
+          <%= @target.unopened_notification_count(@index_options) %>
+        </span></span>
+      <% end %>
+    </h5>
+  </div>
+  <div class="card-body">
+    <div class="list-group">
+      <% if @index_options[:with_group_members] %>
+          <%= render_notification @notifications, @index_options.slice(:routing_scope, :devise_default_routes).merge(fallback: :default_without_grouping, with_group_members: true) %>
+      <% else %>
+          <%= render_notification @notifications, @index_options.slice(:routing_scope, :devise_default_routes).merge(fallback: :default) %>
+      <% end %>
+    </div>
+    <br/>
+    <%= link_to open_all_notifications_path_for(@target, @index_options.slice(:routing_scope, :devise_default_routes)), class: "btn btn-success float-right", method: :post, remote: true do %>
+        Marcar todas como lidas
+    <% end %>
+  </div>
+</div>

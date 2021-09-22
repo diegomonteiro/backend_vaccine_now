@@ -27,7 +27,7 @@
         <td><%= user_vaccine.vaccine_type.disease.name %> - <%= user_vaccine.vaccine_type.name %></td>
         <td><%= user_vaccine.vaccination_point.vaccination_point_type.cod %> - <%= user_vaccine.vaccination_point.name %></td>
         <td><%= user_vaccine.user.name %></td>
-        <td><%= user_vaccine.signed_by %></td>
+        <td><%= @user_signeds.select { |x| x.id == user_vaccine.signed_by.to_i }.first.name %></td>
         <td><%= user_vaccine.dose_number %></td>
         <td><%= (user_vaccine.is_complete) ? "Sim" : "Não" %></td>
         <td>

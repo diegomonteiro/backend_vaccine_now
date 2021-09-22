@@ -37,3 +37,6 @@ yarn-debug.log*
 
 # Ignore database config file
 /config/database.yml
+
+# Ignore development Certifiers
+/certifiers

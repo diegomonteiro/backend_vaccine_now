@@ -1,13 +1,18 @@
 Rails.application.configure do
   config.after_initialize do
-    Bullet.enable        = true
+    Bullet.enable        = false
     Bullet.alert         = true
     Bullet.bullet_logger = true
     Bullet.console       = true
   # Bullet.growl         = true
     Bullet.rails_logger  = true
     Bullet.add_footer    = true
+    Bullet.unused_eager_loading_enable = false
+    Bullet.add_whitelist :type => :unused_eager_loading, :class_name => "ActivityNotification::Notification", :association => :targets
+    #Bullet.add_safelist :type => :n_plus_one_query, :class_name => "Post", :association => :comments
+    #Bullet.add_safelist :type => :counter_cache, :class_name => "Country", :association => :cities
   end
+
 
   # Settings specified here will take precedence over those in config/application.rb.
 

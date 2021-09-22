@@ -1,0 +1,15 @@
+
+<% class_status_notification = (notification.unopened?) ? 'list-group-item-success' : 'list-group-item-light' %>
+<% class_status_notification_icon = (notification.unopened?) ? 'fa fa-circle text-green' : 'fa fa-circle text-gray'%>
+
+<% notifier_member = notification.notifier.present? ? notification.notifier.printable_notifier_name : 'Vacina Já' %>
+<% notifiable = notification.notifiable %>
+
+<%= link_to open_notification_path_for(notification, parameters.slice(:routing_scope, :devise_default_routes).merge(reload: false)), method: :put, remote: true, class: "unopened_wrapper list-group-item list-group-item-action notification_#{notification.id} #{class_status_notification}" do %>
+    <div class="d-flex w-100 justify-content-between">
+    <h5 class="mb-1"><%= notifiable.notifier_message[:title] %></h5>
+    <small><i class='<%= class_status_notification_icon %>'></i></small>
+    </div>
+    <p class="mb-1"><%= notifiable.notifier_message[:message] %></p>
+    <small><%= distance_of_time_in_words(notification.created_at,Time.now).capitalize %></small>
+<% end %>

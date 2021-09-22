@@ -4,6 +4,8 @@ class UserVaccinesController < ApplicationController
   # GET /user_vaccines or /user_vaccines.json
   def index
     @user_vaccines = UserVaccine.includes([:vaccine_type => :disease, :vaccination_point => :vaccination_point_type]).includes(:user).accessible_by(current_ability).all
+
+    @user_signeds = User.where("id IN (?)",@user_vaccines.pluck(:signed_by).uniq).all
   end
 
   # GET /user_vaccines/1 or /user_vaccines/1.json
@@ -64,6 +66,6 @@ class UserVaccinesController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def user_vaccine_params
-      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccine_type_id, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complete)
+      params.require(:user_vaccine).permit(:date_vaccination, :batch, :local, :vaccine_type_id, :vaccination_point_id, :user_id, :signed_by, :dose_number, :is_complet, :expiration_date)
     end
 end

@@ -1,0 +1,50 @@
+<% class_count = (@target.unopened_notification_count(parameters) > 0) ? "badge badge-danger" : "" %>
+
+<li class="nav-item">
+    <a class="nav-link" href="#" data-toggle="modal" data-target="#modal-notifications"><i class="fa fa-bell"></i> <small><span class='<%= class_count %>'><%= @target.unopened_notification_count(parameters) %></span></small></a>
+</li>
+
+<!-- Modal -->
+<div class="modal" id="modal-notifications" tabindex="-1" aria-labelledby="modal-notifications" aria-hidden="true">
+  <div class="modal-dialog modal-dialog-scrollable">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Minhas notificações</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <div class="notifications">
+            <%= yield :notification_index %>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <%= link_to "<i class='fa fa-eye'></i> Marcar como Lidas".html_safe, open_all_notifications_path_for(@target, parameters.slice(:routing_scope, :devise_default_routes)), class: "btn btn-default", method: :post, remote: true %>
+         <% if @target.class.subscription_enabled? %>
+          <%= link_to "Inscrições", subscriptions_path_for(@target, parameters.slice(:routing_scope, :devise_default_routes)) %>
+        <% end %>
+        <%= link_to "<i class='fa fa-list'></i> Ver todas".html_safe, notifications_path_for(@target, parameters.slice(:routing_scope, :devise_default_routes)),class: 'btn btn-default' %>
+        <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class='fa fa-times'></i> Fechar</button>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+    $('#modal-notifications').modal('handleUpdate');
+
+    $(document).click(function(e){
+        if( !$(e.target).is(".notification_list_cover") && !$(e.target).is(".notification_wrapper a") ){
+            if($(".notification_wrapper").hasClass("open") && !$(".notification_wrapper").hasClass("opened")){
+            $(".notification_wrapper").addClass("opened");
+            }else if($(".notification_wrapper").hasClass("opened")){
+            $(".notification_wrapper").removeClass("open").removeClass("opened");
+            }
+        }
+    });
+
+    $(".dropdown_notification").click(function(){
+        $(this).parent().toggleClass("open");
+    });
+</script>
