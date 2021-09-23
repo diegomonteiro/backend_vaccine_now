@@ -110,4 +110,5 @@ gem 'activity_notification'
 # Mina Aux Gems
 gem 'mina-whenever', require: false
 gem 'mina-delayed_job', require: false
+gem 'daemons'
 
