@@ -1,67 +1,99 @@
-# config valid for current version and patch releases of Capistrano
-lock "~> 3.16.0"
+require 'mina/rails'
+require 'mina/git'
+require 'mina/rvm'
+require 'mina/puma'
+require 'mina/nginx'
+require 'mina/delayed_job'
 
-set :application, "vacinaja"
-set :repo_url, "git@github.com:diegomonteiro/backend_vaccine_now.git"
 
-# Default branch is :master
-ask :branch, `git rev-parse --abbrev-ref HEAD`.chomp
+# Basic settings:
+#   domain       - The hostname to SSH to.
+#   deploy_to    - Path to deploy into.
+#   repository   - Git repo to clone from. (needed by mina/git)
+#   branch       - Branch name to deploy. (needed by mina/git)
 
-# Default deploy_to directory is /var/www/my_app_name
-set :deploy_to, "/home/ubuntu/apps/vacinaja"
+set :application_name, 'vacinaja'
+set :domain, '18.118.51.3'
+set :deploy_to, '/home/ubuntu/apps/vacinaja'
+set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
+set :branch, 'master'
 
-# Default value for :format is :airbrussh.
-# set :format, :airbrussh
+# Optional settings:
+#   set :user, 'foobar'          # Username in the server to SSH to.
+#   set :port, '30000'           # SSH port number.
+#   set :forward_agent, true     # SSH forward_agent.
+set :user, 'ubuntu'          # Username in the server to SSH to.
+set :port, '22'              # SSH port number.
+set :forward_agent, true     # SSH forward_agent.
 
-# You can configure the Airbrussh format using :format_options.
-# These are the defaults.
-set :format_options, command_output: true, log_file: "log/capistrano.log", color: :auto, truncate: :auto
+# Shared dirs and files will be symlinked into the app-folder by the 'deploy:link_shared_paths' step.
+# Some plugins already add folders to shared_dirs like `mina/rails` add `public/assets`, `vendor/bundle` and many more
+# run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
+set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','.bundle','public/system', 'public/uploads')
+set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
 
-# Default value for :pty is false
-# set :pty, true
+# This task is the environment that is loaded for all remote run commands, such as
+# `mina deploy` or `mina rake`.
+task :remote_environment do
+  # If you're using rbenv, use this to load the rbenv environment.
+  # Be sure to commit your .ruby-version or .rbenv-version to your repository.
+  # invoke :'rbenv:load'
 
-# Default value for :linked_files is []
-append :linked_files, "config/database.yml"
+  # For those using RVM, use this to load an RVM version@gemset.
+  # invoke :'rvm:use', 'ruby-2.5.3@default'
+  invoke :'rvm:use', 'ruby-2.6.1@default'
+end
 
-# Default value for linked_dirs is []
-append :linked_dirs, "log", "tmp/pids", "tmp/cache", "tmp/sockets", "public/system"
+# Put any custom commands you need to run at setup
+# All paths in `shared_dirs` and `shared_paths` will be created on their own.
+task :setup do
+  command %[touch "#{fetch(:shared_path)}/config/database.yml"]
+  command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
+  command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
+  
+  # Puma needs a place to store its pid file and socket file.
+  command %(mkdir -p "/home/ubuntu/apps/vacinaja/shared/tmp/sockets")
+  command %(chmod g+rx,u+rwx "/home/ubuntu/apps/vacinaja/shared/tmp/sockets")
+  command %(mkdir -p "/home/ubuntu/apps/vacinaja/shared/tmp/pids")
+  command %(chmod g+rx,u+rwx "/home/ubuntu/apps/vacinaja/shared/tmp/pids")
+ 
+  comment "Be sure to edit '#{fetch(:shared_path)}/config/database.yml', 'secrets.yml' and puma.rb."
+end
 
-# Default value for default_env is {}
-# set :default_env, { path: "/opt/ruby/bin:$PATH" }
+desc "Deploys the current version to the server."
+task :deploy do
+  # uncomment this line to make sure you pushed your local branch to the remote origin
+  # invoke :'git:ensure_pushed'
+  deploy do
+    # Put things that will set up an empty directory into a fully set-up
+    # instance of your project.
+    comment "Deploying #{fetch(:application_name)} to #{fetch(:domain)}:#{fetch(:deploy_to)}"
 
-# Default value for local_user is ENV['USER']
-# set :local_user, -> { `git config user.name`.chomp }
+    invoke :'git:clone'
+    invoke :'deploy:link_shared_paths'
+    invoke :'bundle:install'
+    invoke :'rails:db_migrate'
+    command %{#{fetch(:rails)} db:seed}
+    invoke :'rails:assets_precompile'
+    invoke :'deploy:cleanup'
 
-# Default value for keep_releases is 5
-set :keep_releases, 5
 
-# Uncomment the following to require manually verifying the host key before first deploy.
-# set :ssh_options, verify_host_key: :secure
+    on :launch do
+      invoke :'puma:stop'
+      invoke :'puma:start'
+      invoke :'delayed_job:restart'
 
-set :puma_rackup, -> { File.join(current_path, 'config.ru') }
-set :puma_state, "#{shared_path}/tmp/pids/puma.state"
-set :puma_pid, "#{shared_path}/tmp/pids/puma.pid"
-set :puma_bind, "unix://#{shared_path}/tmp/sockets/puma.sock"    #accept array for multi-bind
-set :puma_conf, "#{shared_path}/puma.rb"
-set :puma_access_log, "#{shared_path}/log/puma_error.log"
-set :puma_error_log, "#{shared_path}/log/puma_access.log"
-set :puma_role, :app
-set :puma_env, fetch(:rack_env, fetch(:rails_env, 'production'))
-set :puma_threads, [0, 8]
-set :puma_workers, 0
-set :puma_worker_timeout, nil
-set :puma_init_active_record, true
-set :puma_preload_app, false
-
-namespace :deploy do
-
-    after :restart, :clear_cache do
-      on roles(:web), in: :groups, limit: 3, wait: 10 do
-        # Here we can do anything such as:
-        # within release_path do
-        #   execute :rake, 'cache:clear'
-        # end
+      in_path(fetch(:current_path)) do
+        command %{mkdir -p tmp/}
+        command %{touch tmp/restart.txt}
       end
     end
-  
   end
+
+  # you can use `run :local` to run tasks on local machine before of after the deploy scripts
+  # run(:local){ say 'done' }
+end
+
+# For help in making your deploy script, see the Mina documentation:
+#
+#  - https://github.com/mina-deploy/mina/tree/master/docs

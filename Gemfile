@@ -77,11 +77,10 @@ group :development do
   gem 'spring'
   gem 'spring-watcher-listen', '~> 2.0.0'
 
-  gem 'capistrano'
-  gem 'capistrano3-puma'
-  gem 'capistrano-rails', require: false
-  gem 'capistrano-bundler', require: false
-  gem 'capistrano-rvm'
+  # Deployment Gem
+  gem 'mina', require: false
+  gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
+  gem 'mina-nginx', :require => false
 end
 
 group :test do
@@ -107,3 +106,8 @@ gem "sentry-rails"
 
 # Notifications Module
 gem 'activity_notification'
+
+# Mina Aux Gems
+gem 'mina-whenever', require: false
+gem 'mina-delayed_job', require: false
+
