@@ -78,7 +78,7 @@ group :development do
   gem 'spring-watcher-listen', '~> 2.0.0'
 
   gem 'capistrano'
-  gem 'capistrano3-puma'
+  gem 'capistrano3-puma', '>= 4.0.0'
   gem 'capistrano-rails', require: false
   gem 'capistrano-bundler', require: false
   gem 'capistrano-rvm'
