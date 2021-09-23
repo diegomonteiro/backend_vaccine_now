@@ -40,3 +40,5 @@ yarn-debug.log*
 
 # Ignore development Certifiers
 /certifiers
+
+/config/credentials/production.key
