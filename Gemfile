@@ -79,7 +79,7 @@ group :development do
 
   # Deployment Gem
   gem 'mina', require: false
-  gem 'mina-puma', require: false,  github: 'untitledkingdom/mina-puma'
+  gem 'mina-puma', require: false
   gem 'mina-nginx', :require => false
 end
 
