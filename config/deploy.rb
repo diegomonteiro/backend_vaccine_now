@@ -46,7 +46,7 @@ end
 
 # Put any custom commands you need to run at setup
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
-task :setup do
+task :setup => :environment do
   command %[touch "#{fetch(:shared_path)}/config/database.yml"]
   command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
   command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
@@ -77,10 +77,8 @@ task :deploy do
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
 
-
     on :launch do
-      invoke :'puma:stop'
-      invoke :'puma:start'
+      invoke :'puma:phased_restart'
       invoke :'delayed_job:restart'
 
       in_path(fetch(:current_path)) do
