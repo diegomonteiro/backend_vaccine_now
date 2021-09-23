@@ -8,6 +8,8 @@ require("turbolinks").start()
 require("@rails/activestorage").start()
 require("channels")
 
+import '../stylesheets/application';
+
 import "vanilla-nested";
 
 // Import Moment JS
