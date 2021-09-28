@@ -60,6 +60,9 @@ task :setup do
   command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
   command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
   
+  # Creating current folder
+  command %(mkdir -o "/home/ubuntu/apps/vacinaja/current")
+
   # Puma needs a place to store its pid file and socket file.
   command %(mkdir -p "/home/ubuntu/apps/vacinaja/shared/tmp/sockets")
   command %(chmod g+rx,u+rwx "/home/ubuntu/apps/vacinaja/shared/tmp/sockets")
