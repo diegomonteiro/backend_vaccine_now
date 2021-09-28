@@ -1,3 +1,11 @@
+GIT
+  remote: https://github.com/untitledkingdom/mina-puma.git
+  revision: 581a2048d82998328a5c9581a45883e0f3b28d06
+  specs:
+    mina-puma (1.1.0)
+      mina (~> 1.2.0)
+      puma (>= 2.13)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -204,9 +212,6 @@ GEM
       mina (>= 1.0.0)
     mina-nginx (0.0.3)
       mina (~> 1)
-    mina-puma (1.1.0)
-      mina (~> 1.2.0)
-      puma (>= 2.13)
     mina-whenever (1.0.1)
       mina (~> 1.0)
     mini_mime (1.1.0)
@@ -468,7 +473,7 @@ DEPENDENCIES
   mina
   mina-delayed_job
   mina-nginx
-  mina-puma
+  mina-puma!
   mina-whenever
   omniauth-facebook
   omniauth-google

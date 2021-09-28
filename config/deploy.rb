@@ -86,7 +86,7 @@ task :deploy do
     
     #command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
 
-    #invoke :'rails:assets_precompile'
+    invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
     
 
