@@ -23,9 +23,9 @@ app_dir = File.expand_path("../..", __FILE__)
 shared_dir = "#{app_dir}/shared"
 
 # Set up socket location
-bind "unix://#{shared_dir}/sockets/puma.sock"
-pidfile "#{shared_dir}/pids/puma.pid"
-state_path "#{shared_dir}/pids/puma.state"
+bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
+pidfile "#{shared_dir}/tmp/pids/puma.pid"
+state_path "#{shared_dir}/tmp/pids/puma.state"
 
 # Logging
 stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
