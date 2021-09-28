@@ -17,6 +17,7 @@ require 'mina/delayed_job'
 set :application_name, 'vacinaja'
 set :domain, '3.140.240.97'
 set :deploy_to, '/home/ubuntu/apps/vacinaja'
+
 set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
 set :branch, 'master'
 
@@ -37,7 +38,7 @@ set :forward_agent, true     # SSH forward_agent.
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 # set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 # set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
-set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','.bundle','public/system', 'public/uploads')
+set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','public/system', 'public/uploads')
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb')
 
 # This task is the environment that is loaded for all remote run commands, such as
@@ -78,14 +79,15 @@ task :deploy do
   # invoke :'git:ensure_pushed'
   deploy do
     # Put things that will set up an empty directory into a fully set-up
+    comment "Deploying #{fetch(:application_name)} to #{fetch(:domain)}:#{fetch(:deploy_to)}"
     # instance of your project.
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     
-    #command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
-
+    command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
+    
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
     
