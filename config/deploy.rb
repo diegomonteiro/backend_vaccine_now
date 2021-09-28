@@ -14,7 +14,7 @@ require 'mina/delayed_job'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'vacinaja'
-set :domain, '18.118.51.3'
+set :domain, '3.133.13.213'
 set :deploy_to, '/home/ubuntu/apps/vacinaja'
 set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
 set :branch, 'master'
@@ -77,10 +77,11 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-
+    invoke :'puma:phased_restart'
+    
     on :launch do
       in_path(fetch(:current_path)) do
-        invoke :'puma:phased_restart'
+        
         command %{mkdir -p tmp/}
         command %{touch tmp/restart.txt}
       end
