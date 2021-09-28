@@ -22,7 +22,7 @@ Rails.application.configure do
   config.cache_classes = false
 
   # Do not eager load code on boot.
-  config.eager_load = false
+  config.eager_load = true
 
   # Show full error reports.
   config.consider_all_requests_local = true
@@ -78,7 +78,7 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Config for Receive Mailer in Development Mode
-  config.action_mailer.default_url_options = { host: '3.137.194.200', port: 3000 }
+  config.action_mailer.default_url_options = { host: '3.137.194.200', protocal: 'https', port: 3000 }
 
   #config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
