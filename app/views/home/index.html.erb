@@ -328,8 +328,8 @@
                     resume += "<div class=\"card-body\">";
                         resume += "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">";
                             resume += "<button type=\"button\" class=\"btn btn-success\"><i class=\"fas fa-sms\"></i> SMS</button>";
-                            resume += "<button type=\"button\" class=\"btn btn-primary\"><i class=\"far fa-compass\"></i> Ver no GPS</button>";
-                            resume += "<button type=\"button\" class=\"btn btn-secondary\"><i class='fas fa-phone'></i> Detalhes</button>";
+                            resume += "<button type=\"button\" class=\"btn btn-primary\"><i class=\"far fa-compass\"></i>GPS</button>";
+                            resume += "<button onclick=\"call_to("+e.contact_number+")\" type=\"button\" class=\"btn btn-secondary\"><i class='fas fa-phone'></i> Detalhes</button>";
                         resume += "</div>";
                     resume += "</div>";
                 resume += "</div>";
@@ -684,6 +684,11 @@
         );
 
         $("#vaccination_point_modal").modal('show');
+    }
+
+    function call_to(contact_number){
+        console.log("Ligar para :", contact_number)
+        window.open('tel:'+contact_number)
     }
 
     function getVaccineTypeById(vaccine_type_id){
