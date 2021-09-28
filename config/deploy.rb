@@ -15,7 +15,8 @@ require 'mina/delayed_job'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'vacinaja'
-set :domain, '3.140.240.97'
+#set :domain, '3.140.240.97'
+set :domain, '3.137.194.200'
 set :deploy_to, '/home/ubuntu/apps/vacinaja'
 
 set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
@@ -38,7 +39,7 @@ set :forward_agent, true     # SSH forward_agent.
 # run `mina -d` to see all folders and files already included in `shared_dirs` and `shared_files`
 # set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 # set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
-set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','public/system', 'public/uploads')
+set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','public/system', 'public/uploads').push(fetch(:bundle_path))
 set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb')
 
 # This task is the environment that is loaded for all remote run commands, such as
@@ -56,8 +57,8 @@ end
 # All paths in `shared_dirs` and `shared_paths` will be created on their own.
 task :setup do
   # command %{rbenv install 2.5.3 --skip-existing}
-  command %{rvm install ruby-2.6.1}
-  command %{gem install bundler}
+  # command %{rvm install ruby-2.6.1}
+  # command %{gem install bundler}
 
   command %[touch "#{fetch(:shared_path)}/config/database.yml"]
   command %[touch "#{fetch(:shared_path)}/config/secrets.yml"]
@@ -84,13 +85,11 @@ task :deploy do
     invoke :'git:clone'
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
-    invoke :'rails:db_migrate'
-    
+        
     command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
-    
     invoke :'rails:assets_precompile'
-    invoke :'deploy:cleanup'
-    
+    invoke :'rails:db_migrate'    
+    invoke :'deploy:cleanup'    
 
     on :launch do
 
