@@ -14,24 +14,11 @@ port ENV.fetch("PORT") { 3000 }
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "production" }
+environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Specifies the `pidfile` that Puma will use.
 pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 
-app_dir = File.expand_path("../..", __FILE__)
-
-#if Rails.env.production?
-#shared_dir = "#{app_dir}/shared"
-
-# Set up socket location
-#bind "unix://#{shared_dir}/tmp/sockets/puma.sock"
-#pidfile "#{shared_dir}/tmp/pids/puma.pid"
-#state_path "#{shared_dir}/tmp/pids/puma.state"
-
-# Logging
-#stdout_redirect "#{shared_dir}/log/puma.stdout.log", "#{shared_dir}/log/puma.stderr.log", true
-#end
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.
@@ -46,8 +33,6 @@ workers ENV.fetch("WEB_CONCURRENCY") { 4 }
 # process behavior so workers use less memory.
 #
 #preload_app!
-
-prune_bundler
 
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart
