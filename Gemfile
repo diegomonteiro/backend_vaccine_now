@@ -113,4 +113,5 @@ gem 'activity_notification'
 gem 'mina-whenever', require: false
 gem 'mina-delayed_job', require: false
 gem 'daemons'
+gem 'geocoder'
 
