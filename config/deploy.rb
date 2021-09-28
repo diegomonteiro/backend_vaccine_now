@@ -1,3 +1,4 @@
+require 'mina/bundler'
 require 'mina/rails'
 require 'mina/git'
 require 'mina/rvm'
@@ -87,10 +88,14 @@ task :deploy do
 
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-    invoke :'puma:stop'
-    invoke :'puma:start'
+    
 
     on :launch do
+
+      invoke :'puma:stop'
+      invoke :'puma:start'
+      invoke :'delayed_job:restart'
+
       in_path(fetch(:current_path)) do
         
         command %{mkdir -p tmp/}
