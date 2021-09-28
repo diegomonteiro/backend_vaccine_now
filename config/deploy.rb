@@ -14,7 +14,7 @@ require 'mina/delayed_job'
 #   branch       - Branch name to deploy. (needed by mina/git)
 
 set :application_name, 'vacinaja'
-set :domain, '3.133.13.213'
+set :domain, '3.140.240.97'
 set :deploy_to, '/home/ubuntu/apps/vacinaja'
 set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
 set :branch, 'master'
