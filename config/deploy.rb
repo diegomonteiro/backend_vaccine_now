@@ -36,7 +36,7 @@ set :forward_agent, true     # SSH forward_agent.
 # set :shared_dirs, fetch(:shared_dirs, []).push('public/assets')
 # set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
 set :shared_dirs, fetch(:shared_dirs,   []).push('public/assets','public/packs', 'storage', 'tmp/pids', 'tpm/cache', 'tpm/sockets', 'vendor/bundle','.bundle','public/system', 'public/uploads')
-set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml')
+set :shared_files, fetch(:shared_files, []).push('config/database.yml', 'config/secrets.yml', 'config/puma.rb')
 
 # This task is the environment that is loaded for all remote run commands, such as
 # `mina deploy` or `mina rake`.
@@ -83,11 +83,10 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-
+    invoke :'puma:stop'
+    invoke :'puma:start'
 
     on :launch do
-      invoke :'puma:stop'
-      invoke :'puma:start'
       in_path(fetch(:current_path)) do
         
         command %{mkdir -p tmp/}
