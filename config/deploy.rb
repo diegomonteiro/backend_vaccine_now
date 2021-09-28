@@ -19,6 +19,9 @@ set :deploy_to, '/home/ubuntu/apps/vacinaja'
 set :repository, 'git@github.com:diegomonteiro/backend_vaccine_now.git'
 set :branch, 'master'
 
+set :pty, true
+set :stage, :production
+
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
 #   set :port, '30000'           # SSH port number.
@@ -77,8 +80,9 @@ task :deploy do
     invoke :'rails:db_migrate'
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-    invoke :'puma:phased_restart'
-    
+    invoke :'puma:stop'
+    invoke :'puma:start'
+
     on :launch do
       in_path(fetch(:current_path)) do
         
