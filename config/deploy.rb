@@ -81,12 +81,13 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
-    #invoke :'rails:assets_precompile'
+    invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
-    invoke :'puma:stop'
-    invoke :'puma:start'
+
 
     on :launch do
+      invoke :'puma:stop'
+      invoke :'puma:start'
       in_path(fetch(:current_path)) do
         
         command %{mkdir -p tmp/}
