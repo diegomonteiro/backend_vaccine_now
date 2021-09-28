@@ -21,6 +21,7 @@ set :branch, 'master'
 
 set :pty, true
 set :stage, :production
+set :rails_env, 'production'
 
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
@@ -61,7 +62,7 @@ task :setup do
   command %[touch "#{fetch(:shared_path)}/config/puma.rb"]
   
   # Creating current folder
-  command %(mkdir -o "/home/ubuntu/apps/vacinaja/current")
+  command %(mkdir -p "/home/ubuntu/apps/vacinaja/current")
 
   # Puma needs a place to store its pid file and socket file.
   command %(mkdir -p "/home/ubuntu/apps/vacinaja/shared/tmp/sockets")
@@ -81,6 +82,9 @@ task :deploy do
     invoke :'deploy:link_shared_paths'
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
+    
+    command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
+
     invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
     invoke :'puma:stop'
