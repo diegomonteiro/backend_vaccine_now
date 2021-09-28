@@ -47,5 +47,7 @@ workers ENV.fetch("WEB_CONCURRENCY") { 4 }
 #
 #preload_app!
 
+prune_bundler
+
 # Allow puma to be restarted by `rails restart` command.
 plugin :tmp_restart

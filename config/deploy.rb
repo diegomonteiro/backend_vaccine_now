@@ -22,7 +22,7 @@ set :branch, 'master'
 
 set :pty, true
 set :stage, :production
-set :rails_env, 'production'
+#set :rails_env, 'production'
 
 # Optional settings:
 #   set :user, 'foobar'          # Username in the server to SSH to.
@@ -84,9 +84,9 @@ task :deploy do
     invoke :'bundle:install'
     invoke :'rails:db_migrate'
     
-    command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
+    #command "RAILS_ENV=#{fetch(:rails_env)} bundle exec rails webpacker:yarn_install"
 
-    invoke :'rails:assets_precompile'
+    #invoke :'rails:assets_precompile'
     invoke :'deploy:cleanup'
     
 
