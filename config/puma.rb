@@ -24,6 +24,8 @@ pidfile "#{app_dir}/tmp/pids/puma.pid"
 state_path "#{app_dir}/tmp/pids/puma.state"
 bind "unix://#{app_dir}/tmp/sockets/puma.sock"
 
+stdout_redirect "#{app_dir}/log/puma.stdout.log", "#{app_dir}/log/puma.stderr.log", true
+
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
 # the concurrency of the application would be max `threads` * `workers`.
@@ -36,6 +38,8 @@ workers 2
 threads 1,2
 
 #daemonize true
+
+activate_control_app
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
