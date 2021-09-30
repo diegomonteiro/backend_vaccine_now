@@ -257,7 +257,6 @@
                 
 
                 bounds.extend({lat: last_position.latitude, lng: last_position.longitude});
-                map.fitBounds(bounds);
 
                 //console.log(vaccination_points);
                 map.eachLayer(function(layer){
@@ -279,7 +278,7 @@
                     }
                 });
 
-               })
+               });
 
                map.fitBounds(bounds);
 
