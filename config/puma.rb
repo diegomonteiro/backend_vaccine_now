@@ -8,16 +8,21 @@ max_threads_count = ENV.fetch("RAILS_MAX_THREADS") { 5 }
 min_threads_count = ENV.fetch("RAILS_MIN_THREADS") { max_threads_count }
 threads min_threads_count, max_threads_count
 
+app_dir = File.expand_path("../..", __FILE__)
+
 # Specifies the `port` that Puma will listen on to receive requests; default is 3000.
 #
 port ENV.fetch("PORT") { 3000 }
 
 # Specifies the `environment` that Puma will run in.
 #
-environment ENV.fetch("RAILS_ENV") { "development" }
+#environment ENV.fetch("RAILS_ENV") { "development" }
 
 # Specifies the `pidfile` that Puma will use.
-pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+#pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
+pidfile "#{app_dir}/tmp/pids/puma.pid"
+state_path "#{app_dir}/tmp/pids/puma.state"
+bind "unix://#{app_dir}/tmp/sockets/puma.sock"
 
 # Specifies the number of `workers` to boot in clustered mode.
 # Workers are forked web server processes. If using threads and workers together
@@ -26,6 +31,11 @@ pidfile ENV.fetch("PIDFILE") { "tmp/pids/server.pid" }
 # processes).
 #
 workers ENV.fetch("WEB_CONCURRENCY") { 4 }
+
+workers 2
+threads 1,2
+
+#daemonize true
 
 # Use the `preload_app!` method when specifying a `workers` number.
 # This directive tells Puma to first boot the application and load code
