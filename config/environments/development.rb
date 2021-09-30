@@ -13,6 +13,7 @@ Rails.application.configure do
     #Bullet.add_safelist :type => :counter_cache, :class_name => "Country", :association => :cities
   end
 
+  config.hosts << "vacinaja.app.br"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
