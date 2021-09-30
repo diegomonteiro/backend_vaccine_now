@@ -14,11 +14,11 @@ class VaccinationCampaign < ApplicationRecord
 
     def notifier_message
     ret = {title: "", message: "", link: "", classification: ""}
-    if remain_doses > 0
-        ret[:title] = 'Nova campanha de vacinação'
-        ret[:icon_class] = 'fa fa-circle text-warning'
-        ret[:message] = "#{vaccination_campaigns.name}"
-    end
+    
+    ret[:title] = 'Nova campanha de vacinação'
+    ret[:icon_class] = 'fa fa-circle text-warning'
+    ret[:message] = "#{vaccination_campaigns.name}"
+    
 
     return ret
     end
