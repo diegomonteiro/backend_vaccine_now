@@ -446,27 +446,27 @@ PLATFORMS
   x86-mswin32
 
 DEPENDENCIES
-  active_model_serializers (~> 0.10.0)
+  active_model_serializers (~> 0.10.12)
   active_record_upsert
-  activity_notification
-  apipie-rails
-  authtrail
+  activity_notification (>= 2.2.2)
+  apipie-rails (>= 0.5.19)
+  authtrail (>= 0.4.1)
   bootsnap (>= 1.4.2)
   bootstrap (>= 4.3.1)
   bullet
   byebug
   cancancan
-  capybara (>= 2.15)
+  capybara (>= 3.35.3)
   daemons
   database_cleaner
   delayed_job_active_record
-  devise
+  devise (>= 4.8.0)
   devise-bootstrap-views (~> 1.0)
-  devise-i18n
-  factory_bot_rails
+  devise-i18n (>= 1.10.0)
+  factory_bot_rails (>= 6.2.0)
   figaro
   geocoder
-  geokit-rails
+  geokit-rails (>= 2.3.2)
   jbuilder (~> 2.7)
   jquery-rails
   letter_opener
@@ -480,34 +480,34 @@ DEPENDENCIES
   omniauth-google
   omniauth-twitter
   pg (>= 0.18, < 2.0)
-  puma (~> 4.1)
+  puma (~> 4.3, >= 4.3.8)
   pusher
-  rails (~> 6.0.3, >= 6.0.3.7)
-  rails-i18n
+  rails (~> 6.0.4, >= 6.0.4.1)
+  rails-i18n (>= 6.0.0)
   rolify
-  rspec-rails (~> 5.0.0)
-  sass-rails (>= 6)
+  rspec-rails (~> 5.0.2)
+  sass-rails (>= 6.0.0)
   selenium-webdriver
   sendgrid-ruby
-  sentry-rails
+  sentry-rails (>= 4.7.3)
   sentry-ruby
   shoulda-callback-matchers (~> 1.1.1)
   shoulda-matchers (~> 4.0)
-  simple_form
-  simple_token_authentication
+  simple_form (>= 5.1.0)
+  simple_token_authentication (>= 1.17.0)
   spring
   spring-watcher-listen (~> 2.0.0)
   turbolinks (~> 5)
-  twitter-bootstrap-rails
+  twitter-bootstrap-rails (>= 3.2.2)
   tzinfo-data
   vanilla_nested
-  web-console (>= 3.3.0)
-  webdrivers
-  webpacker (~> 4.0)
+  web-console (>= 4.1.0)
+  webdrivers (>= 4.6.1)
+  webpacker (~> 4.3, >= 4.3.0)
   whenever
 
 RUBY VERSION
    ruby 2.6.1p33
 
 BUNDLED WITH
-   2.1.4
+   1.17.3
