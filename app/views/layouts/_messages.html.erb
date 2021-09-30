@@ -3,7 +3,9 @@
 <% unless flash.empty? %>
   <script type="text/javascript">
     <% flash.each do |f| %>
+        console.log("<%= f[3] %>");
         <% type = f[0].to_s.gsub('alert', 'error').gsub('notice', 'info') %>
+        
         toastr['<%= type %>']('<%= f[1] %>', '', {"closeButton": true,
                                                   "positionClass": "toast-bottom-center", 
                                                   "onclick": null, 

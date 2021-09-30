@@ -69,12 +69,15 @@
 
     var vaccination_points = L.layerGroup();
     var user_positions = L.layerGroup();
+    var user_paths = L.layerGroup();
+
     var bounds;
 
     var vaccine_types_json = <%= @vaccine_types.to_json.html_safe %>;
     var diseases_json = <%= @diseases.to_json.html_safe %>;
 
     user_positions.addTo(map);
+    user_paths.addTo(map);
 
     startingPoint = {};
 
@@ -149,6 +152,10 @@
         user_positions.addLayer(m);
         //user_positions.addLayer(c);
 
+        <% if user_signed_in?  %>
+            getPathByUser(<%= current_user.id %>);
+        <% end %>
+
         updateUserLocation(e);
     }
 
@@ -185,6 +192,47 @@
         })
     }
 
+    function getRandomColor() {
+        var letters = '0123456789ABCDEF';
+        var color = '#';
+        for (var i = 0; i < 6; i++) {
+            color += letters[Math.floor(Math.random() * 16)];
+        }
+        return color;
+    }
+
+
+    function getDirections(type,from, to){
+
+        var dirs = from.lng+","+from.lat+";"+to.lng+","+to.lat;
+        var url = 'https://api.mapbox.com/directions/v5/mapbox/'+type+'/'+dirs;
+
+        $.ajax({
+            url: url,
+            data: {
+                access_token: "pk.eyJ1IjoiZGllZ29tb250ZWlybyIsImEiOiJjaWtpeTNucGYwNTdudTBtNjMzeW80Y2FsIn0.D1Y1o7NvJA6hwrKAs_NcIg",
+                alternatives: false,
+                geometries:"geojson",
+                steps: true
+            },
+            beforeSend: function(){
+                user_paths.clearLayers();
+            },
+            success: function(data){
+                //console.log("Resposta: ", data);
+
+                $.each(data.routes, function(k,v){
+                    //user_paths.addLayer(v.geometry);
+                    user_paths.addLayer(L.geoJSON(v.geometry, {
+                        style: function(feature){
+                            return {color: getRandomColor(), weight: 2.5};
+                        }
+                    }));
+                });
+            }
+        })
+    }
+
     function getPathByUser(user_id){
         
         $.ajax({
@@ -192,15 +240,49 @@
             type: "GET",
             beforeSend: function(){
                 user_positions.clearLayers();
+                user_paths.clearLayers();
             },
             success: function(data){
-                var vals = _.groupBy(data,function(o){ return o.user_id });
+               var vals = _.groupBy(data,function(o){ return o.user_id });
+               var latlngs = [];
+               var bounds = L.latLngBounds();
 
-                $.each(vals[user_id], function(k,v){
-                    console.log("Posição em: ",v.updated_at,"=> ",v);
-                    user_positions.addLayer(L.marker([v.latitude, v.longitude], {options: v}));
-                    map.setView([v.latitude, v.longitude],16);
+               $.each(vals, function(key,val_user){
+
+                var positions = _.sortBy(vals[user_id], function(o){ return o.updated_at });
+
+                var last_position = _.last(positions);
+                user_positions.addLayer(L.marker([last_position.latitude, last_position.longitude], {options: last_position}).bindPopup("Sua última localização em "+last_position.updated_at));
+                
+                
+
+                bounds.extend({lat: last_position.latitude, lng: last_position.longitude});
+                map.fitBounds(bounds);
+
+                //console.log(vaccination_points);
+                map.eachLayer(function(layer){
+                    if(layer._mRadius){
+                            var from = turf.point([last_position.longitude, last_position.latitude]);
+                            var to = turf.point([layer._latlng.lng, layer._latlng.lat]);
+
+                            var options = {units: 'kilometers'};
+                            var distance = turf.distance(from, to, options);
+                            var radius_km = (layer._mRadius/1000);
+
+                            if(distance <= radius_km && layer.options.options.remain_doses > 0){
+                                //console.log("Layer map: ",layer._latlng, " => Distancia: ", distance," ==> ",layer.options.options);
+                                console.log("Notificar de Ponto de Vacinação: ", layer.options.options);
+                                bounds.extend(layer._latlng);
+
+                                getDirections("driving",{lat: last_position.latitude, lng: last_position.longitude},layer._latlng);
+                            }
+                    }
                 });
+
+               })
+
+               map.fitBounds(bounds);
+
             },
             error: function(e){
                 console.error("Erro ao obter posições: ",e)
@@ -249,7 +331,7 @@
         }
         else{
             console.error("GPS não habilitado ou autorizado no dispositivo");
-            alert("Habilite o GPS");
+            //alert("Habilite o GPS");
         }
     }
 
@@ -268,14 +350,20 @@
 
                     var remain_doses = v.remain_doses;
 
-                    var vaccination_point = L.circle([parseFloat(v.latitude), parseFloat(v.longitude)], {
-                        radius: v.radius_km * 1000,
-                        color: style.textColor,
-                        fillColor: style.textColor,
-                        fill: style.textColor,
-                        fillOpacity: 0.1,
-                        options: v
-                    });
+                    if(remain_doses > 0){
+                        var vaccination_point = L.circle([parseFloat(v.latitude), parseFloat(v.longitude)], {
+                            radius: v.radius_km * 1000,
+                            color: style.textColor,
+                            fillColor: style.textColor,
+                            fill: style.textColor,
+                            fillOpacity: 0.1,
+                            dashArray: '-',
+                            weight: 1.2,
+                            options: v
+                        });
+
+                        vaccination_points.addLayer(vaccination_point);
+                    }
 
                     vaccination_points.addLayer(
                         L.marker({lat: parseFloat(v.latitude), lng: parseFloat(v.longitude)},
@@ -283,7 +371,8 @@
                             icon: L.BeautifyIcon.icon(style),
                             options: v
                         }).addTo(map));
-                    vaccination_points.addLayer(vaccination_point);
+                    
+                    
                 });
 
                 vaccination_points.eachLayer(function (layer) {
@@ -325,13 +414,6 @@
                         resume += "<li class=\"list-group-item\"><b>Doses Disponíveis</b> <span class=\"badge badge-success float-right\">"+e.remain_doses+"</span></li>";
                         resume += "<li class=\"list-group-item\"><b>Doses Descartadas</b> <span class=\"badge badge-danger float-right\">"+e.discarded_doses+"</span></li>";
                     resume += "</ul>";
-                    resume += "<div class=\"card-body\">";
-                        resume += "<div class=\"btn-group\" role=\"group\" aria-label=\"Basic example\">";
-                            resume += "<button type=\"button\" class=\"btn btn-success\"><i class=\"fas fa-sms\"></i> SMS</button>";
-                            resume += "<button type=\"button\" class=\"btn btn-primary\"><i class=\"far fa-compass\"></i>GPS</button>";
-                            resume += "<button onclick=\"call_to("+e.contact_number+")\" type=\"button\" class=\"btn btn-secondary\"><i class='fas fa-phone'></i> Detalhes</button>";
-                        resume += "</div>";
-                    resume += "</div>";
                 resume += "</div>";
             resume += "</div>";
             resume += "<div class=\"col-md-8\">";

@@ -20,7 +20,7 @@
     <div class="row">
       <div class="col-md-4"><%= f.input :signed_by, collection: User.with_role(:worker).all, :label_method => :complete_name, :value_method => :id, :label => "Aplicado por" %></div>
       <div class="col-md-4"><%= f.input :dose_number, :label => "Núm. de Doses" %></div>
-      <div class="col-md-4"><%= f.input :is_complete, :label => "Está Completa?" %></div>
+      <div class="col-md-4"><br/><%= f.input :is_complete, :label => "Está Completa?" %></div>
     </div>
   </div>
 

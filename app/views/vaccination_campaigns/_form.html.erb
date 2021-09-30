@@ -39,7 +39,7 @@
           <tr id="target_"+target.id>
             <!--<td>De <%= target.date_start %> até <%= target.date_end %></td>-->
             <td>De <%= target.min_years_old %> até <%= target.max_years_old %></td>
-            <td><%= target.with_comorbidity %></td>
+            <td><%= (target.with_comorbidity) ? "Sim" : "Não" %></td>
             <td><%= target.restrictions %></td>
             <td><a href="#" onclick="delete_vaccination_campaign_target(<%= target.id %>)" class="btn btn-danger btn-block"><i class="fa fa-trash"></i></a></td>            
           </tr>

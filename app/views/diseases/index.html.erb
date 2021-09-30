@@ -9,10 +9,10 @@
       <th>Cod</th>
       <th>Nome Cientifico</th>
       <th>Descrição</th>
-      <th>Sintomas</th>
+      <!--<th>Sintomas</th>
       <th>Restrições</th>
       <th>Patógeno</th>
-      <th>Descrição do Patógeno</th>
+      <th>Descrição do Patógeno</th>-->
       <th>Contagioso?</th>
       <th></th>
     </tr>
@@ -25,11 +25,11 @@
         <td><%= disease.cod %></td>
         <td><%= disease.complete_name %></td>
         <td><%= disease.description.truncate(100) %></td>
-        <td><%= disease.symptoms.truncate(100) %></td>
+        <!--td><%= disease.symptoms.truncate(100) %></td>
         <td><%= disease.restrictions.truncate(100) %></td>
         <td><%= disease.pathogen %></td>
-        <td><%= disease.pathogen_description %></td>
-        <td><%= disease.is_contagious %></td>
+        <td><%= disease.pathogen_description %></td>-->
+        <td><%= (disease.is_contagious) ? "Sim" : "Não" %></td>
 
         <td>
           <% if can? :read, Disease %>
