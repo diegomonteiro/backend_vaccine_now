@@ -12,7 +12,7 @@ class AlertUsersToRemainVaccinesJob < ApplicationJob
       up = UserPosition.within(v.radius_km, :origin => v, :units => :kms)
       users_ids = up.pluck(:user_id).uniq
 
-      puts "Vaccination Point: #{v.name} - Closest Users: #{users_ids.count} - Vaccines: #{vv}"
+      #puts "Vaccination Point: #{v.name} - Closest Users: #{users_ids.count} - Vaccines: #{vv}"
       
       users = User.includes(:roles).where("id in (?)",users_ids)
       users.each do |user|

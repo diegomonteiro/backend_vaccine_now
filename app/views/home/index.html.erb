@@ -202,7 +202,7 @@
     }
 
 
-    function getDirections(type,from, to){
+    function getDirections(type,from,to,vaccination_point){
 
         var dirs = from.lng+","+from.lat+";"+to.lng+","+to.lat;
         var url = 'https://api.mapbox.com/directions/v5/mapbox/'+type+'/'+dirs;
@@ -213,13 +213,43 @@
                 access_token: "pk.eyJ1IjoiZGllZ29tb250ZWlybyIsImEiOiJjaWtpeTNucGYwNTdudTBtNjMzeW80Y2FsIn0.D1Y1o7NvJA6hwrKAs_NcIg",
                 alternatives: false,
                 geometries:"geojson",
-                steps: true
+                steps: false
             },
             beforeSend: function(){
                 user_paths.clearLayers();
             },
             success: function(data){
-                //console.log("Resposta: ", data);
+                console.log("Rota Localizada: ", data," => ", vaccination_point);
+                var rota = data.routes[0];
+                var msg = "Você está a "+metersToKilometers(rota.distance)+" km, tempo de chegada previsto: "+secondsToMinutes(rota.duration)+" minutos!";
+                
+                var maps_url = "https://www.google.com.br/maps/dir/";
+                    maps_url += from.lat +","+ from.lng+"/"
+                    maps_url += to.lat + "," + to.lng;
+
+                //swal("Vacina disponível!", msg, "success");
+                swal(msg, {
+                icon: 'warning',
+                buttons: {
+                    cancel: "Cancelar",
+                    goto: {
+                        text: "Traçar Rota!",
+                        value: "goto",
+                    }
+                },
+                })
+                .then((value) => {
+                switch (value) {
+                
+                    case "goto":
+                    console.log("Link Google Maps: ",maps_url);
+                    window.open(maps_url, '_blank');
+                    break;
+                
+                    default:
+                    swal("Atenção","Não perca os prazos das vacinas para não perder eficácia!","error");
+                }
+                });
 
                 $.each(data.routes, function(k,v){
                     //user_paths.addLayer(v.geometry);
@@ -231,6 +261,14 @@
                 });
             }
         })
+    }
+
+    function metersToKilometers(meters){
+        return parseInt(""+(meters/1000));
+    }
+
+    function secondsToMinutes(segs){
+        return parseInt(""+(segs/60));
     }
 
     function getPathByUser(user_id){
@@ -268,12 +306,15 @@
                             var distance = turf.distance(from, to, options);
                             var radius_km = (layer._mRadius/1000);
 
-                            if(distance <= radius_km && layer.options.options.remain_doses > 0){
+                            var dt = moment(layer.options.options.updated_at);
+                            var h24 = moment().subtract(24,'hours');
+
+                            if(distance <= radius_km && layer.options.options.remain_doses > 0 && dt.isAfter(h24)){
                                 //console.log("Layer map: ",layer._latlng, " => Distancia: ", distance," ==> ",layer.options.options);
-                                console.log("Notificar de Ponto de Vacinação: ", layer.options.options);
+                                //console.log("Notificar de Ponto de Vacinação: ", layer.options.options," DT: ", dt," <> ",h24);
                                 bounds.extend(layer._latlng);
 
-                                getDirections("driving",{lat: last_position.latitude, lng: last_position.longitude},layer._latlng);
+                                getDirections("driving",{lat: last_position.latitude, lng: last_position.longitude},layer._latlng, layer.options.options);
                             }
                     }
                 });
