@@ -91,17 +91,16 @@ Rails.application.configure do
   # Do not dump schema after migrations.
   config.active_record.dump_schema_after_migration = false
 
-  config.action_mailer.default_url_options = { host: 'https://3.137.194.200', port: 3000 }
+  config.action_mailer.default_url_options = { host: 'https://vacinaja.app.br' }
 
   #config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
 
   config.action_mailer.delivery_method = :smtp
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
+    address:              'smtp.office365.com',
     port:                 587,
-    domain:               'gmail.com',
-    user_name:            'send.vacinas@gmail.com',
+    user_name:            'send.vacinaja@outlook.com',
     password:             '@c3ss0_v@c1n@s',
     authentication:       'login',
     enable_starttls_auto: true

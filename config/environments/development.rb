@@ -87,10 +87,9 @@ Rails.application.configure do
   config.action_mailer.delivery_method = :smtp
   
   config.action_mailer.smtp_settings = {
-    address:              'smtp.gmail.com',
+    address:              'smtp.office365.com',
     port:                 587,
-    domain:               'gmail.com',
-    user_name:            'send.vacinas@gmail.com',
+    user_name:            'send.vacinaja@outlook.com',
     password:             '@c3ss0_v@c1n@s',
     authentication:       'login',
     enable_starttls_auto: true
