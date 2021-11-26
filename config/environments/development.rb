@@ -14,6 +14,7 @@ Rails.application.configure do
   end
 
   config.hosts << "vacinaja.app.br"
+  config.hosts << "ec2-3-16-169-9.us-east-2.compute.amazonaws.com"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
