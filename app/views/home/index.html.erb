@@ -390,34 +390,40 @@
                     var style = getVaccinationPointStyle(v);
 
                     var remain_doses = v.remain_doses;
-                    console.log("Vac: ", v);
+                    //console.log("Vac: ", v);
                     
                     var dt = moment(v.updated_at);
+                    var lat = parseFloat(v.latitude.replace(/,/g, '.'));
+                    var lng = parseFloat(v.longitude.replace(/,/g, '.'));
 
-                    if(remain_doses > 0 && dt.isAfter(h24)){
-                        var vaccination_point = L.circle([parseFloat(v.latitude), parseFloat(v.longitude)], {
-                            radius: v.radius_km * 1000,
-                            color: style.textColor,
-                            fillColor: style.textColor,
-                            fill: style.textColor,
-                            fillOpacity: 0.1,
-                            dashArray: '-',
-                            weight: 1.2,
+                    if(!isNaN(lat) && !isNaN(lng)){
+
+                        if(remain_doses > 0 && dt.isAfter(h24)){
+                            var vaccination_point = L.circle([lat, lng], {
+                                radius: v.radius_km * 1000,
+                                color: style.textColor,
+                                fillColor: style.textColor,
+                                fill: style.textColor,
+                                fillOpacity: 0.1,
+                                dashArray: '-',
+                                weight: 1.2,
+                                options: v
+                            });
+
+                            vaccination_points.addLayer(vaccination_point);
+                        }
+
+                        var vpoint = L.marker({lat: lat, lng: lng},{
+                            icon: L.BeautifyIcon.icon(style),
                             options: v
                         });
 
-                        vaccination_points.addLayer(vaccination_point);
+                        vaccination_points.addLayer(vpoint).addTo(map);
                     }
-
-                    vaccination_points.addLayer(
-                        L.marker({lat: parseFloat(v.latitude), lng: parseFloat(v.longitude)},
-                        {
-                            icon: L.BeautifyIcon.icon(style),
-                            options: v
-                        }).addTo(map));
                     
                     
                 });
+                
 
                 vaccination_points.eachLayer(function (layer) {
                     var html = "";

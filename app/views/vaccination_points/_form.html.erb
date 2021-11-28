@@ -11,3 +11,16 @@
   <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
   
 <% end %>
+
+<script>
+
+function geocode_address(address){
+  var API_KEY_GOOGLE = "AIzaSyA8EYTrG_4afRhhoX_EuOuzyBeEsw3PF6U";
+  var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key="+API_KEY_GOOGLE;
+
+  $.get(url, function(data){
+    console.log("Teste: ", data);
+  });
+}
+
+</script>
