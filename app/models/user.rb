@@ -22,5 +22,25 @@ class User < ApplicationRecord
   def complete_name
     "#{roles.first.name.capitalize} - #{name}"
   end
+
+  def self.make_fake_patients
+
+    us = User.where("email like 'user_%'")
+
+    us.each do |u|
+      u.add_role :patient
+    end
+    # 10.times do
+    #   rkey = SecureRandom.hex(10)
+    #   u = User.new
+    #   u.name  = "User #{rkey}"
+    #   u.email = "user_vacinaja#{rkey}@gmail.com"
+    #   u.born_date = "#{rand(1950..1990)}"
+    #   u.password = rkey
+    #   u.save 
+
+    #   u.add_role :patient
+    #end
+  end
   
 end

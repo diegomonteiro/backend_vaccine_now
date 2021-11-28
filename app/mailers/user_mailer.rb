@@ -2,7 +2,7 @@
 class UserMailer < ApplicationMailer
     
 
-    default from: "send.vacinas@gmail.com"
+    default from: "send.vacinaja@outlook.com"
 
     def notificar_usuarios_por_vacinas
         @user = params[:user]

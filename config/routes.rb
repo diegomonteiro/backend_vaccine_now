@@ -17,6 +17,7 @@ Rails.application.routes.draw do
   scope module: 'api', path: '/api' do
     resources :auth_token
     resources :user_positions
+    resources :user_vaccines
     resources :vaccination_points
   end
 
