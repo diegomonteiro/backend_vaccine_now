@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.4', '>= 6.0.4.1'
+gem 'rails', '~> 6.0.4', '>= 6.0.4.2'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -39,8 +39,8 @@ gem 'omniauth-google'
 
 gem 'rails-i18n', '>= 6.0.0'
 
-gem "bootstrap", ">= 4.3.1"
-gem 'jquery-rails'
+gem "bootstrap", ">= 5.1.0"
+gem 'jquery-rails', '>= 4.4.0'
 gem 'pusher'
 gem 'figaro'
 
