@@ -39,7 +39,7 @@ gem 'omniauth-google'
 
 gem 'rails-i18n', '>= 6.0.0'
 
-gem "bootstrap", ">= 4.3.1"
+gem "bootstrap", ">= 5.1.0"
 gem 'jquery-rails'
 gem 'pusher'
 gem 'figaro'
