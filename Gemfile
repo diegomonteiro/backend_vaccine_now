@@ -17,7 +17,7 @@ gem 'webpacker', '~> 4.3', '>= 4.3.0'
 # Turbolinks makes navigating your web application faster. Read more: https://github.com/turbolinks/turbolinks
 gem 'turbolinks', '~> 5'
 # Build JSON APIs with ease. Read more: https://github.com/rails/jbuilder
-gem 'jbuilder', '~> 2.7'
+gem 'jbuilder', '~> 2.11', '>= 2.11.2'
 # Use Redis adapter to run Action Cable in production
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
@@ -39,7 +39,7 @@ gem 'omniauth-google'
 
 gem 'rails-i18n', '>= 6.0.0'
 
-gem "bootstrap", ">= 4.3.1"
+gem "bootstrap", ">= 5.1.0"
 gem 'jquery-rails'
 gem 'pusher'
 gem 'figaro'
@@ -89,8 +89,8 @@ group :test do
   # Adds support for Capybara system testing and selenium driver
   gem 'capybara', '>= 3.35.3'
   gem 'selenium-webdriver'
-  gem 'shoulda-matchers', '~> 4.0'
-  gem 'shoulda-callback-matchers', '~> 1.1.1'
+  gem 'shoulda-matchers', '~> 4.5', '>= 4.5.1'
+  gem 'shoulda-callback-matchers', '~> 1.1.4'
   gem 'database_cleaner'
   # Easy installation and use of web drivers to run system tests with browsers
   gem 'webdrivers', '>= 4.6.1'
