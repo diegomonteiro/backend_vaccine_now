@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_29_224503) do
+ActiveRecord::Schema.define(version: 2022_09_30_021418) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -53,6 +53,16 @@ ActiveRecord::Schema.define(version: 2022_09_29_224503) do
     t.datetime "updated_at", precision: 6, null: false
   end
 
+  create_table "equipaments", force: :cascade do |t|
+    t.string "cod"
+    t.bigint "manufacturer_id", null: false
+    t.bigint "vaccination_point_id", null: false
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["manufacturer_id"], name: "index_equipaments_on_manufacturer_id"
+    t.index ["vaccination_point_id"], name: "index_equipaments_on_vaccination_point_id"
+  end
+
   create_table "login_activities", force: :cascade do |t|
     t.string "scope"
     t.string "strategy"
@@ -74,6 +84,23 @@ ActiveRecord::Schema.define(version: 2022_09_29_224503) do
     t.index ["identity"], name: "index_login_activities_on_identity"
     t.index ["ip"], name: "index_login_activities_on_ip"
     t.index ["user_type", "user_id"], name: "index_login_activities_on_user_type_and_user_id"
+  end
+
+  create_table "manufacturers", force: :cascade do |t|
+    t.string "name"
+    t.string "cod"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+  end
+
+  create_table "measurements", force: :cascade do |t|
+    t.bigint "equipament_id", null: false
+    t.datetime "date_hour"
+    t.string "unit"
+    t.float "value"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["equipament_id"], name: "index_measurements_on_equipament_id"
   end
 
   create_table "notifications", force: :cascade do |t|
@@ -106,45 +133,6 @@ ActiveRecord::Schema.define(version: 2022_09_29_224503) do
     t.datetime "updated_at", precision: 6, null: false
     t.index ["name", "resource_type", "resource_id"], name: "index_roles_on_name_and_resource_type_and_resource_id"
     t.index ["resource_type", "resource_id"], name: "index_roles_on_resource_type_and_resource_id"
-  end
-
-  create_table "sensor_manufacturers", force: :cascade do |t|
-    t.string "name"
-    t.string "cod"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-  end
-
-  create_table "sensor_measurements", force: :cascade do |t|
-    t.bigint "sensors_id", null: false
-    t.datetime "date_hour"
-    t.string "unit"
-    t.float "value"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["sensors_id"], name: "index_sensor_measurements_on_sensors_id"
-  end
-
-  create_table "sensor_models", force: :cascade do |t|
-    t.string "cod"
-    t.string "name"
-    t.bigint "sensor_manufacturer_id", null: false
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["sensor_manufacturer_id"], name: "index_sensor_models_on_sensor_manufacturer_id"
-  end
-
-  create_table "sensors", force: :cascade do |t|
-    t.bigint "sensor_manufacturers_id", null: false
-    t.bigint "sensor_models_id", null: false
-    t.bigint "vaccination_point_id", null: false
-    t.string "cod"
-    t.integer "status"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["sensor_manufacturers_id"], name: "index_sensors_on_sensor_manufacturers_id"
-    t.index ["sensor_models_id"], name: "index_sensors_on_sensor_models_id"
-    t.index ["vaccination_point_id"], name: "index_sensors_on_vaccination_point_id"
   end
 
   create_table "subscriptions", force: :cascade do |t|
@@ -316,11 +304,9 @@ ActiveRecord::Schema.define(version: 2022_09_29_224503) do
   end
 
   add_foreign_key "checkins", "trips"
-  add_foreign_key "sensor_measurements", "sensors", column: "sensors_id"
-  add_foreign_key "sensor_models", "sensor_manufacturers"
-  add_foreign_key "sensors", "sensor_manufacturers", column: "sensor_manufacturers_id"
-  add_foreign_key "sensors", "sensor_models", column: "sensor_models_id"
-  add_foreign_key "sensors", "vaccination_points"
+  add_foreign_key "equipaments", "manufacturers"
+  add_foreign_key "equipaments", "vaccination_points"
+  add_foreign_key "measurements", "equipaments"
   add_foreign_key "trips", "users"
   add_foreign_key "user_positions", "users"
   add_foreign_key "user_vaccines", "users"

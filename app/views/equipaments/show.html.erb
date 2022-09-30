@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @equipament.cod %>
+</p>
+
+<p>
+  <strong>Manufacturer:</strong>
+  <%= @equipament.manufacturer_id %>
+</p>
+
+<p>
+  <strong>Vaccination point:</strong>
+  <%= @equipament.vaccination_point_id %>
+</p>
+
+<%= link_to 'Edit', edit_equipament_path(@equipament) %> |
+<%= link_to 'Back', equipaments_path %>
