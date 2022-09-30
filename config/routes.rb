@@ -1,5 +1,9 @@
 Rails.application.routes.draw do
 
+  resources :sensor_measurements
+  resources :sensors
+  resources :sensor_models
+  resources :sensor_manufacturers
   resources :user_vaccines
   resources :diseases
   resources :vaccination_compaigns_targets
@@ -19,6 +23,7 @@ Rails.application.routes.draw do
     resources :user_positions
     resources :user_vaccines
     resources :vaccination_points
+    resources :sensor_measurements
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

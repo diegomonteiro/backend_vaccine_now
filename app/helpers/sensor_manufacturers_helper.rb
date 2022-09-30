@@ -1,0 +1,2 @@
+module SensorManufacturersHelper
+end

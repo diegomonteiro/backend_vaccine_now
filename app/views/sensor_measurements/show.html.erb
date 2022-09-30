@@ -1,0 +1,24 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Sensors:</strong>
+  <%= @sensor_measurement.sensors_id %>
+</p>
+
+<p>
+  <strong>Date hour:</strong>
+  <%= @sensor_measurement.date_hour %>
+</p>
+
+<p>
+  <strong>Unit:</strong>
+  <%= @sensor_measurement.unit %>
+</p>
+
+<p>
+  <strong>Value:</strong>
+  <%= @sensor_measurement.value %>
+</p>
+
+<%= link_to 'Edit', edit_sensor_measurement_path(@sensor_measurement) %> |
+<%= link_to 'Back', sensor_measurements_path %>

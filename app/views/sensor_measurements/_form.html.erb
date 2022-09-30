@@ -1,0 +1,16 @@
+
+<%= simple_form_for(@sensor_measurement) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.association :sensors %>
+    <%= f.input :date_hour %>
+    <%= f.input :unit %>
+    <%= f.input :value %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

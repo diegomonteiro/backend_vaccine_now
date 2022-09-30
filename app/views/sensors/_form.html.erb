@@ -1,0 +1,17 @@
+
+<%= simple_form_for(@sensor) do |f| %>
+  <%= f.error_notification %>
+  <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
+
+  <div class="form-inputs">
+    <%= f.association :sensor_manufacturers, :label => "Fabricante", collection: SensorManufacturer.all.map { |sm| [sm.name,sm.id] } %>
+    <%= f.association :sensor_models, :label => "Modelos", collection: SensorModel.all.map { |sm| [sm.name,sm.id] } %>
+    <%= f.association :vaccination_point %>
+    <%= f.input :cod %>
+    <%= f.input :status %>
+  </div>
+
+  <div class="form-actions">
+    <%= f.button :submit %>
+  </div>
+<% end %>

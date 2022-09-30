@@ -21,9 +21,9 @@
     <% @vaccination_points.each do |vaccination_point| %>
       <tr>
         <td><%= link_to vaccination_point.id, vaccination_point_path(vaccination_point) %></td>
-        <td><%= vaccination_point.vaccination_point_type.name %></td>
-        <td><%= vaccination_point.name %></td>
-        <td><%= vaccination_point.address %></td>
+        <td><%= vaccination_point.vaccination_point_type.cod %></td>
+        <td><%= vaccination_point.name.truncate(15) %></td>
+        <td><a target="_blank" href="https://www.google.com/maps/place/<%= vaccination_point.address %>" data-toggle="tooltip" title="<%= vaccination_point.address %>">Ver endereço</a></td>
         <!--<td><%= vaccination_point.latitude %></td>
         <td><%= vaccination_point.longitude %></td>-->
         <td><%= vaccination_point.contact_number %></td>
@@ -57,3 +57,9 @@
             new_vaccination_point_path,
             :class => 'btn btn-primary' %>
 <% end %>
+
+<script>
+  $(function () {
+    $('[data-toggle="tooltip"]').tooltip()
+  })
+</script>

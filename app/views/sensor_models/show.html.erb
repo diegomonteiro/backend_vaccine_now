@@ -1,0 +1,19 @@
+<p id="notice"><%= notice %></p>
+
+<p>
+  <strong>Cod:</strong>
+  <%= @sensor_model.cod %>
+</p>
+
+<p>
+  <strong>Name:</strong>
+  <%= @sensor_model.name %>
+</p>
+
+<p>
+  <strong>Sensor manufacturer:</strong>
+  <%= @sensor_model.sensor_manufacturer_id %>
+</p>
+
+<%= link_to 'Edit', edit_sensor_model_path(@sensor_model) %> |
+<%= link_to 'Back', sensor_models_path %>
