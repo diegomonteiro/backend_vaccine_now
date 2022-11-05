@@ -140,12 +140,13 @@
         data: params,
         beforeSend: function(xhr){
             xhr.setRequestHeader('X-CSRF-Token', token);
+            $("#table_targets").find("tbody").empty();
         },
         success: function(response){
           //console.log("Target Registrada: ",response);
           //var row = "<tr><td>De "+response.date_start+" até "+response.date_end+"</td>";
           var row = "<tr id='target_"+response.id+"'><td>De "+response.min_years_old +" até "+response.max_years_old+"</td>";
-          row += "<td>"+response.with_comorbidity+"</td>";
+          row += "<td>"+(response.with_comorbidity) ? "Sim" : "Não" +"</td>";
           row += "<td>"+response.restrictions+"</td>";
           row += "<td><a href=\"#\" onclick=\"delete_vaccination_campaign_target("+response.id+")\" class=\"btn btn-danger btn-block\"><i class=\"fa fa-trash\"></i></a></td>";
           row += "</tr>";
@@ -186,8 +187,6 @@ $(function() {
     function cb(start, end) {
         $('#reportrange span').html(start.format('DD/MM/YYYY') + ' - ' + end.format('DD/MM/YYYY'));
     }
-
-   
 
     $('#reportrange').daterangepicker({
         startDate: start,

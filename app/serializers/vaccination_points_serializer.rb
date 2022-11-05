@@ -1,5 +1,4 @@
-module Api
-  class VaccinationPointsSerializer < ActiveModel::Serializer
+class VaccinationPointsSerializer < ActiveModel::Serializer
     attributes :id, :name, :latitude, :longitude, :radius_km, :updated_at,  :contact_number, :vaccinations, :address, :vaccination_point_type, :remain_doses, :total_doses, :waste_rate, :discarded_doses
     has_many :vaccinations
     has_many :user_vaccines
@@ -32,5 +31,4 @@ module Api
       end
     end
 
-  end
 end

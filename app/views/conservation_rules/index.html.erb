@@ -1,0 +1,35 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Conservation Rules</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Tipo de Vacina</th>
+      <th>Min Temp.</th>
+      <th>Máx. Temp.</th>
+      <th>Máx. Variação</th>
+      <th>Intervalo(H)</th>
+      <th colspan="3"></th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @conservation_rules.each do |conservation_rule| %>
+      <tr>
+        <td><%= conservation_rule.vaccine_type_id %></td>
+        <td><%= conservation_rule.min_temp %></td>
+        <td><%= conservation_rule.max_temp %></td>
+        <td><%= conservation_rule.max_variation %></td>
+        <td><%= conservation_rule.range_hours %></td>
+        <td><%= link_to 'Show', conservation_rule %></td>
+        <td><%= link_to 'Edit', edit_conservation_rule_path(conservation_rule) %></td>
+        <td><%= link_to 'Destroy', conservation_rule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Conservation Rule', new_conservation_rule_path %>

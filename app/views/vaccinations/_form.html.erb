@@ -6,7 +6,7 @@
   <%= f.input :total_doses, :label => "Total de Doses" %>
   <%= f.input :remain_doses, :label => "Doses Restantes" %>
   <%= f.input :discarded_doses, :label => "Doses Descartadas" %>
-
+  <%= f.input :date_hour, :label => "Data e Hora"%>
   <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
   <%= link_to t('.cancel', :default => t("helpers.links.cancel")),
                 vaccinations_path, :class => 'btn btn-default' %>

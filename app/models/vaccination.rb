@@ -6,7 +6,7 @@ class Vaccination < ApplicationRecord
   validates_presence_of :remain_doses, message: 'As doses remanescentes não podem ficar em branco'
   validates_presence_of :discarded_doses, message: 'As doses descartadas não podem ficar em branco'
 
-  validates :vaccination_point, uniqueness: { scope: [:vaccine_type], message: "Vacinação já existe, atualize-a" }
+  validates :vaccination_point, uniqueness: { scope: [:vaccine_type], message: "Vacinação já registrada!" }
 
 
   # acts_as_notifiable configures your model as ActivityNotification::Notifiable

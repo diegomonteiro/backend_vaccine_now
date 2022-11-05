@@ -13,7 +13,9 @@ class User < ApplicationRecord
 
   acts_as_target email: :email, email_allowed: :confirmed_at, action_cable_allowed: true
 
-  
+  validates :sus_id, uniqueness: {
+    scope: [:cpf, :name], message: "CPF e Nome já estão registrados"
+  }
 
   def assign_default_role
     add_role(:patient) if self.roles.blank?

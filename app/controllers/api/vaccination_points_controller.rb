@@ -20,7 +20,7 @@ module Api
 	    error code: 403, desc:  'Proíbido'
 
 	    api :GET, '/vaccination_points', "Listar Pontos de Vacinação"
-
+		param :with_remain_doses, :boolean
 	    description <<-eos
 	      Obter dados dos pontos de vacinação
 	      #{URI_API}/inspecoes
@@ -30,7 +30,13 @@ module Api
 	      Resposta:
 	    eos
 	    def index
-		    vp = VaccinationPoint.includes([:vaccinations, :vaccination_point_type]).accessible_by(current_ability)
+			
+			if params[:with_remain_doses].present?
+				vp = VaccinationPoint.joins(:vaccinations).group("vaccination_points.id").having("sum(vaccinations.remain_doses) > 0")
+			else
+				vp = VaccinationPoint.includes([:vaccinations, :vaccination_point_type]).accessible_by(current_ability)
+			end
+
 		    render json: vp, each_serializer: VaccinationPointsSerializer
 	    end
     end

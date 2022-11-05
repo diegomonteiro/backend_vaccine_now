@@ -374,6 +374,7 @@
     function getVaccinationPoints(){
         $.ajax({
             url: "/api/vaccination_points",
+            data: { with_remain_doses: true},
             beforeSend: function(){
                 //console.log("Preparing request of Vaccination Points");
                 vaccination_points.clearLayers();

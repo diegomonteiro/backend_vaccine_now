@@ -1,5 +1,6 @@
 Rails.application.routes.draw do
 
+  resources :conservation_rules
   resources :measurements
   resources :equipaments
   resources :manufacturers
@@ -25,7 +26,9 @@ Rails.application.routes.draw do
     resources :user_positions
     resources :user_vaccines
     resources :vaccination_points
-    end
+    resources :equipaments
+    resources :measurements
+  end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
   root to: "home#index"

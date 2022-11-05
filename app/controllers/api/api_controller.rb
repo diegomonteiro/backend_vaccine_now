@@ -9,6 +9,11 @@ module Api
       rescue_from Apipie::Error do |exception|
         render json: { error: exception.message }, status: 400
       end
+
+      # ParamError is superclass of ParamMissing, ParamInvalid
+      rescue_from Apipie::ParamError do |e|
+        render json: e.message, status: :unprocessable_entity
+      end
   
       #rescue_from ActiveRecord::RecordNotFound, with: :record_not_found
       rescue_from ActiveRecord::RecordNotFound do |exception|

@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_09_30_021418) do
+ActiveRecord::Schema.define(version: 2022_10_13_011236) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -22,6 +22,17 @@ ActiveRecord::Schema.define(version: 2022_09_30_021418) do
     t.datetime "created_at", precision: 6, null: false
     t.datetime "updated_at", precision: 6, null: false
     t.index ["trip_id"], name: "index_checkins_on_trip_id"
+  end
+
+  create_table "conservation_rules", force: :cascade do |t|
+    t.bigint "vaccine_type_id", null: false
+    t.float "min_temp"
+    t.float "max_temp"
+    t.float "max_variation"
+    t.float "range_hours"
+    t.datetime "created_at", precision: 6, null: false
+    t.datetime "updated_at", precision: 6, null: false
+    t.index ["vaccine_type_id"], name: "index_conservation_rules_on_vaccine_type_id"
   end
 
   create_table "delayed_jobs", force: :cascade do |t|
@@ -286,6 +297,7 @@ ActiveRecord::Schema.define(version: 2022_09_30_021418) do
     t.datetime "updated_at", precision: 6, null: false
     t.bigint "vaccine_type_id"
     t.integer "discarded_doses"
+    t.datetime "date_hour"
     t.index ["vaccination_point_id"], name: "index_vaccinations_on_vaccination_point_id"
     t.index ["vaccine_type_id"], name: "index_vaccinations_on_vaccine_type_id"
   end
@@ -304,6 +316,7 @@ ActiveRecord::Schema.define(version: 2022_09_30_021418) do
   end
 
   add_foreign_key "checkins", "trips"
+  add_foreign_key "conservation_rules", "vaccine_types"
   add_foreign_key "equipaments", "manufacturers"
   add_foreign_key "equipaments", "vaccination_points"
   add_foreign_key "measurements", "equipaments"

@@ -1,3 +1,0 @@
-class SensorManufacturer < ApplicationRecord
-    
-end
