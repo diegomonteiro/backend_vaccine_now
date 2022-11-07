@@ -4,6 +4,8 @@ require 'rails/all'
 require 'sendgrid-ruby'
 require 'securerandom'
 
+include SendGrid
+
 # Require the gems listed in Gemfile, including any gems
 # you've limited to :test, :development, or :production.
 Bundler.require(*Rails.groups)

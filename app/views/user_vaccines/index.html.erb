@@ -2,7 +2,7 @@
   <h4><%=t '.title', :default => "Pacientes Vacinados" %></h4>
 </div>
 
-<table class="table table-striped">
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>#</th>
@@ -15,48 +15,54 @@
       <th>Aplicador</th>
       <th>Núm.Dose</th>
       <th>Completa?</th>
-      <th></th>
+      <th>Ações</th>
     </tr>
   </thead>
 
   <tbody>
-    <% @user_vaccines.each do |user_vaccine| %>
-      <tr>
-        <td><i class="fa fa-circle <%= (user_vaccine.is_complete) ? "text-success" : "text-danger" %>"></i></td>
-        <td><%= user_vaccine.date_vaccination %></td>
-        <td><%= user_vaccine.expiration_date %></td>
-        <td><%= user_vaccine.batch %></td>
-        <td><%= user_vaccine.vaccine_type.disease.name %> - <%= user_vaccine.vaccine_type.name %></td>
-        <td><%= user_vaccine.vaccination_point.vaccination_point_type.cod %> - <%= user_vaccine.vaccination_point.name %></td>
-        <td><%= user_vaccine.user.name %></td>
-        <td><%= @user_signeds.select { |x| x.id == user_vaccine.signed_by.to_i }.first.name %></td>
-        <td><%= user_vaccine.dose_number %></td>
-        <td><%= (user_vaccine.is_complete) ? "Sim" : "Não" %></td>
-        <td>
-          <% if can? :read, UserVaccine %>
-            <%= link_to '<i class="fa fa-eye"></i> '.html_safe+t('.show', :default => t("helpers.links.show")), user_vaccine , :class => 'btn btn-info btn-xs'%>
-          <% end %>
+    <% if @user_vaccines.blank? %>
+      <tr><td colspan="13">Sem vacinas registradas até o momento!</td></tr>
+    <% else %>
+      <% @user_vaccines.each do |user_vaccine| %>
+        <tr>
+          <td><i class="fa fa-circle <%= (user_vaccine.is_complete) ? "text-success" : "text-danger" %>"></i></td>
+          <td><%= user_vaccine.date_vaccination %></td>
+          <td><%= user_vaccine.expiration_date %></td>
+          <td><%= user_vaccine.batch %></td>
+          <td><%= user_vaccine.vaccine_type.disease.name %> - <%= user_vaccine.vaccine_type.name %></td>
+          <td><%= user_vaccine.vaccination_point.vaccination_point_type.cod %> - <%= user_vaccine.vaccination_point.name %></td>
+          <td><%= user_vaccine.user.name %></td>
+          <td><%= @user_signeds.select { |x| x.id == user_vaccine.signed_by.to_i }.first.name %></td>
+          <td><%= user_vaccine.dose_number %></td>
+          <td><%= (user_vaccine.is_complete) ? "Sim" : "Não" %></td>
+          <td>
+            <% if can? :read, UserVaccine %>
+              <%= link_to '<i class="fa fa-eye"></i> '.html_safe+t('.show', :default => t("helpers.links.show")), user_vaccine , :class => 'btn btn-info btn-xs'%>
+            <% end %>
 
-          <% if can? :update, UserVaccine %>
-          <%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
-                      edit_user_vaccine_path(user_vaccine), :class => 'btn btn-warning btn-xs' %>
-          <% end %>
+            <% if can? :update, UserVaccine %>
+            <%= link_to '<i class="fa fa-edit"></i> '.html_safe+t('.edit', :default => t("helpers.links.edit")),
+                        edit_user_vaccine_path(user_vaccine), :class => 'btn btn-warning btn-xs' %>
+            <% end %>
 
-          <% if can? :destroy, UserVaccine %>
-          <%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
-                      user_vaccine_path(user_vaccine),
-                      :method => :delete,
-                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Tem certeza?')) },
-                      :class => 'btn btn-xs btn-danger' %>
-          <% end %>
-        </td>
+            <% if can? :destroy, UserVaccine %>
+            <%= link_to '<i class="fa fa-trash"></i> '.html_safe+t('.destroy', :default => t("helpers.links.destroy")),
+                        user_vaccine_path(user_vaccine),
+                        :method => :delete,
+                        :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Tem certeza?')) },
+                        :class => 'btn btn-xs btn-danger' %>
+            <% end %>
+          </td>
 
-      </tr>
+        </tr>
+      <% end %>
     <% end %>
   </tbody>
 </table>
 
 <br>
+<% if can? :create, UserVaccine %>
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_user_vaccine_path,
             :class => 'btn btn-primary' %>
+<% end %>

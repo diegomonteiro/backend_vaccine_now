@@ -80,20 +80,26 @@ Rails.application.configure do
   config.file_watcher = ActiveSupport::EventedFileUpdateChecker
 
   # Config for Receive Mailer in Development Mode
-  config.action_mailer.default_url_options = { host: 'https://vacinaja.app.br' }
+  config.action_mailer.default_url_options = { host: 'http://localhost', port: 3000 }
 
-  #config.action_mailer.delivery_method = :letter_opener
+  config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
   config.action_mailer.raise_delivery_errors = true  
-  config.action_mailer.delivery_method = :smtp
+  #config.action_mailer.delivery_method = :smtp
   
-  config.action_mailer.smtp_settings = {
-    address:              'smtp.office365.com',
-    port:                 587,
-    user_name:            'send.vacinaja@outlook.com',
-    password:             '@c3ss0_v@c1n@s',
-    authentication:       'login',
-    enable_starttls_auto: true
-  }
+  # config.action_mailer.smtp_settings = {
+  #   #address:              'smtp.office365.com',
+  #   #port:                 587,
+  #   #user_name:            'send.vacinaja@outlook.com',
+  #   #password:             '@c3ss0_v@c1n@s',
+  #   #authentication:       'login',
+  #   #enable_starttls_auto: true
+  #   address: 'smtp.sendgrid.net',
+  #   port: 587,
+  #   user_name: 'apikey',
+  #   password: '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',
+  #   enable_starttls_auto: true,
+  #   authentication: 'plain'
+  # }
 
 end

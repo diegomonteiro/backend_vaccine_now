@@ -1,25 +1,162 @@
-<%= simple_form_for @vaccination_point, :html => { :class => 'form-horizontal' } do |f| %>
-  <%= f.association :vaccination_point_type, :label => "Tipo de Ponto de Vacinação", collection: VaccinationPointType.all.map { |vpt| [vpt.name, vpt.id] } %>
-  <%= f.input :name, :label => "Nome" %>
-  <%= f.input :address, :label => "Endereço" %>
-  <%= f.input :latitude, :label => "Latitude" %>
-  <%= f.input :longitude, :label => "Longitude" %>
-  <%= f.input :contact_number, :label => "Contato" %>
-  <%= f.input :radius_km, :label => "Raio (km)"%>
+<div class="card">
+<div class="card-body container-fluid">
+  <div class="row row-cols-lg-auto">
+    <div class="col-6">
+    <%= simple_form_for @vaccination_point, :html => { :class => 'form-horizontal' } do |f| %>
+      <%= f.association :vaccination_point_type, :label => "Tipo de Ponto de Vacinação", collection: VaccinationPointType.all.map { |vpt| [vpt.name, vpt.id] } %>
+      
+      <div class="row g-3">
+        <div class="col-sm">
+          <%= f.input :name, :label => "Nome" %>
+        </div>
+        <div class="col-sm">
+          <%= f.input :contact_number, :label => "Contato" %>
+        </div>
+      </div>
+      <%= f.input :address, :label => "Endereço" %>
 
-  <%= link_to '<i class="fa fa-arrow-left"></i> Voltar'.html_safe, vaccination_points_path, class: 'btn btn-outline-secondary' %>
-  <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
-  
-<% end %>
+      <div class="row g-3">
+        <div class="col-sm">
+        <%= f.input :latitude, :label => "Latitude" %>
+        </div>
 
+        <div class="col-sm">
+        <%= f.input :longitude, :label => "Longitude" %>
+        </div>
+      </div>
+     
+      <%= f.input :radius_km, as: :range, input_html: { min: '0.1', max: '30', step: '0.1' }, html5: true, :label => "Raio (km)"%>
+
+      <%= link_to '<i class="fa fa-arrow-left"></i> Voltar'.html_safe, vaccination_points_path, class: 'btn btn-outline-secondary' %>
+      <%= f.button :submit, "Confirmar", :class => 'btn-primary' %>
+      
+    <% end %>
+    </div>
+    <div class="col-6">
+    <div id="map" style="height: 500px"></div>
+    </div>
+  </div>
+</div>
+</div>
 <script>
 
-function geocode_address(address){
-  var API_KEY_GOOGLE = "AIzaSyA8EYTrG_4afRhhoX_EuOuzyBeEsw3PF6U";
-  var url = "https://maps.googleapis.com/maps/api/geocode/json?address="+address+",+CA&key="+API_KEY_GOOGLE;
+var map = L.map('map').setView([-23.56500988161549, -46.63970947265626], 13);
 
-  $.get(url, function(data){
-    console.log("Teste: ", data);
+L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+  attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+}).addTo(map);
+
+//var marker = L.marker([51.5, -0.09]).addTo(map);
+var marker_group = L.layerGroup([]);
+var radius_group = L.layerGroup([]);
+
+marker_group.addTo(map);
+radius_group.addTo(map);
+
+map.on('click', function(e){
+  marker_group.clearLayers();
+  radius_group.clearLayers();
+
+  let lat = e.latlng.lat;
+  let lon = e.latlng.lng;
+
+  $("#vaccination_point_latitude").val(e.latlng.lat);
+  $("#vaccination_point_longitude").val(e.latlng.lng);
+
+  geocoder_mapbox(e.latlng);
+
+  let marker = L.marker([lat,lon],{draggable: true, autopan: true});
+
+  marker.on('moveend', function(e){
+    geocoder_mapbox(e.latlng);
+  });
+
+  marker.on('move', function(e){
+  
+    $("#vaccination_point_latitude").val(e.latlng.lat);
+    $("#vaccination_point_longitude").val(e.latlng.lng);
+
+    let lat = $("#vaccination_point_latitude").val();
+    let lon = $("#vaccination_point_longitude").val();
+
+    //geocoder_mapbox(e.latlng);
+
+    radius_group.clearLayers();
+
+    var vaccination_point = L.circle([lat, lon], {
+                                  radius: $("#vaccination_point_radius_km").val() * 1000,
+                                  color: "green",
+                                  fillColor: "green",
+                                  fill: "green",
+                                  fillOpacity: 0.1,
+                                  dashArray: '-',
+                                  weight: 1.2
+                              });
+    radius_group.addLayer(vaccination_point);
+  });
+
+  var vaccination_point = L.circle([lat, lon], {
+                                  radius: $("#vaccination_point_radius_km").val() * 1000,
+                                  color: "green",
+                                  fillColor: "green",
+                                  fill: "green",
+                                  fillOpacity: 0.1,
+                                  dashArray: '-',
+                                  weight: 1.2
+                              });
+    radius_group.addLayer(vaccination_point);
+  
+  marker_group.addLayer(marker);
+});
+
+$("#vaccination_point_radius_km").on('change', function(e){
+  //console.log("Raio mudou =: ", $("#vaccination_point_radius_km").val());
+  let lat = $("#vaccination_point_latitude").val();
+  let lon = $("#vaccination_point_longitude").val();
+  radius_group.clearLayers();
+
+  var vaccination_point = L.circle([lat, lon], {
+                                radius: $("#vaccination_point_radius_km").val() * 1000,
+                                color: "green",
+                                fillColor: "green",
+                                fill: "green",
+                                fillOpacity: 0.1,
+                                dashArray: '-',
+                                weight: 1.2
+                            });
+  radius_group.addLayer(vaccination_point);
+  
+});
+
+$("#vaccination_point_latitude, #vaccination_point_longitude").on('keyup', function(e){
+  marker_group.clearLayers();
+  let lat = $("#vaccination_point_latitude").val();
+  let lon = $("#vaccination_point_longitude").val();
+  
+  let marker = L.marker([lat,lon],{draggable: true, autopan: true});
+  marker_group.addLayer(marker);
+
+  let coordinates = {lng: lon, lat: lat};
+
+  map.panTo(coordinates);
+
+  geocoder_mapbox(coordinates);
+})
+
+function geocoder_mapbox(coordinates){
+  console.log("Call mapbox => ", coordinates);
+  $.ajax({
+    type: "GET",
+    url: "https://api.mapbox.com/geocoding/v5/mapbox.places/"+coordinates.lng+","+coordinates.lat+".json",
+    data: {
+      access_token: 'pk.eyJ1IjoiZGllZ29tb250ZWlybyIsImEiOiJjaWtpeTNucGYwNTdudTBtNjMzeW80Y2FsIn0.D1Y1o7NvJA6hwrKAs_NcIg',
+      data_type: 'address',
+      limit: 1
+    },
+    success: function (response) {
+      //console.log("Response Mapbox: ", response);
+      $("#vaccination_point_address").val(response.features[0].place_name);
+    }
   });
 }
 

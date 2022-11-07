@@ -4,14 +4,14 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.association :vaccine_type %>
-    <%= f.input :min_temp %>
-    <%= f.input :max_temp %>
-    <%= f.input :max_variation %>
-    <%= f.input :range_hours %>
+    <%= f.association :vaccine_type, :label => "Tipo de Vacina" %>
+    <%= f.input :min_temp, :label => "Temperatura Mínima" %>
+    <%= f.input :max_temp, :label => "Temperatura Máxima" %>
+    <%= f.input :max_variation, :label => "Máximo de Variação (%)" %>
+    <%= f.input :range_hours, :label => "Intervalo de Tempo" %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, "Salvar" %>
   </div>
 <% end %>

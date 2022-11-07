@@ -1,6 +1,7 @@
 class UserVaccinesController < ApplicationController
   before_action :set_user_vaccine, only: %i[ show edit update destroy ]
-
+  before_action :authenticate_user!
+  load_and_authorize_resource
   # GET /user_vaccines or /user_vaccines.json
   def index
     @user_vaccines = UserVaccine.includes([:vaccine_type => :disease, :vaccination_point => :vaccination_point_type]).includes(:user).accessible_by(current_ability).all

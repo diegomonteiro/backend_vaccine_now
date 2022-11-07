@@ -52,7 +52,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
-        <button type="button" class="btn btn-primary"><i class="fas fa-bell"></i> Avise-me</button>
+        <!--<button type="button" class="btn btn-primary"><i class="fas fa-bell"></i> Avise-me</button>-->
       </div>
     </div>
   </div>
@@ -394,6 +394,7 @@
 
                     if(!isNaN(lat) && !isNaN(lng)){
 
+                        //Exibindo somente com doses remanescentes depois de 24h
                         if(remain_doses > 0 && dt.isAfter(h24)){
                             var vaccination_point = L.circle([lat, lng], {
                                 radius: v.radius_km * 1000,
@@ -511,7 +512,7 @@
             },
             yAxis: {
                 title: {
-                    text: 'Total percentual de doses aplicadas'
+                    text: 'Total de doses aplicadas'
                 }
 
             },

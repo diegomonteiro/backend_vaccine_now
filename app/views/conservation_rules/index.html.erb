@@ -1,6 +1,6 @@
 <p id="notice"><%= notice %></p>
 
-<h1>Conservation Rules</h1>
+<h1>Regras de Conservação</h1>
 
 <table>
   <thead>
@@ -22,9 +22,9 @@
         <td><%= conservation_rule.max_temp %></td>
         <td><%= conservation_rule.max_variation %></td>
         <td><%= conservation_rule.range_hours %></td>
-        <td><%= link_to 'Show', conservation_rule %></td>
-        <td><%= link_to 'Edit', edit_conservation_rule_path(conservation_rule) %></td>
-        <td><%= link_to 'Destroy', conservation_rule, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= link_to 'Ver', conservation_rule %></td>
+        <td><%= link_to 'Editar', edit_conservation_rule_path(conservation_rule) %></td>
+        <td><%= link_to 'Excluir', conservation_rule, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -32,4 +32,4 @@
 
 <br>
 
-<%= link_to 'New Conservation Rule', new_conservation_rule_path %>
+<%= link_to 'Nova Regra', new_conservation_rule_path %>
