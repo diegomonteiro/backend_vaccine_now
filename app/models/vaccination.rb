@@ -1,6 +1,7 @@
 class Vaccination < ApplicationRecord
   belongs_to :vaccination_point
   belongs_to :vaccine_type
+  belongs_to :equipament
 
   validates_presence_of :total_doses, message: 'O total de doses não pode fica em branco'
   validates_presence_of :remain_doses, message: 'As doses remanescentes não podem ficar em branco'

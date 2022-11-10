@@ -5,8 +5,6 @@ Rails.application.routes.draw do
   resources :equipaments
   resources :manufacturers
   resources :sensor_measurements
-  resources :sensor_models
-  resources :sensor_manufacturers
   resources :user_vaccines
   resources :diseases
   resources :vaccination_compaigns_targets

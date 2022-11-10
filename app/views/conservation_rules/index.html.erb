@@ -2,7 +2,7 @@
 
 <h1>Regras de Conservação</h1>
 
-<table>
+<table class="table table-bordered table-condensed">
   <thead>
     <tr>
       <th>Tipo de Vacina</th>
@@ -17,7 +17,7 @@
   <tbody>
     <% @conservation_rules.each do |conservation_rule| %>
       <tr>
-        <td><%= conservation_rule.vaccine_type_id %></td>
+        <td><%= conservation_rule.vaccine_type.name unless conservation_rule.vaccine_type.nil? %></td>
         <td><%= conservation_rule.min_temp %></td>
         <td><%= conservation_rule.max_temp %></td>
         <td><%= conservation_rule.max_variation %></td>

@@ -17,8 +17,7 @@ class VaccinationCampaign < ApplicationRecord
     
     ret[:title] = 'Nova campanha de vacinação'
     ret[:icon_class] = 'fa fa-circle text-warning'
-    ret[:message] = "#{name}"
-    
+    ret[:message] = "#{name} - Período: #{date_start} até #{date_end}"
 
     return ret
     end

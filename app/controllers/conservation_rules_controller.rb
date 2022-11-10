@@ -25,7 +25,7 @@ class ConservationRulesController < ApplicationController
 
     respond_to do |format|
       if @conservation_rule.save
-        format.html { redirect_to @conservation_rule, notice: "Conservation rule was successfully created." }
+        format.html { redirect_to @conservation_rule, notice: "Regra de conservação criada com sucesso!" }
         format.json { render :show, status: :created, location: @conservation_rule }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class ConservationRulesController < ApplicationController
   def update
     respond_to do |format|
       if @conservation_rule.update(conservation_rule_params)
-        format.html { redirect_to @conservation_rule, notice: "Conservation rule was successfully updated." }
+        format.html { redirect_to @conservation_rule, notice: "Regra de conservação alterada com sucesso!" }
         format.json { render :show, status: :ok, location: @conservation_rule }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class ConservationRulesController < ApplicationController
   def destroy
     @conservation_rule.destroy
     respond_to do |format|
-      format.html { redirect_to conservation_rules_url, notice: "Conservation rule was successfully destroyed." }
+      format.html { redirect_to conservation_rules_url, notice: "Regra de conservação excluída com sucesso!" }
       format.json { head :no_content }
     end
   end

@@ -1,6 +1,7 @@
 <%= simple_form_for @vaccination, :html => { :class => 'form-horizontal' } do |f| %>
 
   <%= f.association :vaccination_point, collection: VaccinationPoint.includes(:vaccination_point_type).all.map { |vpt| ["#{vpt.vaccination_point_type.cod}-#{vpt.name}", vpt.id] }, :label => "Ponto de Vacinação"%>
+  <%= f.association :equipament, collection: Equipament.all.map { |vpt| ["#{vpt.cod}", vpt.id] }, :label => "Equipamento de Monitoramento"%>
   <%= f.input :cod, :label => "Código"%> 
   <%= f.association :vaccine_type, collection: VaccineType.includes(:disease).all.map { |vpt| ["#{vpt.disease.name} - #{vpt.name}", vpt.id] }, :label => "Tipo de Vacinação" %>
   <%= f.input :total_doses, :label => "Total de Doses" %>

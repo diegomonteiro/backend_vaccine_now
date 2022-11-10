@@ -25,7 +25,7 @@ class DiseasesController < ApplicationController
 
     respond_to do |format|
       if @disease.save
-        format.html { redirect_to @disease, notice: "Disease was successfully created." }
+        format.html { redirect_to @disease, notice: "Tipo de Doença registrada!" }
         format.json { render :show, status: :created, location: @disease }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class DiseasesController < ApplicationController
   def update
     respond_to do |format|
       if @disease.update(disease_params)
-        format.html { redirect_to @disease, notice: "Disease was successfully updated." }
+        format.html { redirect_to @disease, notice: "Tipo de doença alterada!" }
         format.json { render :show, status: :ok, location: @disease }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class DiseasesController < ApplicationController
   def destroy
     @disease.destroy
     respond_to do |format|
-      format.html { redirect_to diseases_url, notice: "Disease was successfully destroyed." }
+      format.html { redirect_to diseases_url, notice: "Tipo de doença excluída!" }
       format.json { head :no_content }
     end
   end

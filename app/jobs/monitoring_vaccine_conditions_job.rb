@@ -3,6 +3,9 @@ class MonitoringVaccineConditionsJob < ApplicationJob
 
   def perform(*args)
     # Do something later
-    puts "Executing monitoring"
+    #puts "Executing monitoring"
+    ConservationRole.all.each do |k,v|
+      
+    end
   end
 end

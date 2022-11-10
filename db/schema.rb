@@ -10,19 +10,10 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 2022_10_13_011236) do
+ActiveRecord::Schema.define(version: 2022_11_10_010110) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
-
-  create_table "checkins", force: :cascade do |t|
-    t.bigint "trip_id", null: false
-    t.decimal "lat"
-    t.decimal "lng"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.index ["trip_id"], name: "index_checkins_on_trip_id"
-  end
 
   create_table "conservation_rules", force: :cascade do |t|
     t.bigint "vaccine_type_id", null: false
@@ -164,15 +155,6 @@ ActiveRecord::Schema.define(version: 2022_10_13_011236) do
     t.index ["target_type", "target_id"], name: "index_subscriptions_on_target_type_and_target_id"
   end
 
-  create_table "trips", force: :cascade do |t|
-    t.string "name"
-    t.string "uuid"
-    t.datetime "created_at", precision: 6, null: false
-    t.datetime "updated_at", precision: 6, null: false
-    t.bigint "user_id", null: false
-    t.index ["user_id"], name: "index_trips_on_user_id"
-  end
-
   create_table "user_positions", force: :cascade do |t|
     t.bigint "user_id", null: false
     t.float "latitude"
@@ -298,6 +280,8 @@ ActiveRecord::Schema.define(version: 2022_10_13_011236) do
     t.bigint "vaccine_type_id"
     t.integer "discarded_doses"
     t.datetime "date_hour"
+    t.bigint "equipament_id"
+    t.index ["equipament_id"], name: "index_vaccinations_on_equipament_id"
     t.index ["vaccination_point_id"], name: "index_vaccinations_on_vaccination_point_id"
     t.index ["vaccine_type_id"], name: "index_vaccinations_on_vaccine_type_id"
   end
@@ -315,18 +299,17 @@ ActiveRecord::Schema.define(version: 2022_10_13_011236) do
     t.index ["disease_id"], name: "index_vaccine_types_on_disease_id"
   end
 
-  add_foreign_key "checkins", "trips"
   add_foreign_key "conservation_rules", "vaccine_types"
   add_foreign_key "equipaments", "manufacturers"
   add_foreign_key "equipaments", "vaccination_points"
   add_foreign_key "measurements", "equipaments"
-  add_foreign_key "trips", "users"
   add_foreign_key "user_positions", "users"
   add_foreign_key "user_vaccines", "users"
   add_foreign_key "user_vaccines", "vaccination_points"
   add_foreign_key "user_vaccines", "vaccine_types"
   add_foreign_key "vaccination_compaigns_targets", "vaccination_campaigns"
   add_foreign_key "vaccination_points", "vaccination_point_types"
+  add_foreign_key "vaccinations", "equipaments"
   add_foreign_key "vaccinations", "vaccination_points"
   add_foreign_key "vaccinations", "vaccine_types"
   add_foreign_key "vaccine_types", "diseases"
