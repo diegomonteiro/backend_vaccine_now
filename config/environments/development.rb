@@ -13,8 +13,8 @@ Rails.application.configure do
     #Bullet.add_safelist :type => :counter_cache, :class_name => "Country", :association => :cities
   end
 
-  config.hosts << "vacinaja.app.br"
-  config.hosts << "ec2-3-16-169-9.us-east-2.compute.amazonaws.com"
+  #config.hosts << "vacinaja.app.br"
+  #config.hosts << "ec2-3-16-169-9.us-east-2.compute.amazonaws.com"
 
   # Settings specified here will take precedence over those in config/application.rb.
 
@@ -84,7 +84,8 @@ Rails.application.configure do
 
   config.action_mailer.delivery_method = :letter_opener
   config.action_mailer.perform_deliveries = true
-  config.action_mailer.raise_delivery_errors = true  
+  config.action_mailer.raise_delivery_errors = true
+    
   #config.action_mailer.delivery_method = :smtp
   
   # config.action_mailer.smtp_settings = {

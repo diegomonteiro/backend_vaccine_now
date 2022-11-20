@@ -8,6 +8,7 @@ class VaccinationPoint < ApplicationRecord
                    :lng_column_name => :longitude
   has_many :vaccinations
   has_many :user_vaccines
+  has_many :equipaments
 
   def complete_name
     "#{vaccination_point_type.cod} - #{name}"

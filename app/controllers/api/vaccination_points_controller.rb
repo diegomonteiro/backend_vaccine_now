@@ -38,6 +38,16 @@ module Api
 			end
 
 		    render json: vp, each_serializer: VaccinationPointsSerializer
-	    end
+	    end	
+
+		api :GET, '/vaccination_points/:id', "Listar ponto de vacinação"
+		param :id, :number, desc: 'id of the requested user'
+		description <<-eos
+			Obter ponto de vacinação por id
+		eos
+		def show
+			vp = VaccinationPoint.includes([:vaccinations, :vaccination_point_type]).accessible_by(current_ability).find(params[:id])
+			render json: vp, serializer: VaccinationPointsSerializer
+		end
     end
 end

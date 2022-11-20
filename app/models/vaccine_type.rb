@@ -2,6 +2,8 @@ class VaccineType < ApplicationRecord
     has_many :vaccinations
     belongs_to :disease
 
+    has_many :conservation_rules
+
     validates :name, presence: true
     validates :cod, presence: true
     validates :manufacturer, presence: true

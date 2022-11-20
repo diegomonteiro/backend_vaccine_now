@@ -66,6 +66,6 @@ class VaccinationsController < ApplicationController
 
     # Only allow a list of trusted parameters through.
     def vaccination_params
-      params.require(:vaccination).permit(:vaccination_point_id, :cod, :vaccine_type_id, :total_doses, :remain_doses, :discarded_doses)
+      params.require(:vaccination).permit(:vaccination_point_id, :cod, :vaccine_type_id, :total_doses, :remain_doses, :discarded_doses, :equipament_id)
     end
 end

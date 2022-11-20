@@ -11,6 +11,9 @@ class Ability
     can :read, VaccinationCampaign
     can :read, VaccinationCompaignsTarget
     can :read, VaccineType
+    can :read, Equipament
+    can :read, Measurement
+    can :read, ConservationRule
 
     if user.has_role? :patient
       can :read, UserVaccine, user_id: user.id

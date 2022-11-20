@@ -25,7 +25,7 @@ class VaccinationCompaignsTargetsController < ApplicationController
 
     respond_to do |format|
       if @vaccination_compaigns_target.save
-        format.html { redirect_to @vaccination_compaigns_target, notice: "Vaccination compaigns target was successfully created." }
+        format.html { redirect_to @vaccination_compaigns_target, notice: "Público alvo criado!" }
         format.json { render :show, status: :created, location: @vaccination_compaigns_target }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class VaccinationCompaignsTargetsController < ApplicationController
   def update
     respond_to do |format|
       if @vaccination_compaigns_target.update(vaccination_compaigns_target_params)
-        format.html { redirect_to @vaccination_compaigns_target, notice: "Vaccination compaigns target was successfully updated." }
+        format.html { redirect_to @vaccination_compaigns_target, notice: "Público alvo atualizado!" }
         format.json { render :show, status: :ok, location: @vaccination_compaigns_target }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class VaccinationCompaignsTargetsController < ApplicationController
   def destroy
     @vaccination_compaigns_target.destroy
     respond_to do |format|
-      format.html { redirect_to vaccination_compaigns_targets_url, notice: "Vaccination compaigns target was successfully destroyed." }
+      format.html { redirect_to vaccination_compaigns_targets_url, notice: "Público alvo excluído!" }
       format.json { head :no_content }
     end
   end

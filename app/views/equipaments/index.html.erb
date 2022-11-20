@@ -1,13 +1,12 @@
-<p id="notice"><%= notice %></p>
 
-<h1>Equipaments</h1>
+<h1>Equipamentos</h1>
 
-<table>
+<table class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>Cod</th>
-      <th>Manufacturer</th>
-      <th>Vaccination point</th>
+      <th>Fabricante</th>
+      <th>Ponto de Vacinação</th>
       <th colspan="3"></th>
     </tr>
   </thead>
@@ -16,11 +15,11 @@
     <% @equipaments.each do |equipament| %>
       <tr>
         <td><%= equipament.cod %></td>
-        <td><%= equipament.manufacturer_id %></td>
-        <td><%= equipament.vaccination_point_id %></td>
-        <td><%= link_to 'Show', equipament %></td>
-        <td><%= link_to 'Edit', edit_equipament_path(equipament) %></td>
-        <td><%= link_to 'Destroy', equipament, method: :delete, data: { confirm: 'Are you sure?' } %></td>
+        <td><%= equipament.manufacturer.name unless equipament.manufacturer.nil? %></td>
+        <td><%= equipament.vaccination_point.name unless equipament.vaccination_point.nil? %></td>
+        <td><%= link_to 'Ver', equipament %></td>
+        <td><%= link_to 'Editar', edit_equipament_path(equipament) %></td>
+        <td><%= link_to 'Excluir', equipament, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
       </tr>
     <% end %>
   </tbody>
@@ -28,4 +27,4 @@
 
 <br>
 
-<%= link_to 'New Equipament', new_equipament_path %>
+<%= link_to 'Novo Equipamento', new_equipament_path %>

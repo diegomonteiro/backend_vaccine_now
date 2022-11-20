@@ -25,7 +25,7 @@ class VaccinationCampaignsController < ApplicationController
 
     respond_to do |format|
       if @vaccination_campaign.save
-        format.html { redirect_to @vaccination_campaign, notice: "Vaccination campaign was successfully created." }
+        format.html { redirect_to @vaccination_campaign, notice: "Campanha de vacinação criada!" }
         format.json { render :show, status: :created, location: @vaccination_campaign }
       else
         format.html { render :new, status: :unprocessable_entity }
@@ -38,7 +38,7 @@ class VaccinationCampaignsController < ApplicationController
   def update
     respond_to do |format|
       if @vaccination_campaign.update(vaccination_campaign_params)
-        format.html { redirect_to @vaccination_campaign, notice: "Vaccination campaign was successfully updated." }
+        format.html { redirect_to @vaccination_campaign, notice: "Campanha de vacinação atualizada!" }
         format.json { render :show, status: :ok, location: @vaccination_campaign }
       else
         format.html { render :edit, status: :unprocessable_entity }
@@ -51,7 +51,7 @@ class VaccinationCampaignsController < ApplicationController
   def destroy
     @vaccination_campaign.destroy
     respond_to do |format|
-      format.html { redirect_to vaccination_campaigns_url, notice: "Vaccination campaign was successfully destroyed." }
+      format.html { redirect_to vaccination_campaigns_url, notice: "Campanha de vacinação excluída!" }
       format.json { head :no_content }
     end
   end

@@ -76,7 +76,11 @@
 
     startingPoint = {};
 
+    var trace_route = true;
+
     var h24 = moment().subtract(24,'hours');
+
+    
 
     L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
 		attribution: '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
@@ -244,6 +248,7 @@
                     break;
                 
                     default:
+                    trace_route = false;
                     swal("Atenção","Não perca os prazos das vacinas para não perder eficácia!","error");
                 }
                 });
@@ -263,7 +268,7 @@
     function metersToKilometers(meters){
         return parseInt(""+(meters/1000));
     }
-
+h24
     function secondsToMinutes(segs){
         return parseInt(""+(segs/60));
     }
@@ -304,7 +309,8 @@
                             var radius_km = (layer._mRadius/1000);
 
                             var dt = moment(layer.options.options.updated_at);
-
+                            
+                            //Se a distância estiver no alcance do raio de atendimento e se houver doses disponíveis
                             if(distance <= radius_km && layer.options.options.remain_doses > 0 && dt.isAfter(h24)){
                                 //console.log("Layer map: ",layer._latlng, " => Distancia: ", distance," ==> ",layer.options.options);
                                 //console.log("Notificar de Ponto de Vacinação: ", layer.options.options," DT: ", dt," <> ",h24);
@@ -374,7 +380,7 @@
     function getVaccinationPoints(){
         $.ajax({
             url: "/api/vaccination_points",
-            data: { with_remain_doses: true},
+            //data: { with_remain_doses: false},
             beforeSend: function(){
                 //console.log("Preparing request of Vaccination Points");
                 vaccination_points.clearLayers();

@@ -33,5 +33,15 @@ module Api
 		    user_vaccines = UserVaccine.accessible_by(current_ability).order("updated_at DESC")
 		    render json: user_vaccines
 	    end
+
+		api :GET, 'user_vaccines', "Listar Vacinas do Usuário por ID"
+		param :id, :number, desc: 'id of the requested user'
+		description <<-eos
+			Obter vacinas do usuário por ID #{URI_API}/user_vaccines/:id
+		eos
+		def show
+			user_vaccine = UserVaccine.accessible_by(current_ability).find(params[:id])
+			render json: user_vaccine
+		end
     end
 end

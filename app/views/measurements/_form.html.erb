@@ -4,13 +4,13 @@
   <%= f.error_notification message: f.object.errors[:base].to_sentence if f.object.errors[:base].present? %>
 
   <div class="form-inputs">
-    <%= f.association :equipament %>
-    <%= f.input :date_hour %>
-    <%= f.input :unit %>
-    <%= f.input :value %>
+    <%= f.association :equipament, collection: Equipament.all.map { |vpt| ["#{vpt.vaccination_point.name} - #{vpt.manufacturer.name} - #{vpt.cod}", vpt.id] }, :label => "Equipamento" %>
+    <%= f.input :date_hour, :label => "Data e Hora" %>
+    <%= f.input :unit, :label => "Unidade de Medida" %>
+    <%= f.input :value, :label => "Valor" %>
   </div>
 
   <div class="form-actions">
-    <%= f.button :submit %>
+    <%= f.button :submit, "Criar Medição" %>
   </div>
 <% end %>

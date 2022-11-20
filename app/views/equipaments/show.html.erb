@@ -1,4 +1,3 @@
-<p id="notice"><%= notice %></p>
 
 <p>
   <strong>Cod:</strong>
@@ -6,14 +5,14 @@
 </p>
 
 <p>
-  <strong>Manufacturer:</strong>
-  <%= @equipament.manufacturer_id %>
+  <strong>Fabricante:</strong>
+  <%= @equipament.manufacturer.name unless @equipament.manufacturer.nil? %>
 </p>
 
 <p>
-  <strong>Vaccination point:</strong>
-  <%= @equipament.vaccination_point_id %>
+  <strong>Ponto de Vacinação:</strong>
+  <%= @equipament.vaccination_point.name unless @equipament.vaccination_point.nil? %>
 </p>
 
-<%= link_to 'Edit', edit_equipament_path(@equipament) %> |
-<%= link_to 'Back', equipaments_path %>
+<%= link_to 'Editar', edit_equipament_path(@equipament) %> |
+<%= link_to 'Voltar', equipaments_path %>

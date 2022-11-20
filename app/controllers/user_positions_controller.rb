@@ -27,6 +27,11 @@ class UserPositionsController < ApplicationController
 
     respond_to do |format|
       if @user_position.save
+        user = User.find(@user_position.user_id)
+        user.latitude = @user_position.latitude
+        user.longitude = @user_position.longitude
+        user.save!
+
         format.html { redirect_to @user_position, notice: "Posição registrada com sucesso!" }
         format.json { render :show, status: :created, location: @user_position }
       else

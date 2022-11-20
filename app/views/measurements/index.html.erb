@@ -1,15 +1,14 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Medições de Temperatura</h1>
 
-<table>
+<table class="table table-bordered">
   <thead>
     <tr>
       <th>Equipamento</th>
       <th>Data/Hora</th>
       <th>Unidade</th>
       <th>Valor</th>
-      <th colspan="3"></th>
+      <th colspan="3">Ações</th>
     </tr>
   </thead>
 
@@ -20,9 +19,26 @@
         <td><%= measurement.date_hour %></td>
         <td><%= measurement.unit %></td>
         <td><%= measurement.value %></td>
-        <td><%= link_to 'Ver', measurement %></td>
-        <td><%= link_to 'Editar', edit_measurement_path(measurement) %></td>
-        <td><%= link_to 'Excluir', measurement, method: :delete, data: { confirm: 'Tem certeza?' } %></td>
+      
+
+        <td>
+          <% if can? :read, Measurement %>
+            <%= link_to '<i class="fa fa-eye"></i> Ver'.html_safe, measurement , :class => 'btn btn-info btn-xs'%>
+          <% end %>
+
+          <% if can? :update, Measurement %>
+          <%= link_to '<i class="fa fa-edit"></i> '.html_safe + t('.edit', :default => t("helpers.links.edit")),
+                      edit_measurement_path(measurement), :class => 'btn btn-warning btn-xs' %>
+          <% end %>
+
+          <% if can? :destroy, Measurement %>
+          <%= link_to '<i class="fa fa-trash"></i> '.html_safe + t('.destroy', :default => t("helpers.links.destroy")),
+                      measurement_path(measurement),
+                      :method => :delete,
+                      :data => { :confirm => t('.confirm', :default => t("helpers.links.confirm", :default => 'Tem certeza?')) },
+                      :class => 'btn btn-xs btn-danger' %>
+          <% end %>
+        </td>
       </tr>
     <% end %>
   </tbody>
@@ -30,4 +46,4 @@
 
 <br>
 
-<%= link_to 'Nova Medição', new_measurement_path %>
+<%= link_to 'Nova Medição', new_measurement_path, :class => 'btn btn-primary' %>
