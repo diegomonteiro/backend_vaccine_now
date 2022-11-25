@@ -5,8 +5,9 @@ require File.expand_path(File.dirname(__FILE__) + "/environment")
 # It's helpful, but not entirely necessary to understand cron before proceeding.
 # http://en.wikipedia.org/wiki/Cron
 
-every 10.minutes do
+every 1.minutes do
     AlertUsersToRemainVaccinesJob.perform_now
+    MonitoringVaccineConditionsJob.perform_now
 end
 
 # Example:

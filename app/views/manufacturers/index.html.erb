@@ -1,7 +1,7 @@
 
 <h1>Fabricantes</h1>
 
-<table class="table table-bordered">
+<table id="table-manufacturers" class="table table-bordered">
   <thead>
     <tr>
       <th>Nome</th>
@@ -26,3 +26,14 @@
 <br>
 
 <%= link_to 'Novo fabricante', new_manufacturer_path %>
+
+<script>
+$(document).ready(function () {
+  $('#table-manufacturers').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
+</script>
+

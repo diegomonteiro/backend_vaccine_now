@@ -2,7 +2,7 @@
   <h4><%=t '.title', :default => "Tipo de Doenças" %></h4>
 </div>
 
-<table class="table table-bordered table-striped">
+<table id="table-diseases" class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>Nome</th>
@@ -59,3 +59,13 @@
 <%= link_to t('.new', :default => t("helpers.links.new")),
             new_disease_path,
             :class => 'btn btn-primary' %>
+
+<script>
+$(document).ready(function () {
+  $('#table-diseases').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
+</script>

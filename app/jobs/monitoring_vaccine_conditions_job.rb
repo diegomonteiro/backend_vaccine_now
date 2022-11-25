@@ -17,7 +17,7 @@ class MonitoringVaccineConditionsJob < ApplicationJob
 
           vars = []
           v.equipament.measurements.each_with_index do |mx,kx|
-            
+
             vant = v.equipament.measurements[kx-1].value
             pvar = (mx.value/vant-1)*100
 

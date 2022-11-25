@@ -2,7 +2,7 @@
 <div class="page-header">
   <h4><%=t '.title', :default => "Vacinas" %></h4>
 </div>
-<table class="table table-striped">
+<table id="table-vaccinations" class="table table-bordered table-condensed table-striped">
   <thead>
     <tr>
       <th>#</th>
@@ -56,3 +56,13 @@
             new_vaccination_path,
             :class => 'btn btn-primary' %>
 <% end %>
+
+<script>
+$(document).ready(function () {
+  $('#table-vaccinations').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
+</script>

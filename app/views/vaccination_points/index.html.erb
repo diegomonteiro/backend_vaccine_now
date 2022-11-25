@@ -2,7 +2,7 @@
 <div class="page-header">
   <h4><%=t '.title', :default => "Pontos de Vacinação" %></h4>
 </div>
-<table class="table table-bordered table-striped">
+<table id="table-vaccination-points" class="table table-bordered table-striped">
   <thead>
     <tr>
       <th>#</th>
@@ -61,5 +61,17 @@
 <script>
   $(function () {
     $('[data-toggle="tooltip"]').tooltip()
-  })
+  });
+
+  
+</script>
+
+<script>
+$(document).ready(function () {
+  $('#table-vaccination-points').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
 </script>

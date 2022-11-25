@@ -2,7 +2,7 @@
 
 <h1>Público alvo das campanhas de Vacinação</h1>
 
-<table class="table table-bordered">
+<table id="table-vaccination-campaigns-targets" class="table table-stripped table-bordered">
   <thead>
     <tr>
       <th>Campanha</th>
@@ -37,3 +37,14 @@
 <br>
 
 <%= link_to 'Novo público alvo', new_vaccination_compaigns_target_path %>
+
+<script>
+$(document).ready(function () {
+  $('#table-vaccination-campaigns-targets').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
+</script>
+

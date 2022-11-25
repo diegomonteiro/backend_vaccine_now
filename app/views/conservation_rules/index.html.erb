@@ -1,8 +1,7 @@
-<p id="notice"><%= notice %></p>
 
 <h1>Regras de Conservação</h1>
 
-<table class="table table-bordered table-condensed">
+<table id="table-conservation-rules" class="table table-bordered table-condensed table-striped">
   <thead>
     <tr>
       <th>Tipo de Vacina</th>
@@ -32,4 +31,14 @@
 
 <br>
 
-<%= link_to 'Nova Regra', new_conservation_rule_path %>
+<%= link_to 'Nova Regra', new_conservation_rule_path, class: "btn btn-primary" %>
+
+<script>
+$(document).ready(function () {
+  $('#table-conservation-rules').DataTable({
+    language: {
+      url: 'https://cdn.datatables.net/plug-ins/1.13.1/i18n/pt-BR.json'
+    }
+  });
+});
+</script>
