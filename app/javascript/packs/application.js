@@ -12,6 +12,8 @@ import '../stylesheets/application';
 
 import "vanilla-nested";
 
+import "../packs/leaflet-sidepanel";
+
 // Import Moment JS
 import moment from 'moment';
 window.moment = moment;

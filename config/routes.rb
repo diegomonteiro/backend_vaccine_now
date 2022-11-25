@@ -27,6 +27,7 @@ Rails.application.routes.draw do
     resources :vaccination_points
     resources :equipaments
     resources :measurements
+    resources :vaccinations
   end
 
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html

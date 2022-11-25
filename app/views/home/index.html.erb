@@ -31,7 +31,7 @@
   <div class="modal-dialog modal-dialog-centered modal-xl">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title" id="modal_title">Modal title</h5>
+        <h5 class="modal-title" id="modal_title"></h5>
         <button type="button" class="close" data-dismiss="modal" aria-label="Close">
           <span aria-hidden="true">&times;</span>
         </button>
@@ -54,6 +54,7 @@
       </div>
       <div class="modal-footer">
         <button type="button" class="btn btn-secondary" data-dismiss="modal"><i class="fa fa-times"></i> Fechar</button>
+        <button type="button" id="btn-trace-route" class="btn btn-success"><i class="fa fa-map-pin"></i> Traçar Rota</button>
         <!--<button type="button" class="btn btn-primary"><i class="fas fa-bell"></i> Avise-me</button>-->
       </div>
     </div>
@@ -78,6 +79,8 @@
 
     startingPoint = {};
 
+    let closest_points = [];
+
     var trace_route = true;
 
     var h24 = moment().subtract(24,'hours');
@@ -90,6 +93,11 @@
     
     map.on('locationfound', onLocationFound);
     map.on('locationerror', onLocationError);
+
+    $("#btn-trace-route").on('click', function(e){
+        console.log("Click Trace Route: ", $(this).data());
+
+    })
 
     $(window).on("resize", function () {
         //console.log("Redefinir map");
@@ -105,29 +113,6 @@
         getLocation("<%= current_user.id %>");
         <% end %>
     });
-
-    function plotFakeUsers(number){
-        bounds = map.getBounds();
-        var southWest = bounds.getSouthWest();
-        var northEast = bounds.getNorthEast();
-        var lngSpan = northEast.lng - southWest.lng;
-        var latSpan = northEast.lat - southWest.lat;
-
-        pointsrand=[];
-
-        for(var i=0;i<number;++i)
-        {
-            var point = [southWest.lat + latSpan * Math.random(),southWest.lng + lngSpan * Math.random()];
-            pointsrand.push(point);
-
-            user_positions.addLayer(L.marker(point).bindPopup("Sua localização é de " + 0 + " metros a partir deste ponto"));
-            //var marker = L.marker(point).on('click', render_modal));
-            user_positions.addLayer(marker);
-        }
-
-        console.log("Random Users: ", pointsrand);
-
-    }
 
     function updateUserLocation(e){
         
@@ -151,15 +136,13 @@
         user_positions.clearLayers();
 
         var m = L.marker(e.latlng).bindPopup("Sua localização é de " + radius + " metros a partir deste ponto").openPopup();
-
         user_positions.addLayer(m);
         //user_positions.addLayer(c);
 
         <% if user_signed_in?  %>
             getPathByUser(<%= current_user.id %>);
+            updateUserLocation(e);
         <% end %>
-
-        updateUserLocation(e);
     }
 
     function onLocationError(e) {
@@ -222,55 +205,102 @@
                 user_paths.clearLayers();
             },
             success: function(data){
-                console.log("Rota Localizada: ", data," => ", vaccination_point);
+                //console.log("Rota Localizada: ", data," => ", vaccination_point);
                 var rota = data.routes[0];
-                var msg = "Você está a "+metersToKilometers(rota.distance)+" km, tempo de chegada previsto: "+secondsToMinutes(rota.duration)+" minutos!";
-                
-                var maps_url = "https://www.google.com.br/maps/dir/";
-                    maps_url += from.lat +","+ from.lng+"/"
-                    maps_url += to.lat + "," + to.lng;
 
-                //swal("Vacina disponível!", msg, "success");
-                swal(msg, {
-                icon: 'warning',
-                buttons: {
-                    cancel: "Cancelar",
-                    goto: {
-                        text: "Traçar Rota!",
-                        value: "goto",
-                    }
-                },
-                })
-                .then((value) => {
-                switch (value) {
-                
-                    case "goto":
-                    console.log("Link Google Maps: ",maps_url);
-                    window.open(maps_url, '_blank');
-                    break;
-                
-                    default:
-                    trace_route = false;
-                    swal("Atenção","Não perca os prazos das vacinas para não perder eficácia!","error");
-                }
-                });
+                let letw = _.groupBy(vaccination_point.vaccinations,'vaccine_type_id');
 
                 $.each(data.routes, function(k,v){
                     //user_paths.addLayer(v.geometry);
-                    user_paths.addLayer(L.geoJSON(v.geometry, {
+                    let path = L.geoJSON(v.geometry, {
+                        
+                        onEachFeature: onEachFeature,
                         style: function(feature){
-                            return {color: getRandomColor(), weight: 2.5};
+                            
+                            return {color: "#0872F0", weight: 6, fillOpacity: 1};
                         }
-                    }));
+                    });
+
+                    path.on('click', function(e){
+                        
+                        console.log("Escolher esse caminho!!!", e);
+                        
+                        let coords = e.layer._latlngs;
+
+                        //console.table("Coords: ", coords);
+
+                        var maps_url = "https://www.google.com.br/maps/dir/";
+                        let from = _.first(coords);
+                        let to   = _.last(coords);
+
+                        maps_url += from.lat +","+ from.lng+"/"
+                        maps_url += to.lat + "," + to.lng;
+
+                        //console.log("Map Link => ", maps_url);
+                        window.open(maps_url, '_blank');
+                        
+                        //getDirections()
+                    });
+                    user_paths.addLayer(path);
                 });
             }
         })
     }
 
+    function renderDirectionsUrl(from, points){
+        var maps_url = "https://www.google.com.br/maps/dir/";
+        maps_url += from.lat +","+ from.lng+"/"
+
+        console.log("From ", from," => Points: ", points);
+
+        $.each(points, function(k,v){
+            maps_url += v.lat + "," + v.lng+"/";
+        })
+
+        return maps_url; //.substring(0, maps_url.length-1)
+    }
+
+    function highlightFeature(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 18,
+            color: "#0872F0",
+            opacity: .4
+        });
+
+        layer.bringToFront();
+    }
+
+    function resetHighlight(e) {
+        var layer = e.target;
+
+        layer.setStyle({
+            weight: 6,
+            opacity: .6,
+            color: '#0872F0'
+        });
+
+        layer.bringToFront();
+    }
+
+    function zoomToFeature(e) {
+        map.fitBounds(e.target.getBounds());
+    }
+
+    function onEachFeature(feature, layer) {
+        layer.on({
+            mouseover: highlightFeature,
+            mouseout: resetHighlight,
+            click: zoomToFeature
+        });
+    }
+
+
     function metersToKilometers(meters){
         return parseInt(""+(meters/1000));
     }
-h24
+
     function secondsToMinutes(segs){
         return parseInt(""+(segs/60));
     }
@@ -295,14 +325,11 @@ h24
 
                 var last_position = _.last(positions);
                 user_positions.addLayer(L.marker([last_position.latitude, last_position.longitude], {options: last_position}).bindPopup("Sua última localização em "+last_position.updated_at));
-                
-                
 
                 bounds.extend({lat: last_position.latitude, lng: last_position.longitude});
 
-                //console.log(vaccination_points);
                 map.eachLayer(function(layer){
-                    if(layer._mRadius){
+                    if(layer._mRadius && trace_route){
                             var from = turf.point([last_position.longitude, last_position.latitude]);
                             var to = turf.point([layer._latlng.lng, layer._latlng.lat]);
 
@@ -317,11 +344,115 @@ h24
                                 //console.log("Layer map: ",layer._latlng, " => Distancia: ", distance," ==> ",layer.options.options);
                                 //console.log("Notificar de Ponto de Vacinação: ", layer.options.options," DT: ", dt," <> ",h24);
                                 bounds.extend(layer._latlng);
-
+                                
+                                closest_points.push({vaccination_point: layer.options.options, distance: distance, radius_km: radius_km, from: from, to: to});
                                 getDirections("driving",{lat: last_position.latitude, lng: last_position.longitude},layer._latlng, layer.options.options);
                             }
                     }
                 });
+
+                console.log("Closest Points: ", closest_points);
+
+                closest_points = _.orderBy(_.uniqBy(closest_points, function(e){ return e.vaccination_point.id }), ['distance','desc']);
+
+                if(closest_points.length > 0){
+                    var msg = "Foram encontrados "+closest_points.length+" próximos da sua localização com vacinas disponíveis! Basta clicar na rota no mapa para ser redirecionado pro Google Maps!";
+                    
+                    let steps_obj = [];
+                    let steps_num = [];
+
+                    $.each(closest_points, function(k,v){
+
+                        let html_table = "Há "+(v.distance).toFixed(2)+"km de distância da sua última localização!<br/><br/><table class='table table-bordered'><thead><tr><th>Vacina</th><th>Disponíveis</th></tr></thead><tbody>"
+                        $.each(v.vaccination_point.vaccinations, function(w,x){
+                            
+
+                            let vaccine_type = $.grep(vaccine_types_json, function(e){ return e.id == x.vaccine_type_id })[0];
+                            let disease = $.grep(diseases_json, function(e){ return e.id == vaccine_type.disease_id })[0];
+
+                            html_table += "<tr><td>"+disease.name+" - "+vaccine_type.name+"</td><td>"+x.remain_doses+"</td></tr>";
+                        });
+                        
+                        html_table += "</tbody></table>";
+
+                        steps_obj.push({
+                            title: v.vaccination_point.name,
+                            text: "Teste "+(k+1),
+                            html: `${html_table}`,
+                        });
+
+                        steps_num.push(k+1);
+                    });
+
+                    Swal.mixin({
+                        input: 'radio',
+                        inputOptions: {
+                            'Sim': 'Sim',
+                            'Não': 'Não'
+                        },
+                        inputValidator: (value) => {
+                            if (!value) {
+                            return 'Escolha se quer ou não ir até o local!'
+                            }
+                            else{
+
+                            }
+                        },
+                        confirmButtonText: 'Próxima →',
+                        cancelButtonText: 'Cancelar',
+                        showCancelButton: true,
+                        progressSteps: steps_num
+                        }).queue(
+                            steps_obj
+                        ).then((result) => {
+                        if (result.value) {
+                          
+                            let rst_points = [];
+
+                            $.each(result.value, function(k,v){
+                                if(v == "Sim"){
+                                    //console.log("Ponto Selecionado! => ", closest_points[k]);
+                                    let cx = closest_points[k].to.geometry.coordinates;
+                                    rst_points.push({lat: cx[1], lng: cx[0]});
+                                }
+                            });
+                            
+                            //console.log("CoordsX: ", rst_points);
+                            if(rst_points.length > 0){
+                                let mapUrl = renderDirectionsUrl({lng: last_position.longitude, lat: last_position.latitude}, rst_points);
+                                window.open(mapUrl,'_blank');
+                            }
+
+                        }
+                        });
+
+                    /*swal(msg, {
+                    icon: 'warning',
+                    buttons: {
+                        cancel: "Cancelar",
+                        goto: {
+                            text: "Ok!",
+                            value: "goto",
+                        }
+                    },
+                    })
+                    .then((value) => {
+                    switch (value) {
+                    
+                        case "goto":
+                        console.log("Confirmou as rotas!");
+                        
+                        break;
+                    
+                        default:
+                        trace_route = false;
+                        swal("Atenção","Não perca os prazos das vacinas para não perder eficácia!","error");
+
+                        //Limpar rotas
+                        user_paths.clearLayers();
+                    }
+                    });*/
+                }
 
                });
 
@@ -382,7 +513,7 @@ h24
     function getVaccinationPoints(){
         $.ajax({
             url: "/api/vaccination_points",
-            //data: { with_remain_doses: false},
+            data: { with_remain_doses: true},
             beforeSend: function(){
                 //console.log("Preparing request of Vaccination Points");
                 vaccination_points.clearLayers();
@@ -436,6 +567,7 @@ h24
                     layer.on('click',function(e){
                         console.log("Click: ",e.target.options.options)
                         render_modal(e.target.options.options);
+
                     });
                     //console.log("Renderizar Custom-Modal: ", layer);
 
@@ -453,6 +585,8 @@ h24
         console.log(e);
         $("#vaccination_point_modal").find(".modal-title").html(e.vaccination_point_type.cod + " - " + e.name);
 
+        $("#btn-trace-route").data('coords', e);
+
         var resume = "";
 
         resume += "<br/><div class=\"row\">";
@@ -462,11 +596,14 @@ h24
                     resume += "<div class=\"card-body\">";
                         resume += "<h5 class=\"card-title\"><b>Localização</b></h5>";
                         resume += "<p class=\"card-text\">"+e.address+"</p>";
-                        resume += "<p class=\"card-text\"><b>Tel:</b> "+e.contact_number+"</p>";
+                        if(e.contact_number != "" && e.contact_number){
+                            resume += "<p class=\"card-text\"><b>Tel:</b> "+e.contact_number+"</p>";
+                        }
                     resume += "</div>";
                     resume += "<ul class=\"list-group list-group-flush\">";
-                        resume += "<li class=\"list-group-item\"><b>Total de Doses</b> <span class=\"badge badge-info float-right\">"+e.total_doses+"</span></li>";
-                        resume += "<li class=\"list-group-item\"><b>Doses Disponíveis</b> <span class=\"badge badge-success float-right\">"+e.remain_doses+"</span></li>";
+                        resume += "<li class=\"list-group-item\"><b>Total de Doses</b> <span class=\"badge badge-secondary float-right\">"+e.total_doses+"</span></li>";
+                        resume += "<li class=\"list-group-item\"><b>Doses Disponíveis</b> <span class=\"badge badge-info float-right\">"+e.remain_doses+"</span></li>";
+                        resume += "<li class=\"list-group-item\"><b>Doses Aplicadas</b> <span class=\"badge badge-success float-right\">"+(e.total_doses - (e.discarded_doses + e.remain_doses))+"</span></li>";
                         resume += "<li class=\"list-group-item\"><b>Doses Descartadas</b> <span class=\"badge badge-danger float-right\">"+e.discarded_doses+"</span></li>";
                     resume += "</ul>";
                 resume += "</div>";
@@ -474,10 +611,10 @@ h24
             resume += "<div class=\"col-md-8\">";
                 resume += "<div class='table-responsive'>";
                 resume += "<table id=\"table_vaccines\" class='table table-condensed table-striped table-bordered'>";
-                    resume += "<thead><tr><th>Doença</th><th>Vacina</th><th>Disponíveis</th><th>Descartadas</th><th>Total</th><th>Desp(%)</th></tr></thead>";
+                    resume += "<thead><tr><th>Doença</th><th>Vacina</th><th>Disponíveis</th><th>Descartadas</th><th>Total</th><th>Desp(%)</th><th>Atualizado Em?</th></tr></thead>";
                     resume += "<tbody>";
                         $.each(e.vaccinations, function(k,v){
-                            //console.log(v);
+                            console.log(v);
                             var vaccine_type_obj = getVaccineTypeById(v.vaccine_type_id);
 
                             resume += "<tr>";
@@ -487,6 +624,7 @@ h24
                                 resume += "<td>"+v.discarded_doses+"</td>";
                                 resume += "<td>"+v.total_doses+"</td>";
                                 resume += "<td>"+getWasteRate(v.total_doses,v.discarded_doses).toFixed(2)+"</td>";
+                                resume += "<td>"+moment(v.updated_at).format("YYYY-MM-DD HH:mm")+"</td>"
                             resume += "</tr>";
                         });
                     resume += "</tbody>";
@@ -548,24 +686,24 @@ h24
                     colorByPoint: true,
                     data: [
                         {
-                            name: "Astrazeneca",
+                            name: "Covid-19",
                             y: 25,
-                            drilldown: "Astrazeneca"
+                            drilldown: "Covid-19"
                         },
                         {
-                            name: "Coronavac",
+                            name: "Influenza",
                             y: 25,
-                            drilldown: "Coronavac"
+                            drilldown: "Influenza"
                         },
                         {
-                            name: "Pfizer",
+                            name: "Poliomelite",
                             y: 25,
-                            drilldown: "Pfizer"
+                            drilldown: "Poliomelite"
                         },
                         {
-                            name: "Jansen",
+                            name: "Febre Amarela",
                             y: 10,
-                            drilldown: "Jansen"
+                            drilldown: "Febre Amarela"
                         },
                         
                         {
@@ -579,8 +717,8 @@ h24
             drilldown: {
                 series: [
                     {
-                        name: "Astrazeneca",
-                        id: "Astrazeneca",
+                        name: "Covid-19",
+                        id: "Covid-19",
                         data: [
                             [
                                 "2021-01-01",
@@ -637,8 +775,8 @@ h24
                         ]
                     },
                     {
-                        name: "Coronavac",
-                        id: "Coronavac",
+                        name: "Influenza",
+                        id: "Influenza",
                         data: [
                              [
                                 "2021-01-01",
@@ -695,8 +833,66 @@ h24
                         ]
                     },
                     {
-                        name: "Jansen",
-                        id: "Jansen",
+                        name: "Poliomelite",
+                        id: "Poliomelite",
+                        data: [
+                             [
+                                "2021-01-01",
+                                10
+                            ],
+                            [
+                                "2021-01-02",
+                                13
+                            ],
+                            [
+                                "2021-01-03",
+                                53
+                            ],
+                            [
+                                "2021-01-04",
+                                14
+                            ],
+                            [
+                                "2021-01-05",
+                                88
+                            ],
+                            [
+                                "2021-01-06",
+                                56
+                            ],
+                            [
+                                "2021-01-07",
+                                45
+                            ],
+                            [
+                                "2021-01-08",
+                                49
+                            ],
+                            [
+                                "2021-01-09",
+                                32
+                            ],
+                            [
+                                "2021-01-10",
+                                29
+                            ],
+                            [
+                                "2021-01-11",
+                                79
+                            ],
+                            [
+                                "2021-01-12",
+                                18
+                            ],
+                            [
+                                "2021-01-13",
+                                13
+                            ]
+                        ]
+                    },
+                     {
+                        name: "Febre Amarela",
+                        id: "Febre Amarela",
                         data: [
                              [
                                 "2021-01-01",
@@ -753,8 +949,8 @@ h24
                         ]
                     },
                     {
-                        name: "Others",
-                        id: "Others",
+                        name: "Outros",
+                        id: "Outros",
                         data: [
                            [
                                 "2021-01-01",

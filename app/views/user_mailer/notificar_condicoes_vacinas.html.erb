@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+  <head>
+    <meta content='text/html; charset=UTF-8' http-equiv='Content-Type' />
+  </head>
+  <body>
+    <h1>Olá, <%= @user.name %></h1>
+    <p>
+      Informamos que há vacinas expiradas ou próximas de expirar!<br>
+      Nome: <%= @vaccination_point.name %><br/>
+      Local: <%= @vaccination_point.address %><br/>
+    </p>
+    <hr/>
+
+    <table border="1">
+    <thead>
+      <tr>
+        <th>Tipo</th>
+        <th>Código/Lote</th>
+        <th>Equipamento</th>
+        <th>Data/Hora</th>
+        <th>Temperatura</th>
+      </tr>
+    </thead>
+    <tbody>
+    <% @vaccines_outdate.each do |vo| %>
+      <tr><td><%= vo[1].vaccine_type.name %></td><td><%= vo[1].cod %></td><td><%= vo[0].equipament.cod %></td><td><%= vo[0].date_hour %></td><td><%= vo[0].value %></td></tr>
+    <% end %>
+    </tbody>
+    </table>
+  </body>
+</html>

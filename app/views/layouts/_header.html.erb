@@ -55,7 +55,7 @@
 
     <ul class="navbar-nav mr-auto pull-right">
       <% if user_signed_in? %>
-        <%= render_notifications_of current_user, fallback: :default, index_content: :with_attributes, devise_default_routes: respond_to?('notifications_path') %>
+        <%= render_notifications_of current_user, fallback: :default, index_content: :unopened_with_attributes, reverse: true, devise_default_routes: respond_to?('notifications_path') %>
         <%#= render_notifications_of current_user, fallback: :default, index_content: :unopened_with_attributes, reverse: true %>
         <%#= render_notifications_of current_user, fallback: :default, index_content: :with_attributes, as_latest_group_member: true %>
         <%#= render_notifications_of current_user, fallback: :default_without_grouping, index_content: :with_attributes, with_group_members: true %>
