@@ -4,7 +4,7 @@ git_source(:github) { |repo| "https://github.com/#{repo}.git" }
 ruby '2.6.1'
 
 # Bundle edge Rails instead: gem 'rails', github: 'rails/rails'
-gem 'rails', '~> 6.0.5', '>= 6.0.5.1'
+gem 'rails', '~> 6.0.6'
 # Use postgresql as the database for Active Record
 gem 'pg', '>= 0.18', '< 2.0'
 # Use Puma as the app server
@@ -22,7 +22,7 @@ gem 'jbuilder', '~> 2.7'
 # gem 'redis', '~> 4.0'
 # Use Active Model has_secure_password
 # gem 'bcrypt', '~> 3.1.7'
-gem 'rails_admin', '~> 3.0'
+gem 'rails_admin', '~> 3.1', '>= 3.1.0'
 
 # Use Active Storage variant
 # gem 'image_processing', '~> 1.2'
@@ -40,13 +40,13 @@ gem 'omniauth-google'
 
 gem 'rails-i18n', '>= 6.0.0'
 
-gem "bootstrap", ">= 5.1.0"
+gem "bootstrap", ">= 5.2.1"
 gem 'jquery-rails'
 gem 'pusher'
 gem 'figaro'
 
 gem 'simple_form', '>= 5.1.0'
-gem "twitter-bootstrap-rails", ">= 3.2.2"
+gem "twitter-bootstrap-rails", ">= 5.0.0"
 gem 'geokit-rails', '>= 2.3.2'
 
 gem 'apipie-rails', '>= 0.5.19'
