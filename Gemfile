@@ -50,7 +50,7 @@ gem "twitter-bootstrap-rails", ">= 3.2.2"
 gem 'geokit-rails', '>= 2.3.2'
 
 gem 'apipie-rails', '>= 0.5.19'
-gem 'authtrail', '>= 0.4.1'
+gem 'authtrail', '>= 0.5.0'
 gem 'active_record_upsert'
 gem 'whenever'
 gem 'delayed_job_active_record'
