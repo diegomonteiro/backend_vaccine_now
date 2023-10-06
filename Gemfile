@@ -47,7 +47,7 @@ gem 'figaro'
 
 gem 'simple_form', '>= 5.1.0'
 gem "twitter-bootstrap-rails", ">= 3.2.2"
-gem 'geokit-rails', '>= 2.3.2'
+gem 'geokit-rails', '>= 2.5.0'
 
 gem 'apipie-rails', '>= 0.5.19'
 gem 'authtrail', '>= 0.4.1'
@@ -60,7 +60,7 @@ gem 'simple_token_authentication', '>= 1.17.0'
 
 gem "letter_opener", group: :development
 gem 'sendgrid-ruby'
-gem 'active_model_serializers', '~> 0.10.12'
+gem 'active_model_serializers', '~> 0.10.14'
 gem "bullet"
 
 
