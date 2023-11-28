@@ -51,7 +51,7 @@ gem 'geokit-rails', '>= 2.3.2'
 
 gem 'apipie-rails', '>= 0.5.19'
 gem 'authtrail', '>= 0.4.1'
-gem 'active_record_upsert'
+gem 'active_record_upsert', '>= 0.11.2'
 gem 'whenever'
 gem 'delayed_job_active_record'
 gem 'devise-i18n', '>= 1.10.0'
